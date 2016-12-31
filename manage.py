@@ -2,6 +2,8 @@
 import os
 import sys
 
+# I'm here :D
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tahlil.settings")
     try:
