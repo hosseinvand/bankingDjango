@@ -10,6 +10,13 @@ class Employee(models.Model):
     father_name = models.CharField(max_length=255)
     social_id = models.CharField(max_length=10)
     branch = models.ForeignKey('Branch', on_delete=models.CASCADE)
+    EMPLOYEE_TYPES = (
+        ('au', 'auditor'),
+        ('ca', 'cashier'),
+        ('ma', 'manager'),
+        ('le', 'legal'),
+    )
+    type = models.CharField(max_length=2, choices=EMPLOYEE_TYPES)
 
 class Branch(models.Model):
     manager=models.ForeignKey(
