@@ -21,16 +21,16 @@ class Card(models.Model):
 
 
 class withdrawFromATM(models.Model):
-    ATM = models.ForeignKey(ATM, on_delete=models.SET_NULL, related_name="withdrawal")
-    Card = models.ForeignKey(Card, on_delete=models.SET_NULL, related_name="withdrawal")
+    ATM = models.ForeignKey(ATM, on_delete=models.SET_NULL, related_name="withdrawal",null=True)
+    Card = models.ForeignKey(Card, on_delete=models.SET_NULL, related_name="withdrawal",null=True)
     volume = models.IntegerField()
 
 
 class CardToCard(models.Model):
     volume = models.IntegerField()
-    ATM = models.ForeignKey(ATM, on_delete=models.SET_NULL, related_name="card_to_card")
-    FromCard = models.ForeignKey(Card, on_delete=models.SET_NULL, related_name="card_to_card_from")
-    ToCard = models.ForeignKey(Card, on_delete=models.SET_NULL, related_name="card_to_card_to")
+    ATM = models.ForeignKey(ATM, on_delete=models.SET_NULL, related_name="card_to_card",null=True)
+    FromCard = models.ForeignKey(Card, on_delete=models.SET_NULL, related_name="card_to_card_from",null=True)
+    ToCard = models.ForeignKey(Card, on_delete=models.SET_NULL, related_name="card_to_card_to",null=True)
 
 
 class BillType(models.Model):
