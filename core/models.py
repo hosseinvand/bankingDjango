@@ -76,7 +76,11 @@ class Customer(models.Model):
 
 
 class SystemModel(models.Model):
-    card_production_fee = models.CharField(max_length = 255, default='0')
-    check_production_fee = models.CharField(max_length = 255, default='0')
+    card_production_fee = models.IntegerField( default = 0)
+    check_production_fee = models.IntegerField( default = 0)
 
 
+class Account(models.Model):
+    owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    account_number = models.IntegerField(primary_key=True)
+    balance = models.IntegerField(default = 0)
