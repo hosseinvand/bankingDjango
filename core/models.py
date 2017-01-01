@@ -23,3 +23,6 @@ class Branch(models.Model):
         Employee, on_delete = models.SET_NULL, null = True, related_name='+')
     name=models.CharField(max_length = 255)
     address=models.CharField(max_length = 255)
+
+
+
