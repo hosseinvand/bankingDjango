@@ -29,8 +29,8 @@ class Account(models.Model):
 
 
 class Card(models.Model):
-    card_number = models.CharField(max_length=20,unique=True,null=True)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE,null=True)
+    card_number = models.CharField(max_length=20,unique=True)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 
 class WithdrawFromATM(models.Model):
