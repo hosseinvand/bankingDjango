@@ -74,3 +74,7 @@ class Customer(models.Model):
     birthday = models.DateField(
         verbose_name=None, name=None, auto_now=False, auto_now_add=False)
     father_name = models.CharField(max_length=255)
+
+class SystemModel(models.Model):
+    card_production_fee = models.CharField(max_length = 255, default='0')
+    check_production_fee = models.CharField(max_length = 255, default='0')
