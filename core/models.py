@@ -28,7 +28,6 @@ class WithdrawFromATM(models.Model):
 
 class CardToCard(models.Model):
     volume = models.IntegerField()
-    ATM = models.ForeignKey(ATM, on_delete=models.SET_NULL, related_name="card_to_card",null=True)
     FromCard = models.ForeignKey(Card, on_delete=models.SET_NULL, related_name="card_to_card_from",null=True)
     ToCard = models.ForeignKey(Card, on_delete=models.SET_NULL, related_name="card_to_card_to",null=True)
 
@@ -75,6 +74,9 @@ class Customer(models.Model):
         verbose_name=None, name=None, auto_now=False, auto_now_add=False)
     father_name = models.CharField(max_length=255)
 
+
 class SystemModel(models.Model):
     card_production_fee = models.CharField(max_length = 255, default='0')
     check_production_fee = models.CharField(max_length = 255, default='0')
+
+
