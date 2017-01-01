@@ -11,7 +11,7 @@ class ATMGuy(models.Model):
     ATM = models.OneToOneField(ATM, on_delete=models.CASCADE, related_name='atm_guy')
 
 
-class eskenas(models.Model):
+class Greenback(models.Model):
     value = models.IntegerField()
 
 
@@ -20,7 +20,7 @@ class Card(models.Model):
     # TODO FK be hesab
 
 
-class withdrawFromATM(models.Model):
+class WithdrawFromATM(models.Model):
     ATM = models.ForeignKey(ATM, on_delete=models.SET_NULL, related_name="withdrawal",null=True)
     Card = models.ForeignKey(Card, on_delete=models.SET_NULL, related_name="withdrawal",null=True)
     volume = models.IntegerField()
@@ -38,14 +38,14 @@ class BillType(models.Model):
     #TODO FK be hesab
 
 
-class bill(models.Model):
+class Bill(models.Model):
     billType = models.ForeignKey(BillType, on_delete=models.CASCADE, related_name="bills")
     total = models.IntegerField()
     #TODO fk to pay transaction
 
 
 class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     father_name = models.CharField(max_length=255)
