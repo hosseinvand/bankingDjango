@@ -21,7 +21,7 @@ from tahlil import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^core/' , include('core.urls'))
+    url(r'^core/', include('core.urls'))
 ]
 
 if settings.DEBUG:

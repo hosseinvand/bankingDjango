@@ -1,7 +1,8 @@
 from django.contrib import admin
+from solo.admin import SingletonModelAdmin
 from core.models import *
 # Register your models here.
-admin.site.register(System)
+admin.site.register(SystemConfiguration,SingletonModelAdmin)
 admin.site.register(Manager)
 admin.site.register(Auditor)
 admin.site.register(Jursit)
@@ -28,3 +29,4 @@ admin.site.register(Maintainer)
 admin.site.register(Customer)
 admin.site.register(Notification)
 admin.site.register(PayedBill)
+admin.site.register(Contain)
