@@ -3,9 +3,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from solo.models import SingletonModel
 import uuid
-from django.db.models.loading import cache as model_cache
-if not model_cache.loaded:
-    model_cache.get_models()
+
 
 UNKNOWN = 'NA'
 ACCEPT = 'AC'
