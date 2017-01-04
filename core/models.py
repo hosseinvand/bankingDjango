@@ -57,7 +57,6 @@ wage_types = (
 )
 
 
-
 class System(models.Model):
     card_production_fee = models.IntegerField(default=100)
     cheque_production_fee = models.IntegerField(default=100)
@@ -67,7 +66,7 @@ class System(models.Model):
     atm_min_money = models.IntegerField(default=100000)
     loan_interest = models.FloatField(default=0.14)
     deposit_yearly_interest = models.FloatField(default=0.10)
-    #Implemented yearly, but must be applied daily(x^(1/365)).
+    # Implemented yearly, but must be applied daily(x^(1/365)).
 
     def __str__(self):
         return "System Settings"
@@ -80,7 +79,6 @@ class Customer(models.Model):
     father_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=11)
     email = models.CharField(max_length=255)
-
 
     notif_type = models.CharField(
         max_length=3,
@@ -129,12 +127,12 @@ class Maintainer(models.Model):
         + self.last_name
 
 
-
 class Greenback(models.Model):
     value = models.IntegerField()
 
     def __str__(self):
         return str(self.value)
+
 
 class ATM(models.Model):
     balance = models.IntegerField()
@@ -189,8 +187,6 @@ class Account(models.Model):
     )
     balance = models.IntegerField(default=0)
     is_blocked = models.BooleanField(default=False)
-
-
 
     user_type = models.CharField(
         max_length=1,
@@ -301,7 +297,6 @@ class Transaction(models.Model):
     date = models.DateField(auto_now=True)
     time = models.TimeField(auto_now=True)
 
-
     transaction_type = models.CharField(
         max_length=1,
         choices=transaction_types,
@@ -329,9 +324,9 @@ class TransactionWage(models.Model):
         Transaction,
         on_delete=models.PROTECT,
         related_name="wage",
-    )   #Points to the transaction that are of type w.
-        #So related_name=wage_type only must be used
-        #when the type of transaction is w.
+    )  # Points to the transaction that are of type w.
+    # So related_name=wage_type only must be used
+    # when the type of transaction is w.
 
 
 class Card(models.Model):
@@ -453,7 +448,7 @@ class PayedBill(models.Model):
         Transaction,
         on_delete=models.PROTECT,
         related_name='+',
-    )  #Keep in mind that this always points to deposit transaction
+    )  # Keep in mind that this always points to deposit transaction
 
     bill = models.OneToOneField(
         Bill,
@@ -462,7 +457,7 @@ class PayedBill(models.Model):
     )
 
     def __str__(self):
-        return self.payment.bill_type.company
+        return self.bill.bill_type.company
 
 
 class LoanApplication(models.Model):
@@ -488,7 +483,7 @@ class LoanApplication(models.Model):
 
     def __str__(self):
         return "Balance: {} Owner: {}".format(
-            self.balance,
+            self.amount,
             self.account.pk,
         )
 
@@ -560,17 +555,35 @@ class ChequeApplication(models.Model):
 
 
 class Cheque(models.Model):
+    cheque_id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+
     cheque_application = models.ForeignKey(
         ChequeApplication,
         related_name="cheque_pages",
         on_delete=models.PROTECT,
     )
 
+    def __str__(self):
+        return str(self.cheque_id)
+
     def clean(self):
-        if (self.cheque_application.legal_expert_validation is not ACCEPT or
-                self.cheque_application.auditor_validation is not ACCEPT):
+        if (self.cheque_application.legal_expert_validation != ACCEPT):
             raise ValidationError(
-                "Can't make cheque page for lack of validation"
+                "Can't make cheque page for lack of legal validation it is {}".format(
+                    self.cheque_application.legal_expert_validation,
+                )
+            )
+            print(self.cheque_application.legal_expert_validation)
+
+        if(self.cheque_application.auditor_validation != ACCEPT):
+            raise ValidationError(
+                "Can't make cheque page for lack of auditor validation{}".format(
+                    self.cheque_application.legal_expert_validation,
+                )
             )
 
 
