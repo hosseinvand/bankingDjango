@@ -33,13 +33,12 @@ class LoginForm(ModelForm):
 #             User.objects.get(username=cleaned_data.get("username"))
 #         except User.DoesNotExist:
 #             raise forms.ValidationError('Username "%s" Does not exist.' % cleaned_data.get("username"))
-#
 #         password = self.cleaned_data.get('password')
 #         username = self.cleaned_data.get('username')
 #         if not password or len(password) < 1:
-#             raise forms.ValidationError("لطفا رمز عبور خود را وارد نمایید")
+#             raise forms.ValidationError("pass")
 #
 #         user = authenticate(username=username, password=password)
 #         if user is None:
-#             raise forms.ValidationError("رمز عبور شما نادرست است!")
+#             raise forms.ValidationError("pass")
 #         return cleaned_data
