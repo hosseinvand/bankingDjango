@@ -1,6 +1,4 @@
 from django.contrib.auth.models import User  # multiple models have keys
-# Employee subclass and maintainer
-# to user so collusions!
 from django.db import models
 from django.core.exceptions import ValidationError
 import uuid
