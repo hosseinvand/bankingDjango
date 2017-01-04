@@ -3,6 +3,7 @@ from django.contrib.auth.models import User  # multiple models have keys
 # to user so collusions!
 from django.db import models
 from django.core.exceptions import ValidationError
+from solo.models import SingletonModel
 import uuid
 
 
@@ -59,7 +60,7 @@ wage_types = (
 )
 
 
-class System(models.Model):
+class SystemConfiguration(SingletonModel):
     card_production_fee = models.IntegerField(default=100)
     cheque_production_fee = models.IntegerField(default=100)
     sms_notif_fee = models.IntegerField(default=100)
@@ -67,11 +68,14 @@ class System(models.Model):
     transactio_fee = models.IntegerField(default=100)
     atm_min_money = models.IntegerField(default=100000)
     loan_interest = models.FloatField(default=0.14)
-    deposit_yearly_interest = models.FloatField(default=0.10)
+    deposit_yearly_interest = models.FloatField(
+        default=0.14,
+        help_text=' Implemented yearly, but must be applied daily(x^(1/365))',
+    )
     # Implemented yearly, but must be applied daily(x^(1/365)).
 
     def __str__(self):
-        return "System Settings"
+        return "System Configurations"
 
 
 class Customer(models.Model):
@@ -89,11 +93,11 @@ class Customer(models.Model):
     )
 
     def __str__(self):
-        return str(self.pk)
-        + " "
-        + self.first_name
-        + " "
-        + self.last_name
+        return "{}- {} {}".format(
+            self.pk,
+            self.first_name,
+            self.last_name,
+        )
 
 
 class Notification(models.Model):
@@ -124,9 +128,10 @@ class Maintainer(models.Model):
     last_name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.first_name
-        + " "
-        + self.last_name
+        return "{} {}".format(
+            self.first_name,
+            self.last_name,
+        )
 
 
 class Greenback(models.Model):
@@ -173,6 +178,17 @@ class Contain(models.Model):
 
     count = models.IntegerField(default=0)
 
+    def __str__(self):
+        return "{} contains {} of {}".format(
+            self.atm,
+            self.count,
+            self.greenback,
+        )
+
+
+    class Meta:
+        unique_together = ('greenback', 'atm',)
+
 
 class Account(models.Model):
     real_owner = models.ForeignKey(
@@ -197,7 +213,18 @@ class Account(models.Model):
     )
 
     def __str__(self):
-        return str(self.account_number)
+        if(self.real_owner is None):
+            legals = self.legal_owners.all()
+            if(len(legals)==0):
+                written_owner = "ownerLess"
+            else:
+                written_owner = legals[0].company
+        else:
+            written_owner = self.real_owner.first_name
+        return "account {} for {}".format(
+            self.account_number,
+            written_owner,
+        )
 
 
 class Employee(models.Model):
@@ -231,34 +258,35 @@ class Employee(models.Model):
 class Manager(Employee):
 
     def __str__(self):
-        return self.first_name
-        + " "
-        + self.last_name
+        return "{} {}".format(
+            self.first_name,
+            self.last_name,
+        )
 
 
 class Auditor(Employee):
 
     def __str__(self):
-        return self.first_name
-        + " "
-        + self.last_name
-
+        return "{} {}".format(
+            self.first_name,
+            self.last_name,
+        )
 
 class Cashier(Employee):
 
     def __str__(self):
-        return self.first_name
-        + " "
-        + self.last_name
-
+        return "{} {}".format(
+            self.first_name,
+            self.last_name,
+        )
 
 class Jursit(Employee):
 
     def __str__(self):
-        return self.first_name
-        + " "
-        + self.last_name
-
+        return "{} {}".format(
+            self.first_name,
+            self.last_name,
+        )
 
 class Branch(models.Model):
     manager = models.ForeignKey(
@@ -330,6 +358,9 @@ class TransactionWage(models.Model):
     # So related_name=wage_type only must be used
     # when the type of transaction is w.
 
+    def __str__(self):
+        return "wage for transactoin "+str(self.transaction.pk)
+
 
 class Card(models.Model):
     card_number = models.UUIDField(
@@ -345,7 +376,10 @@ class Card(models.Model):
     )
 
     def __str__(self):
-        return str(self.card_number)
+        return "card: {}\nfor: {}".format(
+            str(self.card_number),
+            str(self.account)
+        )
 
 
 class WithdrawFromATM(models.Model):
@@ -365,9 +399,14 @@ class WithdrawFromATM(models.Model):
 
     amount = models.IntegerField()
 
+    transaction = models.OneToOneField(
+        Transaction,
+        on_delete=models.PROTECT,
+    )
+
     def __str__(self):
         return "withdraw form {} @ {} for {} $".format(
-            self.card.card_number,
+            self.card,
             self.ATM.pk,
             self.amount,
         )
@@ -484,9 +523,9 @@ class LoanApplication(models.Model):
     )
 
     def __str__(self):
-        return "Balance: {} Owner: {}".format(
+        return "Amount: {} Owner: {}".format(
             self.amount,
-            self.account.pk,
+            self.account,
         )
 
 
@@ -500,14 +539,11 @@ class Loan(models.Model):
     )
 
     def __str__(self):
-        return "Balance: {} Owner: {}".format(
-            self.loan_application.balance,
-            self.loan_application.account.pk,
-        )
+        return str(loan_application)
 
     def clean(self):
-        if (self.loan_application.legal_expert_validation is not ACCEPT or
-                self.loan_application.auditor_validation is not ACCEPT):
+        if (self.loan_application.legal_expert_validation != ACCEPT or
+                self.loan_application.auditor_validation != ACCEPT):
             raise ValidationError(
                 "Can't make loan for lack of validation"
             )
@@ -553,7 +589,7 @@ class ChequeApplication(models.Model):
     date = models.DateField(auto_now=True)
 
     def __str__(self):
-        return "cheque book belonging to " + str(self.account.pk)
+        return "cheque book belonging to " + str(self.account)
 
 
 class Cheque(models.Model):
@@ -570,7 +606,10 @@ class Cheque(models.Model):
     )
 
     def __str__(self):
-        return str(self.cheque_id)
+        return "{} from {}".format(
+            self.cheque_id,
+            self.cheque_application,
+        )
 
     def clean(self):
         if (self.cheque_application.legal_expert_validation != ACCEPT):
@@ -613,6 +652,11 @@ class ChequeIssue(models.Model):
         null=True,
     )  # keep in mind that this always points to withdraw transaction
 
+    def __str__(self):
+        return "issue for check {}".format(
+            self.cheque
+        )
+
 
 class PaymentOrder(models.Model):
     account = models.ForeignKey(
@@ -627,12 +671,19 @@ class PaymentOrder(models.Model):
         related_name='payment_orders_to',
     )
 
+    amount = models.IntegerField()
     start_date = models.DateField()
     end_date = models.DateField()
 
+    period_type = models.CharField(
+        max_length=2,
+        choices=period_types,
+        default=YEAR,
+    )
+
     def __str__(self):
         return "Havale from {} Amount: {} TimeSpan: {} - {}".format(
-            self.account.pk,
+            self.account,
             self.amount,
             self.start_date,
             self.end_date
