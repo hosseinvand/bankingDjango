@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm, fields_for_model
 from django import forms
 
-from core.models import Employee
+from core.models import Employee, Branch
 
 
 class LoginForm(ModelForm):
@@ -31,3 +31,4 @@ class LoginForm(ModelForm):
         if user is None:
             raise forms.ValidationError("رمز عبور شما نادرست است!")
         return cleaned_data
+

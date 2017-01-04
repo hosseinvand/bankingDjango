@@ -31,7 +31,6 @@ class LoginView(FormView):
 
 
 
-
 def Transfer_cash(request):
     if request.method != 'POST':
         print("kharaab shod2?!!")
@@ -55,3 +54,5 @@ def Account_Opening(request):
 
     account = Account(owner = Customer, account_number = temp_account_number, balance = 0)
     account.save()
+
+
