@@ -2,7 +2,9 @@ from django.contrib.auth.models import User  # multiple models have keys
 from django.db import models
 from django.core.exceptions import ValidationError
 import uuid
-
+from django.db.models.loading import cache as model_cache
+if not model_cache.loaded:
+    model_cache.get_models()
 
 UNKNOWN = 'NA'
 ACCEPT = 'AC'
@@ -215,12 +217,12 @@ class Employee(models.Model):
         unique=True,
     )
 
-    branch = models.ForeignKey(
-        'Branch',
-        on_delete=models.SET_NULL,
-        related_name='+',
-        null=True,
-    )
+    # branch = models.ForeignKey(
+    #     'Branch',
+    #     on_delete=models.SET_NULL,
+    #     related_name='+',
+    #     null=True,
+    # )
 
     class Meta:
         abstract = True
