@@ -17,11 +17,6 @@ class LoginView(FormView):
     form_class = LoginForm
     success_url = reverse_lazy('mainPage')
 
-    def get(self, request, *args, **kwargs):
-        print('shiiit')
-        response = super(LoginView, self).get(request, *args, **kwargs)
-        return response
-
     def form_valid(self, form):
         response = super(LoginView, self).form_valid(form)
         username, password = form.cleaned_data.get('username'), form.cleaned_data.get('password')

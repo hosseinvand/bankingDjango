@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 from solo.models import SingletonModel
 import uuid
 
-
 UNKNOWN = 'NA'
 ACCEPT = 'AC'
 REJECT = 'RE'
@@ -226,6 +225,21 @@ class Account(models.Model):
             written_owner,
         )
 
+class Branch(models.Model):
+    manager = models.ForeignKey(
+        'Manager', # TODO: move Branch to new file
+        on_delete=models.PROTECT,
+        null=True,
+        related_name='+',
+        default=None,
+    )
+
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
 
 class Employee(models.Model):
     user = models.OneToOneField(
@@ -245,12 +259,13 @@ class Employee(models.Model):
         unique=True,
     )
 
-    # branch = models.ForeignKey(
-    #     'Branch',
-    #     on_delete=models.SET_NULL,
-    #     related_name='+',
-    #     null=True,
-    # )
+    branch = models.ForeignKey(
+        Branch,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        null=True,
+        default=None
+    )
 
     class Meta:
         abstract = True
@@ -288,21 +303,6 @@ class Jursit(Employee):
             self.first_name,
             self.last_name,
         )
-
-class Branch(models.Model):
-    manager = models.ForeignKey(
-        Manager,
-        on_delete=models.PROTECT,
-        null=True,
-        related_name='+',
-        default=None,
-    )
-
-    name = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
 
 
 class Transaction(models.Model):

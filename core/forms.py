@@ -11,8 +11,8 @@ class LoginForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
-        model = Customer
-        fields = []
+        model = Employee
+        fields = ['first_name']
 
     def clean(self):
         cleaned_data = super(LoginForm, self).clean()
