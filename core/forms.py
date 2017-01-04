@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.forms import ModelForm, fields_for_model, forms
+from django.forms import ModelForm, fields_for_model
+from django import forms
 
 from core.models import Employee
 

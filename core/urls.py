@@ -1,8 +1,5 @@
 from django.conf.urls import url
-from django.contrib.auth.views import logout
-
-from reservation import views
-from reservation.views import *
+from core.views import LoginView
 
 __author__ = 'mohre'
 
