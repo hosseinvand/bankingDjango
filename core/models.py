@@ -56,6 +56,22 @@ wage_types = (
     (TRANSACTION, "transaction"),
 )
 
+EDUCATION_TYPES=(
+    ('B', 'کارشناسی'),
+    ('M', 'کارشناسی‌ارشد'),
+    ('PHD', 'دکترا'),
+)
+
+RELATIONSHIP_TYPES=(
+    ('S', 'مجرد'),
+    ('M', 'متاهل')
+)
+
+SEX_TYPES=(
+    ('F', 'زن'),
+    ('M', 'مرد')
+)
+
 
 class SystemConfiguration(SingletonModel):
     card_production_fee = models.IntegerField(default=100)
@@ -249,12 +265,14 @@ class Employee(models.Model):
 
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    father_name = models.CharField(max_length=255)
     social_id = models.CharField(
         max_length=10,
         unique=True,
     )
-
+    birth_date = models.DateField()
+    birth_place = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    sex = models.CharField(max_length=30, choices=SEX_TYPES, blank=True)
     branch = models.ForeignKey(
         Branch,
         on_delete=models.SET_NULL,
@@ -262,6 +280,8 @@ class Employee(models.Model):
         null=True,
         default=None
     )
+    education = models.CharField(max_length=30, choices=EDUCATION_TYPES, blank=True)
+    relationship = models.CharField(max_length=30, choices=RELATIONSHIP_TYPES, blank=True)
 
     class Meta:
         abstract = True

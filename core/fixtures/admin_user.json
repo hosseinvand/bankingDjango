@@ -1,0 +1,19 @@
+[
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$30000$DhMQpVtSt04n$DtTJzoqZG3gCzl4MOcukvnr+brWb/MYhCs6b/bouehI=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "admin",
+        "last_name": "admin",
+        "email": "admin@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-01-04T15:00:57.791Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
