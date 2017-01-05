@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from random import randrange
 
 from django.contrib.auth import authenticate
@@ -7,7 +6,7 @@ from django.forms import ModelForm, fields_for_model, TextInput, Select, DateInp
 from django import forms
 from django.utils.crypto import get_random_string
 
-from core.models import Customer, Employee, Branch,SystemConfiguration
+from core.models import Customer, Employee, Branch
 
 
 class LoginForm(ModelForm):
@@ -68,50 +67,6 @@ class EmployeeCreateForm(ModelForm):
                                             last_name=last_name)
         employee = Employee(user=user, **self.cleaned_data)
         return employee
-
-class SystemConfigurationForm(ModelForm):
-
-
-    def __init__(self, *args, **kwargs):
-        super(SystemConfigurationForm, self).__init__(*args, **kwargs)
-        instance = SystemConfiguration.objects.get()
-
-        self.fields['card_production_fee'].initial = str(instance.card_production_fee)
-        self.fields['cheque_production_fee'].initial = str(instance.cheque_production_fee)
-        self.fields['sms_notif_fee'].initial = str(instance.sms_notif_fee)
-        self.fields['card_to_card_fee'].initial = str(instance.card_to_card_fee)
-        self.fields['transactio_fee'].initial = str(instance.transactio_fee)
-        self.fields['atm_min_money'].initial = str(instance.atm_min_money)
-        self.fields['loan_interest'].initial = str(instance.loan_interest)
-        self.fields['deposit_yearly_interest'].initial = str(instance.deposit_yearly_interest)
-
-    class Meta:
-        model = SystemConfiguration
-        fields = [
-            'card_production_fee',
-            'cheque_production_fee',
-            'sms_notif_fee',
-            'card_to_card_fee',
-            'transactio_fee',
-            'atm_min_money',
-            'loan_interest',
-            'deposit_yearly_interest',
-        ]
-        labels = {
-            'card_production_fee': "هزینه‌ی صدور کارت",
-            'cheque_production_fee': "هزینه‌ی صدور چک",
-            'sms_notif_fee': "هزینه‌ی فعال‌سازی اعلام پیامک",
-            'card_to_card_fee': "هزینه‌ی کارت به کارت",
-            'transactio_fee': "هزینه‌ی تراکنش",
-            'atm_min_money': "مقدار کمینه‌ی پول موجود در خودپرداز",
-            'loan_interest': "بهره‌ی وام",
-            'deposit_yearly_interest': "بهره‌ی حساب سالیانه",
-        }
-
-    def save(self, commit=True):
-        instance = SystemConfiguration(**self.cleaned_data)
-        instance.save()
-        return instance
 
 
 class BranchCreateForm(ModelForm):
