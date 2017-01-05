@@ -55,4 +55,4 @@ class SystemConfigurationView(CreateView):
     form_class = SystemConfigurationForm
     template_name = 'core/sysconfig.html'
     model = SystemConfiguration
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('mainPage')

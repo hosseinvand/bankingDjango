@@ -100,7 +100,11 @@ class Customer(models.Model):
     father_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=11)
     email = models.CharField(max_length=255)
-    sex = models.CharField(max_length=30, choices=SEX_TYPES, blank=True)
+    sex = models.CharField(
+        max_length=30,
+        choices=SEX_TYPES,
+        blank=True,
+    )
     address = models.CharField(max_length=255)
 
 
@@ -132,13 +136,16 @@ class Notification(models.Model):
 
     text = models.TextField(max_length=1023)
     seen = models.BooleanField(default=False)
-
+    time = models.DateTimeField(auto_now=True)
     def __str__(self):
         return "{}, Seen:{}".format(
             self.user.username,
             self.seen,
         )
 
+
+    class Meta:
+        ordering = ['time']
 
 class Maintainer(models.Model):
     user = models.OneToOneField(
@@ -171,6 +178,7 @@ class ATM(models.Model):
         on_delete=models.SET_NULL,
         related_name="atms",
         null=True,
+        blank=True,
         default=None,
     )
 
@@ -219,6 +227,7 @@ class Account(models.Model):
         Customer,
         on_delete=models.PROTECT,
         null=True,
+        blank=True,
         default=None,
         related_name="accounts",
     )
