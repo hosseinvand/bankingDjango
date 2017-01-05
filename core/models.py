@@ -161,6 +161,7 @@ class ATM(models.Model):
         on_delete=models.SET_NULL,
         related_name="atms",
         null=True,
+        default=None,
     )
 
     greenback = models.ManyToManyField(
@@ -208,6 +209,7 @@ class Account(models.Model):
         Customer,
         on_delete=models.PROTECT,
         null=True,
+        default=None,
         related_name="accounts",
     )
 
@@ -241,10 +243,11 @@ class Account(models.Model):
 
 class Branch(models.Model):
     manager = models.ForeignKey(
-        'Manager', # idea: move Branch to new file
+        'Manager', # TODO: move Branch to new file
         on_delete=models.PROTECT,
         null=True,
         related_name='+',
+        default=None,
     )
 
     name = models.CharField(max_length=255)
@@ -260,6 +263,7 @@ class Employee(models.Model):
         on_delete=models.SET_NULL,
         unique=True,
         null=True,
+        default=None,
         related_name='+',
     )
 
@@ -328,6 +332,7 @@ class Transaction(models.Model):
         on_delete=models.SET_NULL,
         related_name="transactions",
         null=True,
+        default=None,
     )
 
     account = models.ForeignKey(
@@ -406,6 +411,7 @@ class WithdrawFromATM(models.Model):
         on_delete=models.SET_NULL,
         related_name="withdrawals",
         null=True,
+        default=None,
     )
 
     card = models.ForeignKey(
@@ -413,6 +419,7 @@ class WithdrawFromATM(models.Model):
         on_delete=models.PROTECT,
         related_name="withdrawals",
         null=True,
+        default=None,
     )
 
     amount = models.IntegerField()
@@ -462,6 +469,7 @@ class CardToCard(models.Model):
         on_delete=models.SET_NULL,
         related_name="card_to_cards",
         null=True,
+        default=None,
     )
 
     def __str__(self):
@@ -662,12 +670,14 @@ class ChequeIssue(models.Model):
         on_delete=models.PROTECT,
         related_name='+',
         null=True,
+        default=None,
     )
     transaction = models.ForeignKey(
         Transaction,
         on_delete=models.PROTECT,
         related_name='+',
         null=True,
+        default=None,
     )  # keep in mind that this always points to withdraw transaction
 
     def __str__(self):
