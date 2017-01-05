@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from random import randrange
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -68,7 +69,6 @@ class EmployeeCreateForm(ModelForm):
         employee = Employee(user=user, **self.cleaned_data)
         return employee
 
-
 class SystemConfigurationForm(ModelForm):
 
 
@@ -112,3 +112,61 @@ class SystemConfigurationForm(ModelForm):
         instance = SystemConfiguration(**self.cleaned_data)
         instance.save()
         return instance
+
+
+class BranchCreateForm(ModelForm):
+    # manager_username = forms.CharField(max_length=32, label="نام کاربری مدیر شعبه")
+
+    class Meta:
+        model = Branch
+        fields = ['name', 'address']
+        labels = {
+            'name': "نام شعبه",
+            'address': "آدرس شعبه"
+        }
+
+    def clean(self):
+        cleaned_data = super(BranchCreateForm, self).clean()
+        # validate form data here!
+        return cleaned_data
+
+    def save(self, commit=True):
+        branch = Branch(**self.cleaned_data)
+        Branch.save()
+        return branch
+
+
+class EmployeeCreateForm(ModelForm):
+    class Meta:
+        model = Employee
+        fields = ['first_name', 'last_name', 'sex', 'birth_date', 'father_name',
+                  'social_id', 'phone_number', 'address', 'email']
+        labels = {
+            'first_name': "نام",
+            'last_name': "نام خانوادگی",
+            'sex': "جنسیت",
+            'birth_date': "تاریخ تولد",
+            'father_name': "نام پدر",
+            'social_id': "شماره ملی",
+            'phone_number': "شماره تلفن",
+            'address': "آدرس",
+            # 'education': "تحصیلات",
+            'email': "آدرس ایمیل",
+            # 'branch': 'شعبه'
+        }
+
+    def clean(self):
+        cleaned_data = super(EmployeeCreateForm, self).clean()
+        # validate form data here!
+        return cleaned_data
+
+    def save(self, commit=True):
+        first_name = self.cleaned_data.get('first_name', None)
+        last_name = self.cleaned_data.get('last_name', None)
+        username = get_random_string(length=8)
+        password = get_random_string(length=8)
+        costumer = Customer(username=username, password=password, first_name=first_name,
+                                            last_name=last_name)
+        Customer.save()
+        employee = Employee(real_owner = costumer, **self.cleaned_data)
+        return employee

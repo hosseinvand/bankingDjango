@@ -100,6 +100,12 @@ class Customer(models.Model):
     father_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=11)
     email = models.CharField(max_length=255)
+    sex = models.CharField(max_length=30, choices=SEX_TYPES, blank=True)
+
+    social_id = models.CharField(
+        max_length=10,
+        unique=True,
+    )
 
     notif_type = models.CharField(
         max_length=3,
@@ -243,21 +249,21 @@ class Account(models.Model):
             written_owner,
         )
 
+
 class Branch(models.Model):
-    manager = models.ForeignKey(
-        'Manager', # TODO: move Branch to new file
-        on_delete=models.PROTECT,
-        null=True,
-        related_name='+',
-        default=None,
-    )
+    # manager = models.ForeignKey(
+    #     'Manager', # TODO: move Branch to new file
+    #     on_delete=models.PROTECT,
+    #     null=True,
+    #     related_name='+',
+    #     default=None,
+    # )
 
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
-
 
 class Employee(models.Model):
     user = models.OneToOneField(
@@ -296,7 +302,6 @@ class Employee(models.Model):
     class Meta:
         abstract = True
 
-
 class Manager(Employee):
 
     def __str__(self):
@@ -304,7 +309,6 @@ class Manager(Employee):
             self.first_name,
             self.last_name,
         )
-
 
 class Auditor(Employee):
 
