@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib.auth.models import User  # multiple models have keys
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -282,7 +284,11 @@ class Employee(models.Model):
     birth_date = models.DateField()
     birth_place = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
-    sex = models.CharField(max_length=30, choices=SEX_TYPES, blank=True)
+    sex = models.CharField(
+        max_length=30,
+        choices=SEX_TYPES,
+        blank=True
+    )
     branch = models.ForeignKey(
         Branch,
         on_delete=models.SET_NULL,
