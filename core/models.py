@@ -101,6 +101,8 @@ class Customer(models.Model):
     phone_number = models.CharField(max_length=11)
     email = models.CharField(max_length=255)
     sex = models.CharField(max_length=30, choices=SEX_TYPES, blank=True)
+    address = models.CharField(max_length=255)
+
 
     social_id = models.CharField(
         max_length=10,
