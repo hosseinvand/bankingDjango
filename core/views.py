@@ -6,7 +6,8 @@ from django.contrib.auth import authenticate, login
 from django.http.response import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import FormView, UpdateView,CreateView
-from core.forms import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, CustomerCreateForm
+from core.forms import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
+    AccountCreateForm
 from core.models import Customer, Employee, SystemConfiguration, Branch, Account
 from django.shortcuts import render
 
@@ -46,9 +47,9 @@ class BranchCreateView(CreateView):
 
 class AccountCreateView(CreateView):
     model = Customer
-    template_name = 'core/create_customer.html'
+    template_name = 'core/create_account.html'
     success_url = reverse_lazy('mainPage')
-    form_class = CustomerCreateForm
+    form_class = AccountCreateForm
 
 
 class SystemConfigurationView(CreateView):

@@ -92,7 +92,9 @@ class BranchCreateForm(ModelForm):
         return branch
 
 
-class CustomerCreateForm(ModelForm):
+class AccountCreateForm(ModelForm):
+    username = fields_for_model(Account, labels={"user_type":"نوع کاربر"})['user_type']
+
     class Meta:
         model = Customer
         fields = ['first_name', 'last_name', 'sex', 'birthday', 'father_name',
@@ -106,26 +108,24 @@ class CustomerCreateForm(ModelForm):
             'social_id': "شماره ملی",
             'phone_number': "شماره تلفن",
             # 'address': "آدرس",
-            # 'education': "تحصیلات",
             'email': "آدرس ایمیل",
             'notif_type' : "نوع اطلاع رسانی"
         }
 
     def clean(self):
-        cleaned_data = super(CustomerCreateForm, self).clean()
+        cleaned_data = super(AccountCreateForm, self).clean()
         # validate form data here!
         return cleaned_data
 
-#    def save(self, commit=True):
-#        first_name = self.cleaned_data.get('first_name', None)
-#        last_name = self.cleaned_data.get('last_name', None)
-#        customer = Customer(**self.cleaned_data)
-#        customer.save()
-#        employee = Employee(real_owner = customer)
-#        employee.save()
-#        account_number = employee.account_number
-
-#        return employee
+   # def save(self, commit=True):
+   #     first_name = self.cleaned_data.get('first_name', None)
+   #     last_name = self.cleaned_data.get('last_name', None)
+   #     customer = Customer(**self.cleaned_data)
+   #     customer.save()
+   #     employee = Employee(real_owner = customer)
+   #     employee.save()
+   #     account_number = employee.account_number
+   #     return employee
 
 
 class SystemConfigurationForm(ModelForm):
