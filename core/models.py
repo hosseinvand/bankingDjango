@@ -98,6 +98,12 @@ class Customer(models.Model):
     father_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=11)
     email = models.CharField(max_length=255)
+    sex = models.CharField(max_length=30, choices=SEX_TYPES, blank=True)
+
+    social_id = models.CharField(
+        max_length=10,
+        unique=True,
+    )
 
     notif_type = models.CharField(
         max_length=3,

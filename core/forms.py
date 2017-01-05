@@ -94,19 +94,20 @@ class BranchCreateForm(ModelForm):
 class EmployeeCreateForm(ModelForm):
     class Meta:
         model = Employee
-        fields = ['first_name', 'last_name', 'sex', 'birth_date', 'birth_place',
-                  'social_id', 'address', 'education', 'relationship']
+        fields = ['first_name', 'last_name', 'sex', 'birth_date', 'father_name',
+                  'social_id', 'phone_number', 'address', 'email']
         labels = {
             'first_name': "نام",
             'last_name': "نام خانوادگی",
             'sex': "جنسیت",
             'birth_date': "تاریخ تولد",
-            'birth_place': "محل تولد",
-            'social_id': "کد ملی",
+            'father_name': "نام پدر",
+            'social_id': "شماره ملی",
+            'phone_number': "شماره تلفن",
             'address': "آدرس",
-            'education': "تحصیلات",
-            'relationship': "وضعیت تاهل",
-            'branch': 'شعبه'
+            # 'education': "تحصیلات",
+            'email': "آدرس ایمیل",
+            # 'branch': 'شعبه'
         }
 
     def clean(self):
