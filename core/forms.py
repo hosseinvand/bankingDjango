@@ -6,7 +6,7 @@ from django.forms import ModelForm, fields_for_model, TextInput, Select, DateInp
 from django import forms
 from django.utils.crypto import get_random_string
 
-from core.models import Customer, Employee, Branch
+from core.models import Customer, Employee, Branch, Account
 
 
 class LoginForm(ModelForm):
@@ -91,20 +91,11 @@ class BranchCreateForm(ModelForm):
         return branch
 
 
-class EmployeeCreateForm(ModelForm):
+class AccountCreateForm(ModelForm):
     class Meta:
-        model = Employee
-        fields = [
-            'first_name',
-            'last_name',
-            'sex',
-            'birth_date',
-            'father_name',
-            'social_id',
-            'phone_number',
-            'address',
-            'email',
-        ]
+        model = Account
+        fields = ['first_name', 'last_name', 'sex', 'birth_date', 'father_name',
+                  'social_id', 'phone_number', 'email', 'notif_type']
         labels = {
             'first_name': "نام",
             'last_name': "نام خانوادگی",
@@ -113,24 +104,24 @@ class EmployeeCreateForm(ModelForm):
             'father_name': "نام پدر",
             'social_id': "شماره ملی",
             'phone_number': "شماره تلفن",
-            'address': "آدرس",
+            # 'address': "آدرس",
             # 'education': "تحصیلات",
             'email': "آدرس ایمیل",
-            # 'branch': 'شعبه'
+            'notif_type' : "نوع اطلاع رسانی"
         }
 
     def clean(self):
-        cleaned_data = super(EmployeeCreateForm, self).clean()
+        cleaned_data = super(AccountCreateForm, self).clean()
         # validate form data here!
         return cleaned_data
 
     def save(self, commit=True):
         first_name = self.cleaned_data.get('first_name', None)
         last_name = self.cleaned_data.get('last_name', None)
-        username = get_random_string(length=8)
-        password = get_random_string(length=8)
-        costumer = Customer(username=username, password=password, first_name=first_name,
-                                            last_name=last_name)
-        Customer.save()
-        employee = Employee(real_owner = costumer, **self.cleaned_data)
+        customer = Customer(**self.cleaned_data)
+        customer.save()
+        employee = Employee(real_owner = customer)
+        employee.save()
+        account_number = employee.account_number
+
         return employee
