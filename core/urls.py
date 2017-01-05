@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from core.views import LoginView, EmployeeCreateView, BranchCreateView, AccountCreateView
+from core.views import LoginView,EmployeeCreateView,BranchCreateView,AccountCreateView,SystemConfigurationView
 
 __author__ = 'mohre'
 
