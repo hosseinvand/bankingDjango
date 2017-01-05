@@ -8,8 +8,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import FormView
 
-from core.forms import LoginForm, EmployeeCreateForm
-from core.models import Customer, Employee
+from core.forms import LoginForm, EmployeeCreateForm, BranchCreateForm, AccountCreateForm
+from core.models import Customer, Employee, Branch, Account
 from django.shortcuts import render
 
 
@@ -39,4 +39,17 @@ class EmployeeCreateView(CreateView):
     #     SystemUser.objects.filter(user=user).update(role=Patient.load())
     #     login(self.request, new_user)
     #     return response
+class BranchCreateView(CreateView):
+    model = Branch
+    template_name = 'core/create_branch.html'
+    success_url = reverse_lazy('mainPage')
+    form_class = BranchCreateForm
+
+
+class AccountCreateView(CreateView):
+    model = Account
+    template_name = 'core/create_account.html'
+    success_url = reverse_lazy('mainPage')
+    form_class = AccountCreateForm
+
 
