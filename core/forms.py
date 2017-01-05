@@ -3,7 +3,17 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm, fields_for_model
 from django import forms
 
-from core.models import Customer, Employee
+from core.models import Customer, Employee, Branch
+
+
+class makeBranchForm(ModelForm):
+    ManagerUsername = fields_for_model(User)['username']
+
+    class Meta:
+        model = Branch
+        fields = ["name", "address"]
+
+
 
 
 class LoginForm(ModelForm):
