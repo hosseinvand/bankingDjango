@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('account_number', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('balance', models.IntegerField(default=0)),
                 ('is_blocked', models.BooleanField(default=False)),
-                ('user_type', models.CharField(choices=[(b'R', b'real'), (b'L', b'legal')], default=b'R', max_length=1)),
+                ('user_type', models.CharField(choices=[('R', 'real'), ('L', 'legal')], default='R', max_length=1)),
             ],
         ),
         migrations.CreateModel(
@@ -41,7 +41,6 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=255)),
                 ('father_name', models.CharField(max_length=255)),
                 ('social_id', models.CharField(max_length=10, unique=True)),
-                ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'abstract': False,
@@ -94,6 +93,7 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=255)),
                 ('father_name', models.CharField(max_length=255)),
                 ('social_id', models.CharField(max_length=10, unique=True)),
+                ('branch', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='core.Branch')),
                 ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -110,8 +110,8 @@ class Migration(migrations.Migration):
             name='ChequeApplication',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('legal_expert_validation', models.CharField(choices=[(b'NA', b'unknown'), (b'AC', b'accepted'), (b'RE', b'rejected')], default=b'NA', max_length=2)),
-                ('auditor_validation', models.CharField(choices=[(b'NA', b'unknown'), (b'AC', b'accepted'), (b'RE', b'rejected')], default=b'NA', max_length=2)),
+                ('legal_expert_validation', models.CharField(choices=[('NA', 'unknown'), ('AC', 'accepted'), ('RE', 'rejected')], default='NA', max_length=2)),
+                ('auditor_validation', models.CharField(choices=[('NA', 'unknown'), ('AC', 'accepted'), ('RE', 'rejected')], default='NA', max_length=2)),
                 ('date', models.DateField(auto_now=True)),
                 ('account', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='cheque_books', to='core.Account')),
             ],
@@ -146,7 +146,7 @@ class Migration(migrations.Migration):
                 ('father_name', models.CharField(max_length=255)),
                 ('phone_number', models.CharField(max_length=11)),
                 ('email', models.CharField(max_length=255)),
-                ('notif_type', models.CharField(choices=[(b'NON', b'none'), (b'SMS', b'sms'), (b'MAL', b'E-Mail'), (b'BOT', b'both')], default=b'NON', max_length=3)),
+                ('notif_type', models.CharField(choices=[('NON', 'none'), ('SMS', 'sms'), ('MAL', 'E-Mail'), ('BOT', 'both')], default='NON', max_length=3)),
             ],
         ),
         migrations.CreateModel(
@@ -160,7 +160,7 @@ class Migration(migrations.Migration):
             name='Inquiry',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(choices=[(b'NA', b'unknown'), (b'AC', b'accepted'), (b'RE', b'rejected')], default=b'NA', max_length=2)),
+                ('status', models.CharField(choices=[('NA', 'unknown'), ('AC', 'accepted'), ('RE', 'rejected')], default='NA', max_length=2)),
                 ('account', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='+', to='core.Account')),
             ],
         ),
@@ -172,6 +172,7 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=255)),
                 ('father_name', models.CharField(max_length=255)),
                 ('social_id', models.CharField(max_length=10, unique=True)),
+                ('branch', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='core.Branch')),
                 ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -192,8 +193,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('amount', models.IntegerField()),
                 ('payment_count', models.IntegerField()),
-                ('legal_expert_validation', models.CharField(choices=[(b'NA', b'unknown'), (b'AC', b'accepted'), (b'RE', b'rejected')], default=b'NA', max_length=2)),
-                ('auditor_validation', models.CharField(choices=[(b'NA', b'unknown'), (b'AC', b'accepted'), (b'RE', b'rejected')], default=b'NA', max_length=2)),
+                ('legal_expert_validation', models.CharField(choices=[('NA', 'unknown'), ('AC', 'accepted'), ('RE', 'rejected')], default='NA', max_length=2)),
+                ('auditor_validation', models.CharField(choices=[('NA', 'unknown'), ('AC', 'accepted'), ('RE', 'rejected')], default='NA', max_length=2)),
                 ('account', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='loan_applications', to='core.Account')),
             ],
         ),
@@ -214,6 +215,7 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=255)),
                 ('father_name', models.CharField(max_length=255)),
                 ('social_id', models.CharField(max_length=10, unique=True)),
+                ('branch', models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='core.Branch')),
                 ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -243,7 +245,7 @@ class Migration(migrations.Migration):
                 ('amount', models.IntegerField()),
                 ('start_date', models.DateField()),
                 ('end_date', models.DateField()),
-                ('period_type', models.CharField(choices=[(b'da', b'daily'), (b'we', b'weekly'), (b'mo', b'monthly'), (b'yr', b'yearly')], default=b'yr', max_length=2)),
+                ('period_type', models.CharField(choices=[('da', 'daily'), ('we', 'weekly'), ('mo', 'monthly'), ('yr', 'yearly')], default='yr', max_length=2)),
                 ('account', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='payment_orders_from', to='core.Account')),
                 ('dest', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='payment_orders_to', to='core.Account')),
             ],
@@ -259,7 +261,7 @@ class Migration(migrations.Migration):
                 ('transactio_fee', models.IntegerField(default=100)),
                 ('atm_min_money', models.IntegerField(default=100000)),
                 ('loan_interest', models.FloatField(default=0.14)),
-                ('deposit_yearly_interest', models.FloatField(default=0.14, help_text=b' Implemented yearly, but must be applied daily(x^(1/365))')),
+                ('deposit_yearly_interest', models.FloatField(default=0.14, help_text=' Implemented yearly, but must be applied daily(x^(1/365))')),
             ],
             options={
                 'abstract': False,
@@ -272,7 +274,7 @@ class Migration(migrations.Migration):
                 ('amount', models.IntegerField()),
                 ('date', models.DateField(auto_now=True)),
                 ('time', models.TimeField(auto_now=True)),
-                ('transaction_type', models.CharField(choices=[(b'w', b'withdraw'), (b'd', b'deposit')], max_length=1)),
+                ('transaction_type', models.CharField(choices=[('w', 'withdraw'), ('d', 'deposit')], max_length=1)),
                 ('account', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='transactions', to='core.Account')),
                 ('auditor', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='transactions', to='core.Auditor')),
                 ('branch', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='transactions', to='core.Branch')),
@@ -282,7 +284,7 @@ class Migration(migrations.Migration):
             name='TransactionWage',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('wage_type', models.CharField(choices=[(b'CTC', b'card to card'), (b'TRN', b'transaction')], max_length=3)),
+                ('wage_type', models.CharField(choices=[('CTC', 'card to card'), ('TRN', 'transaction')], max_length=3)),
                 ('amount', models.IntegerField()),
                 ('transaction', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='wage', to='core.Transaction')),
             ],
@@ -351,6 +353,16 @@ class Migration(migrations.Migration):
             model_name='bill',
             name='bill_type',
             field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='bills', to='core.BillType'),
+        ),
+        migrations.AddField(
+            model_name='auditor',
+            name='branch',
+            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='core.Branch'),
+        ),
+        migrations.AddField(
+            model_name='auditor',
+            name='user',
+            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='atm',

@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 from solo.models import SingletonModel
 import uuid
 
-
 UNKNOWN = 'NA'
 ACCEPT = 'AC'
 REJECT = 'RE'
@@ -55,6 +54,22 @@ TRANSACTION = "TRN"
 wage_types = (
     (CARD_TO_CARD, "card to card"),
     (TRANSACTION, "transaction"),
+)
+
+EDUCATION_TYPES=(
+    ('B', 'کارشناسی'),
+    ('M', 'کارشناسی‌ارشد'),
+    ('PHD', 'دکترا'),
+)
+
+RELATIONSHIP_TYPES=(
+    ('S', 'مجرد'),
+    ('M', 'متاهل')
+)
+
+SEX_TYPES=(
+    ('F', 'زن'),
+    ('M', 'مرد')
 )
 
 
@@ -146,6 +161,7 @@ class ATM(models.Model):
         on_delete=models.SET_NULL,
         related_name="atms",
         null=True,
+        default=None,
     )
 
     greenback = models.ManyToManyField(
@@ -193,6 +209,7 @@ class Account(models.Model):
         Customer,
         on_delete=models.PROTECT,
         null=True,
+        default=None,
         related_name="accounts",
     )
 
@@ -224,6 +241,21 @@ class Account(models.Model):
             written_owner,
         )
 
+class Branch(models.Model):
+    manager = models.ForeignKey(
+        'Manager', # TODO: move Branch to new file
+        on_delete=models.PROTECT,
+        null=True,
+        related_name='+',
+        default=None,
+    )
+
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
 
 class Employee(models.Model):
     user = models.OneToOneField(
@@ -231,23 +263,29 @@ class Employee(models.Model):
         on_delete=models.SET_NULL,
         unique=True,
         null=True,
+        default=None,
         related_name='+',
     )
 
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    father_name = models.CharField(max_length=255)
     social_id = models.CharField(
         max_length=10,
         unique=True,
     )
-
-    # branch = models.ForeignKey(
-    #     'Branch',
-    #     on_delete=models.SET_NULL,
-    #     related_name='+',
-    #     null=True,
-    # )
+    birth_date = models.DateField()
+    birth_place = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    sex = models.CharField(max_length=30, choices=SEX_TYPES, blank=True)
+    branch = models.ForeignKey(
+        Branch,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        null=True,
+        default=None
+    )
+    education = models.CharField(max_length=30, choices=EDUCATION_TYPES, blank=True)
+    relationship = models.CharField(max_length=30, choices=RELATIONSHIP_TYPES, blank=True)
 
     class Meta:
         abstract = True
@@ -286,20 +324,6 @@ class Jursit(Employee):
             self.last_name,
         )
 
-class Branch(models.Model):
-    manager = models.ForeignKey(
-        Manager,
-        on_delete=models.PROTECT,
-        null=True,
-        related_name='+',
-    )
-
-    name = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
-
 
 class Transaction(models.Model):
     amount = models.IntegerField()
@@ -308,6 +332,7 @@ class Transaction(models.Model):
         on_delete=models.SET_NULL,
         related_name="transactions",
         null=True,
+        default=None,
     )
 
     account = models.ForeignKey(
@@ -386,6 +411,7 @@ class WithdrawFromATM(models.Model):
         on_delete=models.SET_NULL,
         related_name="withdrawals",
         null=True,
+        default=None,
     )
 
     card = models.ForeignKey(
@@ -393,6 +419,7 @@ class WithdrawFromATM(models.Model):
         on_delete=models.PROTECT,
         related_name="withdrawals",
         null=True,
+        default=None,
     )
 
     amount = models.IntegerField()
@@ -442,6 +469,7 @@ class CardToCard(models.Model):
         on_delete=models.SET_NULL,
         related_name="card_to_cards",
         null=True,
+        default=None,
     )
 
     def __str__(self):
@@ -642,12 +670,14 @@ class ChequeIssue(models.Model):
         on_delete=models.PROTECT,
         related_name='+',
         null=True,
+        default=None,
     )
     transaction = models.ForeignKey(
         Transaction,
         on_delete=models.PROTECT,
         related_name='+',
         null=True,
+        default=None,
     )  # keep in mind that this always points to withdraw transaction
 
     def __str__(self):
