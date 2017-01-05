@@ -122,5 +122,5 @@ class EmployeeCreateForm(ModelForm):
         costumer = Customer(username=username, password=password, first_name=first_name,
                                             last_name=last_name)
         Customer.save()
-        employee = Employee(user=user, **self.cleaned_data)
+        # employee = Employee(user=user, **self.cleaned_data)
         return employee
