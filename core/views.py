@@ -6,10 +6,10 @@ from django.contrib.auth import authenticate, login
 from django.http.response import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from django.views.generic import FormView
+from django.views.generic import FormView, UpdateView
 
-from core.forms import LoginForm, EmployeeCreateForm
-from core.models import Customer, Employee
+from core.forms import LoginForm, EmployeeCreateForm, SystemConfigurationForm
+from core.models import Customer, Employee, SystemConfiguration
 from django.shortcuts import render
 
 
@@ -40,3 +40,8 @@ class EmployeeCreateView(CreateView):
     #     login(self.request, new_user)
     #     return response
 
+class SystemConfigurationView(CreateView):
+    form_class = SystemConfigurationForm
+    template_name = 'core/sysconfig.html'
+    model = SystemConfiguration
+    success_url = reverse_lazy('login')
