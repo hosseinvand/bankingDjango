@@ -5,16 +5,9 @@ import sys
 from django.contrib.auth import authenticate, login
 from django.http.response import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from django.views.generic import FormView, UpdateView
-
-<<<<<<< HEAD
-from core.forms import LoginForm, EmployeeCreateForm, SystemConfigurationForm
-from core.models import Customer, Employee, SystemConfiguration
-=======
-from core.forms import LoginForm, EmployeeCreateForm, BranchCreateForm, AccountCreateForm
-from core.models import Customer, Employee, Branch, Account
->>>>>>> 981428c1f79ac3c3241765d8b40aa22dea86eb4b
+from django.views.generic import FormView, UpdateView,CreateView
+from core.forms import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, AccountCreateForm
+from core.models import Customer, Employee, SystemConfiguration, Branch, Account
 from django.shortcuts import render
 
 

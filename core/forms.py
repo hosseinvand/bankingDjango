@@ -139,8 +139,17 @@ class BranchCreateForm(ModelForm):
 class EmployeeCreateForm(ModelForm):
     class Meta:
         model = Employee
-        fields = ['first_name', 'last_name', 'sex', 'birth_date', 'father_name',
-                  'social_id', 'phone_number', 'address', 'email']
+        fields = [
+            'first_name',
+            'last_name',
+            'sex',
+            'birth_date',
+            'father_name',
+            'social_id',
+            'phone_number',
+            'address',
+            'email',
+        ]
         labels = {
             'first_name': "نام",
             'last_name': "نام خانوادگی",

@@ -252,7 +252,7 @@ class Account(models.Model):
 
 class Branch(models.Model):
     # manager = models.ForeignKey(
-    #     'Manager', # TODO: move Branch to new file
+    #     'Manager', # move Branch to new file
     #     on_delete=models.PROTECT,
     #     null=True,
     #     related_name='+',
@@ -296,8 +296,16 @@ class Employee(models.Model):
         null=True,
         default=None
     )
-    education = models.CharField(max_length=30, choices=EDUCATION_TYPES, blank=True)
-    relationship = models.CharField(max_length=30, choices=RELATIONSHIP_TYPES, blank=True)
+    education = models.CharField(
+        max_length=30,
+        choices=EDUCATION_TYPES,
+        blank=True,
+    )
+    relationship = models.CharField(
+        max_length=30,
+        choices=RELATIONSHIP_TYPES,
+        blank=True,
+    )
 
     class Meta:
         abstract = True
