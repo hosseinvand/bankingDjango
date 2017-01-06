@@ -19,6 +19,7 @@ from core.models import Customer, Employee, SystemConfiguration, Branch, Account
 from django.shortcuts import render
 from django.views import generic
 
+
 class LoginView(FormView):
     template_name = 'core/login.html'
     form_class = LoginForm
@@ -42,6 +43,7 @@ class EmployeeCreateView(FormView):
         response = super(EmployeeCreateView, self).form_valid(form)
         form.save()
         return response
+
 
 class EmployeeListView(TemplateView):
     template_name = 'core/employee_list.html'
@@ -70,7 +72,6 @@ class BranchCreateView(CreateView):
     form_class = BranchCreateForm
 
 
-
 class AccountCreateView(CreateView):
     model = Customer
     template_name = 'core/create_account.html'
@@ -84,6 +85,7 @@ class SystemConfigurationView(CreateView):
     model = SystemConfiguration
     success_url = reverse_lazy('mainPage')
 
+
 class TransactionsView(generic.ListView):
     model =  Transaction
     template_name = 'core/transactions.html'
@@ -92,28 +94,28 @@ class TransactionsView(generic.ListView):
     def get_queryset(self):
         return Transaction.objects.all().order_by('date','time')
 
+
 class TransactionDetailView(generic.DetailView):
     model = Transaction
     template_name = 'core/transaction_detail.html'
 
-class BranchesView(generic.ListView):
-    model = Branch
-    template_name = 'core/branches.html'
-    context_object_name = 'branch_list'
 
 class AccountsView(generic.ListView):
     model = Account
     template_name = 'core/accounts.html'
     context_object_name = 'account_list'
 
+
 class AccountDetailView(generic.DetailView):
     model = Account
     template_name = 'core/account_detail.html'
+
 
 class CustomersView(generic.ListView):
     model = Customer
     template_name = 'core/customers.html'
     context_object_name = 'customer_list'
+
 
 class CustomerDetailView(generic.DeleteView):
     model = Customer
