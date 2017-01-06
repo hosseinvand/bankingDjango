@@ -510,7 +510,9 @@ class BillType(models.Model):
     )
 
     def __unicode__(self):
-        return str(self.company).encode(encoding="utf-8")
+        return u"{}".format(
+            self.company,
+        )
 
 
 class Bill(models.Model):

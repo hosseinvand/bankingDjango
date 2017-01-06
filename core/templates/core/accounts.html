@@ -4,7 +4,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <h1 class="page-header">لیست شعب</h1>
+                <h1 class="page-header">لیست حساب‌ها</h1>
                 <table class="table table-stripped table-bordered">
                     <thead>
                     <tr>
@@ -26,7 +26,7 @@
                             </a></td>
                         {%endif%}
                         {%if account.legal_owners.all%}
-                            {{ account.legal_owners.all | join:", " }}
+                           <td>{{ account.legal_owners.all | join:", " }}
                         {%endif%}
                     </tr>
                     {% endfor %}
@@ -59,4 +59,3 @@
         </div>
     </div>
 {% endblock %}
-
