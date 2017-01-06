@@ -36,7 +36,7 @@
           </div>
         </div>
     </div>
-    {% if customer.accounts %}
+    {% if customer.accounts.all %}
       <div class="panel panel-default">
         <div class="panel-body">
             <div class="list-group" id= {{branch.pk}} >
@@ -44,6 +44,7 @@
               {%for account in customer.accounts.all%}
               <a href="{% url 'core:account_detail' account.account_number %}">
                 {{account.account_number}}
+                <br>
               </a>
               {% endfor %}
             </div>
