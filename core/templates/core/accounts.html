@@ -17,7 +17,9 @@
                 <br>
               {%if account.real_owner%}
               <strong>صاحب حساب:</strong>
-                {{account.real_owner}}
+                <a href="{% url 'core:customer_detail' account.real_owner.id %}">
+                  {{account.real_owner}}
+                </a>
               <br>
               {%endif%}
               {%if account.legal_owners.all%}

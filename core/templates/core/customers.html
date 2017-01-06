@@ -1,0 +1,26 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+  {% for customer in customer_list %}
+  <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+          <div class="panel-body">
+              <div class="list-group" id= {{branch.pk}} >
+                <a href="{% url 'core:customer_detail' customer.id %}">
+                  <p><strong>نام:</strong>
+                   {{customer.first_name}}
+                  <br>
+                  <strong>نام خانوادگی:</strong>
+                    {{customer.last_name}}
+                  <br>
+                  <strong>کد ملی:</strong>
+                    {{customer.social_id}}
+                  <br>
+              </a>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  {% endfor %}
+{% endblock %}

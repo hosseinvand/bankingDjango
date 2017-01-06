@@ -83,3 +83,12 @@ class AccountsView(generic.ListView):
 class AccountDetailView(generic.DetailView):
     model = Account
     template_name = 'core/account_detail.html'
+
+class CustomersView(generic.ListView):
+    model = Customer
+    template_name = 'core/customers.html'
+    context_object_name = 'customer_list'
+
+class CustomerDetailView(generic.DeleteView):
+    model = Customer
+    template_name = 'core/customer_detail.html'
