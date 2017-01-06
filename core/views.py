@@ -74,3 +74,8 @@ class BranchesView(generic.ListView):
     model = Branch
     template_name = 'core/branches.html'
     context_object_name = 'branch_list'
+
+class AccountsView(generic.ListView):
+    model = Account
+    template_name = 'core/accounts.html'
+    context_object_name = 'account_list'

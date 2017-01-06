@@ -121,7 +121,7 @@ class Customer(models.Model):
 
     def __str__(self):
         return "{}- {} {}".format(
-            self.pk,
+            self.social_id,
             self.first_name,
             self.last_name,
         )
