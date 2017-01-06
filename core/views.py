@@ -92,11 +92,14 @@ class AdminPanel(TemplateView):
 
 
 class SystemConfigurationView(CreateView):
-    config = SystemConfiguration.get_solo()
     form_class = SystemConfigurationForm
     template_name = 'core/sysconfig.html'
     model = SystemConfiguration
     success_url = reverse_lazy('core:admin_panel')
+
+    def __init__(self, *args, **kwargs):
+        super(SystemConfigurationView, self).__init__(*args, **kwargs)
+        self.config = SystemConfiguration.get_solo()
 
 
 class TransactionsView(generic.ListView):
