@@ -78,8 +78,9 @@ class AccountCreateView(CreateView):
     success_url = reverse_lazy('mainPage')
     form_class = AccountCreateForm
 
+
 class AdminPanel(TemplateView):
-    template_name = 'core/admin_panel'
+    template_name = 'core/admin_panel.html'
 
 
 class SystemConfigurationView(CreateView):
