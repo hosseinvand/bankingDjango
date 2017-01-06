@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^cashier/create_account$', AccountCreateView.as_view(), name="create_account"),
     url(r'^transactions/$' ,views.TransactionsView.as_view(), name='transactions'),
     url(r'^transactions/(?P<pk>[0-9]+)/$' ,views.TransactionDetailView.as_view(), name='transaction_detail'),
+    url(r'^branches/$' ,views.BranchesView.as_view(), name='branches'),
 ]
