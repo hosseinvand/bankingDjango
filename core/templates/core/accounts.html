@@ -1,38 +1,65 @@
 {% extends "core/background.html" %}
 {% load widget_tweaks %}
 {% block pageBody %}
-  {% for account in account_list %}
-  <div class="col-md-8 col-md-offset-2">
-      <div class="panel panel-default">
-          <div class="panel-body">
-              <div class="list-group" id= {{branch.pk}} >
-                <p><strong>شماره حساب:</strong>
-                 {{account.account_number}}
-                <br>
-                <strong>موجودی:</strong>
-                  {{account.balance}}
-                <br>
-                <strong>نوع:</strong>
-                  {{account.get_user_type_display}}
-                <br>
-              {%if account.real_owner%}
-              <strong>صاحب حساب:</strong>
-                <a href="{% url 'core:customer_detail' account.real_owner.id %}">
-                  {{account.real_owner}}
-                </a>
-              <br>
-              {%endif%}
-              {%if account.legal_owners.all%}
-              <strong>صاحبان حقوقی حساب:</strong>
-              {%endif%}
-              {%for owner in account.legal_owners.all%}
-                {{owner}}
-                <br>
-              {%endfor%}
-          </div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1 class="page-header">لیست شعب</h1>
+                <table class="table table-stripped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>شماره حساب</th>
+                        <th>موجودی</th>
+                        <th>نوع</th>
+                        <th>صاحب حساب</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for account in object_list %}
+                        <tr>
+                        <td id={{account.pk}} >{{ account.account_number}}</td>
+                        <td>{{ account.balance }}</td>
+                        <td>{{ account.get_user_type_display }}</td>
+                        {%if account.real_owner%}
+                            <td><a href="{% url 'core:customer_detail' account.real_owner.id %}">
+                              {{account.real_owner}}
+                            </a></td>
+                        {%endif%}
+                        {%if account.legal_owners.all%}
+                            {%for owner in account.legal_owners.all%}
+                            {{owner}}
+                            <br>
+                          {%endfor%}
+                        {%endif%}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+{#                <div class="row">#}
+{#                    <div class="col-md-8">#}
+{#                        <nav>#}
+{#                            <ul class="pagination">#}
+{#                                <li>#}
+{#                                    <a href="#" aria-label="Previous">#}
+{#                                        <span aria-hidden="true">«</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                <li><a href="#">1</a></li>#}
+{#                                <li><a href="#">2</a></li>#}
+{#                                <li><a href="#">3</a></li>#}
+{#                                <li><a href="#">4</a></li>#}
+{#                                <li><a href="#">5</a></li>#}
+{#                                <li>#}
+{#                                    <a href="#" aria-label="Next">#}
+{#                                        <span aria-hidden="true">»</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </nav>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
         </div>
-      </div>
-  </div>
-
-  {% endfor %}
+    </div>
 {% endblock %}
+

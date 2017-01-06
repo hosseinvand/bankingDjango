@@ -179,10 +179,9 @@ class CustomerCreateForm(ModelForm):
 
 
 class SystemConfigurationForm(ModelForm):
-
-
     def __init__(self, *args, **kwargs):
         super(SystemConfigurationForm, self).__init__(*args, **kwargs)
+        print(len(SystemConfiguration.objects.all()))
         instance = SystemConfiguration.objects.get()
 
         self.fields['card_production_fee'].initial = str(instance.card_production_fee)
