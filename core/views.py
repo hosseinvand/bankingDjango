@@ -79,6 +79,10 @@ class AccountCreateView(CreateView):
     form_class = AccountCreateForm
 
 
+class AdminPanel(TemplateView):
+    template_name = 'core/admin_panel.html'
+
+
 class SystemConfigurationView(CreateView):
     form_class = SystemConfigurationForm
     template_name = 'core/sysconfig.html'
