@@ -3,11 +3,11 @@
 from random import randrange
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django.forms import ModelForm, fields_for_model, TextInput, Select, DateInput, ModelChoiceField
+from django.forms import ModelForm, fields_for_model, Form
 from django import forms
 from django.utils.crypto import get_random_string
 
-from core.models import Customer, Employee, Branch, Account,SystemConfiguration
+from core.models import Customer, Employee, Branch, Account,SystemConfiguration, Manager, Cashier, Jursit, Auditor
 
 
 class LoginForm(ModelForm):
@@ -34,44 +34,61 @@ class LoginForm(ModelForm):
             raise forms.ValidationError("user is shasgool")
         return cleaned_data
 
+EMPLOYEE_TYPES = (
+    ('Manager', 'مدیر شعبه'),
+    ('Cashier', 'صندوق دار'),
+    ('Jursit', 'کارشناس حقوقی'),
+    ('Auditor', 'حسابرس'),
+)
 
-class EmployeeCreateForm(ModelForm):
+class EmployeeCreateForm(Form):
+    type = forms.ChoiceField(choices=EMPLOYEE_TYPES, label='سمت')
 
-    class Meta:
-        model = Employee
-        fields = ['first_name', 'last_name', 'sex', 'birth_date', 'birth_place',
-                  'social_id', 'address', 'education', 'relationship']
-        labels = {
-            'first_name': "نام",
-            'last_name': "نام خانوادگی",
-            'sex': "جنسیت",
-            'birth_date': "تاریخ تولد",
-            'birth_place': "محل تولد",
-            'social_id': "کد ملی",
-            'address': "آدرس",
-            'education': "تحصیلات",
-            'relationship': "وضعیت تاهل",
-            'branch': 'شعبه'
-        }
+    labels = {
+        'first_name': "نام",
+        'last_name': "نام خانوادگی",
+        'sex': "جنسیت",
+        'birth_date': "تاریخ تولد",
+        'birth_place': "محل تولد",
+        'social_id': "کد ملی",
+        'address': "آدرس",
+        'education': "تحصیلات",
+        'relationship': "وضعیت تاهل",
+        'branch': 'شعبه'
+    }
+
+    def __init__(self, data=None, *args, **kwargs):
+        super(EmployeeCreateForm, self).__init__(data, *args, **kwargs)
+        self.fields.update(fields_for_model(Employee, labels=self.labels))
+        del self.fields['user']
 
     def clean(self):
         cleaned_data = super(EmployeeCreateForm, self).clean()
-        # validate form data here!
+        print('cleaned_data is: ', cleaned_data)
         return cleaned_data
 
-    def save(self, commit=True):
+    def save(self):
         first_name = self.cleaned_data.get('first_name', None)
         last_name = self.cleaned_data.get('last_name', None)
         username = get_random_string(length=8)
         password = get_random_string(length=8)
         user = User.objects.create_user(username=username, password=password, first_name=first_name,
                                             last_name=last_name)
-        employee = Employee(user=user, **self.cleaned_data)
+        model = {
+            'Manager': Manager,
+            'Cashier': Cashier,
+            'Jursit': Jursit,
+            'Auditor': Auditor
+        }[self.cleaned_data.get('type')]
+        del self.cleaned_data['type']
+
+        employee = model(user=user, **self.cleaned_data)
+        employee.save()
+
         return employee
 
 
 class BranchCreateForm(ModelForm):
-    # manager_username = forms.CharField(max_length=32, label="نام کاربری مدیر شعبه")
 
     class Meta:
         model = Branch
@@ -88,9 +105,8 @@ class BranchCreateForm(ModelForm):
 
     def save(self, commit=True):
         branch = Branch(**self.cleaned_data)
-        Branch.save()
+        branch.save()
         return branch
-
 
 class AccountCreateForm(ModelForm):
     username = fields_for_model(Account, labels={"user_type":"نوع کاربر"})['user_type']
