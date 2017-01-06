@@ -8,7 +8,7 @@
               <div class="list-group">
                 <a href="{% url 'core:transaction_detail' transaction.id %}">
                   <p><strong>شماره حساب:</strong>
-                    {{ transaction.account.account_number}}
+                      {{ transaction.account.account_number}}
                   <br>
                   <strong>تاریخ:</strong>
                     {{ transaction.date|date:"SHORT_DATE_FORMAT"}}

@@ -4,7 +4,11 @@
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
             <div class="panel-body">
-              <p><strong>حساب:</strong> <a href="">{{transaction.account.account_number }}</p></a>
+              <p><strong>حساب:</strong>
+                <a href="{% url 'core:account_detail' transaction.account.account_number %}">
+                  {{transaction.account.account_number }}
+                </a>
+              </p>
 
               <p><strong>مبلغ:</strong> {{transaction.amount}}</p>
 
