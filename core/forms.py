@@ -109,13 +109,13 @@ class BranchCreateForm(ModelForm):
         return branch
 
 class AccountCreateForm(ModelForm):
-    username = fields_for_model(Account, labels={"real_owner":"صاحب حساب"})['real_owner']
 
     class Meta:
         model = Account
-        fields = ['user_type']
+        fields = ['user_type', 'real_owner']
         labels = {
             'user_type': "نوع کاربر",
+            "real_owner": "صاحب حساب"
         }
 
     def clean(self):
@@ -124,8 +124,7 @@ class AccountCreateForm(ModelForm):
         return cleaned_data
 
     def save(self, commit=True):
-        customer = self.cleaned_data.get('real_owner', None)
-        account = Account(real_owner = customer, **self.cleaned_data)
+        account = Account( **self.cleaned_data)
         account.save()
         account_number = account.account_number
         return account

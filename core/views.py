@@ -81,7 +81,7 @@ class AccountCreateView(CreateView):
 class CustomerCreateView(CreateView):
     model = Customer
     template_name = 'core/create_customer.html'
-    success_url = reverse_lazy('mainPage')
+    success_url = reverse_lazy('core:admin_panel')
     form_class = CustomerCreateForm
 
 
