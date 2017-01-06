@@ -6,7 +6,17 @@
       <div class="panel panel-default">
           <div class="panel-body">
               <div class="list-group">
-                <li><a href="{% url 'core:transaction_detail' transaction.id %}">{{ transaction.account.account_number }} - {{ transaction.date}} - {{transaction.get_transaction_type_display}}</a></li>
+                <a href="{% url 'core:transaction_detail' transaction.id %}">
+                  <p><strong>شماره حساب:</strong>
+                    {{ transaction.account.account_number}}
+                  <br>
+                  <strong>تاریخ:</strong>
+                    {{ transaction.date}}
+                  <br>
+                  <strong>نوع:</strong>
+                    {{ transaction.get_transaction_type_display}}
+                  </p>
+                </a>
               </div>
           </div>
         </div>

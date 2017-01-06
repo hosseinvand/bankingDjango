@@ -4,11 +4,11 @@
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
             <div class="panel-body">
-              <h1>{{ transaction.get_transaction_type_display}}-{{transaction.date}}-{{transaction.time}}</h1>
+              <h1>{{ transaction.get_transaction_type_display}}<br>{{transaction.date}}<br>{{transaction.time}}</h1>
 
-              <p><strong>حسابرس:</strong> <a href="">{{ transaction.auditor}}</a></p> <!-- Auditor detail link not yet defined -->
+              <p><strong>حسابرس:</strong> {{ transaction.auditor}}</p>
               <p><strong>شعبه:</strong> <a href="">{{ transaction.branch }}</p></a>
-              <p><strong>حساب:</strong> <a href="">{{ transaction.account }}</p></a>
+              <p><strong>حساب:</strong> <a href="">{{ transaction.account.account_number }}</p></a>
 
               </div>
             </div>
