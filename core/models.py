@@ -10,9 +10,9 @@ UNKNOWN = 'NA'
 ACCEPT = 'AC'
 REJECT = 'RE'
 statuses = (
-    (UNKNOWN, 'unknown'),
-    (ACCEPT, 'accepted'),
-    (REJECT, 'rejected'),
+    (UNKNOWN, 'نامعلوم'),
+    (ACCEPT, 'قبول'),
+    (REJECT, 'رد'),
 )
 
 DAY = "da"
@@ -20,10 +20,10 @@ WEEK = "we"
 MONTH = "mo"
 YEAR = "yr"
 period_types = (
-    (DAY, "daily"),
-    (WEEK, "weekly"),
-    (MONTH, "monthly"),
-    (YEAR, "yearly"),
+    (DAY, "روزانه"),
+    (WEEK, "هفتگی"),
+    (MONTH, "ماهانه"),
+    (YEAR, "سالانه"),
 )
 
 NONE = "NON"
@@ -31,31 +31,31 @@ SMS = "SMS"
 MAIL = "MAL"
 BOTH = "BOT"
 notif_types = (
-    (NONE, "none"),
-    (SMS, "sms"),
-    (MAIL, "E-Mail"),
-    (BOTH, "both"),
+    (NONE, "هیچ"),
+    (SMS, "پیامک"),
+    (MAIL, "رایانامه"),
+    (BOTH, "هردو"),
 )
 
 REAL = 'R'
 LEGAL = 'L'
 customer_types = (
-    (REAL, "real"),
-    (LEGAL, "legal"),
+    (REAL, "حقیقی"),
+    (LEGAL, "حقوقی"),
 )
 
 WITHDRAW = 'w'
 DEPOSIT = 'd'
 transaction_types = (
-    (WITHDRAW, 'withdraw'),
-    (DEPOSIT, 'deposit'),
+    (WITHDRAW, 'برداشت'),
+    (DEPOSIT, 'واریز'),
 )
 
 CARD_TO_CARD = "CTC"
 TRANSACTION = "TRN"
 wage_types = (
-    (CARD_TO_CARD, "card to card"),
-    (TRANSACTION, "transaction"),
+    (CARD_TO_CARD, "کارت به کارت"),
+    (TRANSACTION, "تراکنش"),
 )
 
 EDUCATION_TYPES=(

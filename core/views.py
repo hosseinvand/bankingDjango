@@ -8,9 +8,9 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView, UpdateView,CreateView
 from core.forms import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
     AccountCreateForm
-from core.models import Customer, Employee, SystemConfiguration, Branch, Account
+from core.models import Customer, Employee, SystemConfiguration, Branch, Account,Transaction
 from django.shortcuts import render
-
+from django.views import generic
 
 class LoginView(FormView):
     template_name = 'core/login.html'
@@ -57,3 +57,14 @@ class SystemConfigurationView(CreateView):
     template_name = 'core/sysconfig.html'
     model = SystemConfiguration
     success_url = reverse_lazy('mainPage')
+
+class TransactionsView(generic.ListView):
+    template_name = 'core/transactions.html'
+    context_object_name = 'transaction_list'
+
+    def get_queryset(self):
+        return Transaction.objects.all().order_by('date','time')
+
+class TransactionDetailView(generic.DetailView):
+    model = Transaction
+    template_name = 'core/transaction_detail.html'

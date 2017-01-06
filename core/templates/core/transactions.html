@@ -1,0 +1,16 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+  {% for transaction in transaction_list %}
+  <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+          <div class="panel-body">
+              <div class="list-group">
+                <li><a href="{% url 'core:transaction_detail' transaction.id %}">{{ transaction.account.account_number }} - {{ transaction.date}} - {{transaction.get_transaction_type_display}}</a></li>
+              </div>
+          </div>
+        </div>
+  </div>
+
+  {% endfor %}
+{% endblock %}
