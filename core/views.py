@@ -79,6 +79,7 @@ class SystemConfigurationView(CreateView):
     success_url = reverse_lazy('mainPage')
 
 class TransactionsView(generic.ListView):
+    model =  Transaction
     template_name = 'core/transactions.html'
     context_object_name = 'transaction_list'
 
@@ -88,3 +89,26 @@ class TransactionsView(generic.ListView):
 class TransactionDetailView(generic.DetailView):
     model = Transaction
     template_name = 'core/transaction_detail.html'
+
+class BranchesView(generic.ListView):
+    model = Branch
+    template_name = 'core/branches.html'
+    context_object_name = 'branch_list'
+
+class AccountsView(generic.ListView):
+    model = Account
+    template_name = 'core/accounts.html'
+    context_object_name = 'account_list'
+
+class AccountDetailView(generic.DetailView):
+    model = Account
+    template_name = 'core/account_detail.html'
+
+class CustomersView(generic.ListView):
+    model = Customer
+    template_name = 'core/customers.html'
+    context_object_name = 'customer_list'
+
+class CustomerDetailView(generic.DeleteView):
+    model = Customer
+    template_name = 'core/customer_detail.html'

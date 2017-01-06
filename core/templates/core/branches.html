@@ -1,0 +1,21 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+  {% for branch in branch_list %}
+  <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+          <div class="panel-body">
+              <div class="list-group" id= {{branch.pk}} >
+                <p><strong>نام:</strong>
+                 {{branch.name}}
+                <br>
+                <strong>آدرس:</strong>
+                  {{branch.address}}
+                <br>
+              </div>
+          </div>
+        </div>
+  </div>
+
+  {% endfor %}
+{% endblock %}

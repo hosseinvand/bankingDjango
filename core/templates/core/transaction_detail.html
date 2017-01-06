@@ -4,11 +4,22 @@
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
             <div class="panel-body">
-              <h1>{{ transaction.get_transaction_type_display}}<br>{{transaction.date}}<br>{{transaction.time}}</h1>
+              <p><strong>حساب:</strong> <a href="">{{transaction.account.account_number }}</p></a>
+
+              <p><strong>مبلغ:</strong> {{transaction.amount}}</p>
+
+              <p><strong>زمان:</strong> {{transaction.time}}</p>
+
+              <p><strong>نوع:</strong> {{transaction.get_transaction_type_display}}</p>
+
+              <p> <strong>تاریخ:</strong> {{transaction.date|date:"SHORT_DATE_FORMAT"}}</p>
 
               <p><strong>حسابرس:</strong> {{ transaction.auditor}}</p>
-              <p><strong>شعبه:</strong> <a href="">{{ transaction.branch }}</p></a>
-              <p><strong>حساب:</strong> <a href="">{{ transaction.account.account_number }}</p></a>
+
+              <p><strong>شعبه:</strong>
+                <a href="{% url 'core:branches' %}#{{transaction.branch.pk}}">{{ transaction.branch }}
+                </a>
+              </p>
 
               </div>
             </div>
