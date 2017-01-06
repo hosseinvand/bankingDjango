@@ -1,154 +1,78 @@
 {% extends "core/background.html" %}
 {% load widget_tweaks %}
 {% block pageBody %}
-<div class=" bootstrap snippets">
-    <div class="row decor-default">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-          <div class="contacts-list">
-
-            <form class="ac-custom ac-checkbox ac-checkmark" autocomplete="off">
-              <div class="input-group">
-                <input type="text" class="contacts-list-search" placeholder="Search">
-                <div class="input-group-addon">
-                  <button type="button"><img src="http://91.234.35.26/iwiki-admin/v1.0.0/admin/img/icon-17.png" alt="search"></button>
-                </div>
-              </div>
-              <div class="unit head">
-                <div class="field name">
-                  <div class="check">
-                    <input id="cb1" name="cb1" type="checkbox">
-                    <label for="cb1"></label>
-                  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"></svg></div>
-                  Name
-                </div>
-                <div class="field phone">
-                  Phone
-                </div>
-                <div class="field email icons">
-                  Email
-                  <div class="btn-group pull-right" role="group">
-                    <button type="button" class="btn btn-default"><span class="icon icon-folder"></span></button>
-
-                    <div class="btn-group" role="group">
-                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="icon icon-label"></span></button>
-
-                      <ul class="dropdown-menu pull-right">
-                        <li><a href="#"><span class="label label-success text-dark">New</span></a></li>
-                        <li><a href="#"><span class="label label-primary text-dark">Social</span></a></li>
-                        <li><a href="#"><span class="label label-warning text-dark">Spam</span></a></li>
-                      </ul>
-                    </div>
-                    <button type="button" class="btn btn-default"><span class="icon icon-trash"></span></button>
-                  </div>
-                </div>
-              </div>
-              <div class="unit">
-                <div class="field name">
-                  <div class="check">
-                    <input id="cb2" name="cb1" type="checkbox">
-                    <label for="cb2"></label>
-                  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"></svg>
-
-                  </div>
-                  <div>
-                    <img src="http://bootdey.com/img/Content/avatar/avatar1.png" alt="image" class="avatar"> Alexander Verdnam
-                  </div>
-                  <div class="lab lab-warning">Friends</div>
-                </div>
-                <div class="field phone">
-                  +1-800-600-9898
-                </div>
-                <div class="field email">
-                  example@gmail.com
-                </div>
-              </div>
-              <div class="unit">
-                <div class="field name">
-                  <div class="check">
-                    <input id="cb8" name="cb1" type="checkbox">
-                    <label for="cb8"></label>
-                  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"></svg></div>
-                  <div>
-                    <img src="http://bootdey.com/img/Content/avatar/avatar2.png" alt="image" class="avatar"> Gerard Butler
-                  </div>
-                  <div class="lab lab-success">Work</div>
-                </div>
-                <div class="field phone">
-                  +1-800-600-9898
-                </div>
-                <div class="field email">
-                  example@gmail.com
-                </div>
-              </div>
-              <div class="unit">
-                <div class="field name">
-                  <div class="check">
-                    <input id="cb3" name="cb1" type="checkbox">
-                    <label for="cb3"></label>
-                  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"></svg></div>
-                  <div>
-                    <img src="http://bootdey.com/img/Content/avatar/avatar3.png" alt="image" class="avatar"> Anna Lee
-                  </div>
-                  <div class="lab lab-danger">Private</div>
-                </div>
-                <div class="field phone">
-                  +1-800-600-9898
-                </div>
-                <div class="field email">
-                  example@gmail.com
-                </div>
-              </div>
-              <div class="unit">
-                <div class="field name">
-                  <div class="check">
-                    <input id="cb4" name="cb1" type="checkbox">
-                    <label for="cb4"></label>
-                  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"></svg></div>
-                  <img src="http://bootdey.com/img/Content/avatar/avatar4.png" alt="image" class="avatar"> Alexandera Verdnam
-                </div>
-                <div class="field phone">
-                  +1-800-600-9898
-                </div>
-                <div class="field email">
-                  example@gmail.com
-                </div>
-              </div>
-              <div class="unit">
-                <div class="field name">
-                  <div class="check">
-                    <input id="cb5" name="cb1" type="checkbox">
-                    <label for="cb5"></label>
-                  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"></svg></div>
-                  <div>
-                    <img src="http://bootdey.com/img/Content/avatar/avatar5.png" alt="image" class="avatar"> Olga Verdnam
-                  </div>
-                  <div class="lab lab-primary">Family</div>
-                </div>
-                <div class="field phone">
-                  +1-800-600-9898
-                </div>
-                <div class="field email">
-                  example@gmail.com
-                </div>
-              </div>
-              <div class="unit">
-                <div class="field name">
-                  <div class="check">
-                    <input id="cb6" name="cb1" type="checkbox">
-                    <label for="cb6"></label>
-                  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"></svg></div>
-                  <img src="http://bootdey.com/img/Content/avatar/avatar6.png" alt="image" class="avatar"> John Verdnam
-                </div>
-                <div class="field phone">
-                  +1-800-600-9898
-                </div>
-                <div class="field email">
-                  example@gmail.com
-                </div>
-              </div>
-            </form>
-          </div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1 class="page-header">لیست کارمندان</h1>
+                <table class="table table-stripped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>نام کاربری</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>سمت</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for employee in managers %}
+                        <tr>
+                        <td>{{ employee.user.username }}</td>
+                        <td>{{ employee.first_name }}</td>
+                        <td>{{ employee.last_name }}</td>
+                        <td>مدیر شعبه</td>
+                    </tr>
+                    {% endfor %}
+                    {% for employee in jursits %}
+                        <tr>
+                        <td>{{ employee.user.username }}</td>
+                        <td>{{ employee.first_name }}</td>
+                        <td>{{ employee.last_name }}</td>
+                        <td>کارشناس حقوقی</td>
+                    </tr>
+                    {% endfor %}
+                    {% for employee in auditors %}
+                        <tr>
+                        <td>{{ employee.user.username }}</td>
+                        <td>{{ employee.first_name }}</td>
+                        <td>{{ employee.last_name }}</td>
+                        <td>حسابرس</td>
+                    </tr>
+                    {% endfor %}
+                    {% for employee in cashiers %}
+                        <tr>
+                        <td>{{ employee.user.username }}</td>
+                        <td>{{ employee.first_name }}</td>
+                        <td>{{ employee.last_name }}</td>
+                        <td>صندوق‌دار</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+{#                <div class="row">#}
+{#                    <div class="col-md-8">#}
+{#                        <nav>#}
+{#                            <ul class="pagination">#}
+{#                                <li>#}
+{#                                    <a href="#" aria-label="Previous">#}
+{#                                        <span aria-hidden="true">«</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                <li><a href="#">1</a></li>#}
+{#                                <li><a href="#">2</a></li>#}
+{#                                <li><a href="#">3</a></li>#}
+{#                                <li><a href="#">4</a></li>#}
+{#                                <li><a href="#">5</a></li>#}
+{#                                <li>#}
+{#                                    <a href="#" aria-label="Next">#}
+{#                                        <span aria-hidden="true">»</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </nav>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
