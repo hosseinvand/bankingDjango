@@ -89,7 +89,7 @@ class SystemConfiguration(SingletonModel):
     )
     # Implemented yearly, but must be applied daily(x^(1/365)).
 
-    def __unicode__(self):
+    def __str__(self):
         return u"System Configurations"
 
 
@@ -119,7 +119,7 @@ class Customer(models.Model):
         choices=notif_types,
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{}- {} {}".format(
             self.social_id,
             self.first_name,
@@ -137,7 +137,7 @@ class Notification(models.Model):
     text = models.TextField(max_length=1023)
     seen = models.BooleanField(default=False)
     time = models.DateTimeField(auto_now=True)
-    def __unicode__(self):
+    def __str__(self):
         return u"{}, Seen:{}".format(
             self.user.username,
             self.seen,
@@ -157,7 +157,7 @@ class Maintainer(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} {}".format(
             self.first_name,
             self.last_name,
@@ -167,8 +167,8 @@ class Maintainer(models.Model):
 class Greenback(models.Model):
     value = models.IntegerField()
 
-    def __unicode__(self):
-        return str(self.value).encode(encoding="utf-8")
+    def __str__(self):
+        return str(self.value)
 
 
 class ATM(models.Model):
@@ -188,7 +188,7 @@ class ATM(models.Model):
         related_name='+',
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"atm:{} - balance:{}".format(
             self.pk,
             self.balance,
@@ -210,7 +210,7 @@ class Contain(models.Model):
 
     count = models.IntegerField(default=0)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} contains {} of {}".format(
             self.atm,
             self.count,
@@ -246,7 +246,7 @@ class Account(models.Model):
         default=REAL,
     )
 
-    def __unicode__(self):
+    def __str__(self):
         if(self.real_owner is None):
             legals = self.legal_owners.all()
             if(len(legals)==0):
@@ -265,8 +265,8 @@ class Branch(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
 
-    def __unicode__(self):
-        return str(self.name).encode(encoding="utf-8")
+    def __str__(self):
+        return str(self.name)
 
 class Employee(models.Model):
     user = models.OneToOneField(
@@ -315,7 +315,7 @@ class Employee(models.Model):
 
 class Manager(Employee):
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} {}".format(
             self.first_name,
             self.last_name,
@@ -323,7 +323,7 @@ class Manager(Employee):
 
 class Auditor(Employee):
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} {}".format(
             self.first_name,
             self.last_name,
@@ -331,7 +331,7 @@ class Auditor(Employee):
 
 class Cashier(Employee):
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} {}".format(
             self.first_name,
             self.last_name,
@@ -339,7 +339,7 @@ class Cashier(Employee):
 
 class Jursit(Employee):
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} {}".format(
             self.first_name,
             self.last_name,
@@ -376,7 +376,7 @@ class Transaction(models.Model):
         choices=transaction_types,
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} {}  account: {} @ {} {} ".format(
             self.amount,
             self.transaction_type,
@@ -402,8 +402,8 @@ class TransactionWage(models.Model):
     # So related_name=wage_type only must be used
     # when the type of transaction is w.
 
-    def __unicode__(self):
-        return u"wage for transactoin "+str(self.transaction.pk).encode(encoding="utf-8")
+    def __str__(self):
+        return u"wage for transactoin "+str(self.transaction.pk)
 
 
 class Card(models.Model):
@@ -419,11 +419,11 @@ class Card(models.Model):
         related_name="card",
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"card: {}\nfor: {}".format(
             str(self.card_number),
             str(self.account)
-        ).encode(encoding="utf-8")
+        )
 
 
 class WithdrawFromATM(models.Model):
@@ -450,7 +450,7 @@ class WithdrawFromATM(models.Model):
         on_delete=models.PROTECT,
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"withdraw form {} @ {} for {} $".format(
             self.card,
             self.ATM.pk,
@@ -493,7 +493,7 @@ class CardToCard(models.Model):
         default=None,
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} from {} to {}".format(
             self.amount,
             self.from_card,
@@ -509,7 +509,7 @@ class BillType(models.Model):
         related_name="legal_owners",
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{}".format(
             self.company,
         )
@@ -525,7 +525,7 @@ class Bill(models.Model):
     amount = models.IntegerField()
     paid = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"Bill: {} amount: {} is paid: {}".format(
             self.bill_type.company,
             self.amount,
@@ -546,8 +546,8 @@ class PayedBill(models.Model):
         related_name="payment_info",
     )
 
-    def __unicode__(self):
-        return str(self.bill.bill_type.company).encode(encoding="utf-8")
+    def __str__(self):
+        return str(self.bill.bill_type.company)
 
 
 class LoanApplication(models.Model):
@@ -571,7 +571,7 @@ class LoanApplication(models.Model):
         related_name="loan_applications",
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"Amount: {} Owner: {}".format(
             self.amount,
             self.account,
@@ -587,8 +587,8 @@ class Loan(models.Model):
         related_name="loan",
     )
 
-    def __unicode__(self):
-        return str(loan_application).encode(encoding="utf-8")
+    def __str__(self):
+        return str(loan_application)
 
     def clean(self):
         if (self.loan_application.legal_expert_validation != ACCEPT or
@@ -611,7 +611,7 @@ class Inquiry(models.Model):
         related_name="+",
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"Account: {} stat: {}".format(
             self.account.account_number,
             self.status,
@@ -637,8 +637,8 @@ class ChequeApplication(models.Model):
     )
     date = models.DateField(auto_now=True)
 
-    def __unicode__(self):
-        return u"cheque book belonging to " + str(self.account).encode(encoding="utf-8")
+    def __str__(self):
+        return u"cheque book belonging to " + str(self.account)
 
 
 class Cheque(models.Model):
@@ -654,7 +654,7 @@ class Cheque(models.Model):
         on_delete=models.PROTECT,
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"{} from {}".format(
             self.cheque_id,
             self.cheque_application,
@@ -703,7 +703,7 @@ class ChequeIssue(models.Model):
         default=None,
     )  # keep in mind that this always points to withdraw transaction
 
-    def __unicode__(self):
+    def __str__(self):
         return u"issue for check {}".format(
             self.cheque
         )
@@ -732,7 +732,7 @@ class PaymentOrder(models.Model):
         default=YEAR,
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return u"Havale from {} Amount: {} TimeSpan: {} - {}".format(
             self.account,
             self.amount,
