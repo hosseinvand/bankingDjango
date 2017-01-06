@@ -21,7 +21,7 @@
               <p><strong>حسابرس:</strong> {{ transaction.auditor}}</p>
 
               <p><strong>شعبه:</strong>
-                <a href="{% url 'core:branches' %}#{{transaction.branch.pk}}">{{ transaction.branch }}
+                <a href="{% url 'core:branch_list' %}#{{transaction.branch.pk}}">{{ transaction.branch }}
                 </a>
               </p>
 
