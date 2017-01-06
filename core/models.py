@@ -90,7 +90,7 @@ class SystemConfiguration(SingletonModel):
     # Implemented yearly, but must be applied daily(x^(1/365)).
 
     def __str__(self):
-        return u"System Configurations"
+        return "System Configurations"
 
 
 class Customer(models.Model):
@@ -120,7 +120,7 @@ class Customer(models.Model):
     )
 
     def __str__(self):
-        return u"{}- {} {}".format(
+        return "{}- {} {}".format(
             self.social_id,
             self.first_name,
             self.last_name,
@@ -138,7 +138,7 @@ class Notification(models.Model):
     seen = models.BooleanField(default=False)
     time = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return u"{}, Seen:{}".format(
+        return "{}, Seen:{}".format(
             self.user.username,
             self.seen,
         )
@@ -158,7 +158,7 @@ class Maintainer(models.Model):
     last_name = models.CharField(max_length=255)
 
     def __str__(self):
-        return u"{} {}".format(
+        return "{} {}".format(
             self.first_name,
             self.last_name,
         )
@@ -189,7 +189,7 @@ class ATM(models.Model):
     )
 
     def __str__(self):
-        return u"atm:{} - balance:{}".format(
+        return "atm:{} - balance:{}".format(
             self.pk,
             self.balance,
         )
@@ -211,7 +211,7 @@ class Contain(models.Model):
     count = models.IntegerField(default=0)
 
     def __str__(self):
-        return u"{} contains {} of {}".format(
+        return "{} contains {} of {}".format(
             self.atm,
             self.count,
             self.greenback,
@@ -255,7 +255,7 @@ class Account(models.Model):
                 written_owner = legals[0].company
         else:
             written_owner = self.real_owner.first_name
-        return u"account {} for {}".format(
+        return "account {} for {}".format(
             self.account_number,
             written_owner,
         )
@@ -316,7 +316,7 @@ class Employee(models.Model):
 class Manager(Employee):
 
     def __str__(self):
-        return u"{} {}".format(
+        return "{} {}".format(
             self.first_name,
             self.last_name,
         )
@@ -324,7 +324,7 @@ class Manager(Employee):
 class Auditor(Employee):
 
     def __str__(self):
-        return u"{} {}".format(
+        return "{} {}".format(
             self.first_name,
             self.last_name,
         )
@@ -332,7 +332,7 @@ class Auditor(Employee):
 class Cashier(Employee):
 
     def __str__(self):
-        return u"{} {}".format(
+        return "{} {}".format(
             self.first_name,
             self.last_name,
         )
@@ -340,7 +340,7 @@ class Cashier(Employee):
 class Jursit(Employee):
 
     def __str__(self):
-        return u"{} {}".format(
+        return "{} {}".format(
             self.first_name,
             self.last_name,
         )
@@ -377,7 +377,7 @@ class Transaction(models.Model):
     )
 
     def __str__(self):
-        return u"{} {}  account: {} @ {} {} ".format(
+        return "{} {}  account: {} @ {} {} ".format(
             self.amount,
             self.transaction_type,
             self.account.pk,
@@ -403,7 +403,7 @@ class TransactionWage(models.Model):
     # when the type of transaction is w.
 
     def __str__(self):
-        return u"wage for transactoin "+str(self.transaction.pk)
+        return "wage for transactoin "+str(self.transaction.pk)
 
 
 class Card(models.Model):
@@ -420,7 +420,7 @@ class Card(models.Model):
     )
 
     def __str__(self):
-        return u"card: {}\nfor: {}".format(
+        return "card: {}\nfor: {}".format(
             str(self.card_number),
             str(self.account)
         )
@@ -451,7 +451,7 @@ class WithdrawFromATM(models.Model):
     )
 
     def __str__(self):
-        return u"withdraw form {} @ {} for {} $".format(
+        return "withdraw form {} @ {} for {} $".format(
             self.card,
             self.ATM.pk,
             self.amount,
@@ -494,7 +494,7 @@ class CardToCard(models.Model):
     )
 
     def __str__(self):
-        return u"{} from {} to {}".format(
+        return "{} from {} to {}".format(
             self.amount,
             self.from_card,
             self.to_card,
@@ -510,7 +510,7 @@ class BillType(models.Model):
     )
 
     def __str__(self):
-        return u"{}".format(
+        return "{}".format(
             self.company,
         )
 
@@ -526,7 +526,7 @@ class Bill(models.Model):
     paid = models.BooleanField(default=False)
 
     def __str__(self):
-        return u"Bill: {} amount: {} is paid: {}".format(
+        return "Bill: {} amount: {} is paid: {}".format(
             self.bill_type.company,
             self.amount,
             self.paid,
@@ -572,7 +572,8 @@ class LoanApplication(models.Model):
     )
 
     def __str__(self):
-        return u"Amount: {} Owner: {}".format(
+
+        return "Amount: {} Owner: {}".format(
             self.amount,
             self.account,
         )
@@ -612,7 +613,7 @@ class Inquiry(models.Model):
     )
 
     def __str__(self):
-        return u"Account: {} stat: {}".format(
+        return "Account: {} stat: {}".format(
             self.account.account_number,
             self.status,
         )
@@ -638,7 +639,7 @@ class ChequeApplication(models.Model):
     date = models.DateField(auto_now=True)
 
     def __str__(self):
-        return u"cheque book belonging to " + str(self.account)
+        return "cheque book belonging to " + str(self.account)
 
 
 class Cheque(models.Model):
@@ -655,7 +656,7 @@ class Cheque(models.Model):
     )
 
     def __str__(self):
-        return u"{} from {}".format(
+        return "{} from {}".format(
             self.cheque_id,
             self.cheque_application,
         )
@@ -704,7 +705,7 @@ class ChequeIssue(models.Model):
     )  # keep in mind that this always points to withdraw transaction
 
     def __str__(self):
-        return u"issue for check {}".format(
+        return "issue for check {}".format(
             self.cheque
         )
 
@@ -733,7 +734,8 @@ class PaymentOrder(models.Model):
     )
 
     def __str__(self):
-        return u"Havale from {} Amount: {} TimeSpan: {} - {}".format(
+        return "Havale from {} Amount: {} TimeSpan: {} - {}".format(
+
             self.account,
             self.amount,
             self.start_date,
