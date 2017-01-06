@@ -23,7 +23,7 @@ from django.views import generic
 class LoginView(FormView):
     template_name = 'core/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('core:admin_panel')
 
     def form_valid(self, form):
         response = super(LoginView, self).form_valid(form)
@@ -36,7 +36,7 @@ class LoginView(FormView):
 class EmployeeCreateView(FormView):
     model = Employee
     template_name = 'core/create_employee.html'
-    success_url = '/core/admin/create_employee'
+    success_url = reverse_lazy('core:admin_panel')
     form_class = EmployeeCreateForm
 
     def form_valid(self, form):
@@ -68,14 +68,14 @@ class BranchListView(ListView):
 class BranchCreateView(CreateView):
     model = Branch
     template_name = 'core/create_branch.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('core:admin_panel')
     form_class = BranchCreateForm
 
 
 class AccountCreateView(CreateView):
     model = Account
     template_name = 'core/create_account.html'
-    success_url = reverse_lazy('mainPage')
+    success_url = reverse_lazy('core:admin_panel')
     form_class = AccountCreateForm
 
 class CustomerCreateView(CreateView):
@@ -93,7 +93,7 @@ class SystemConfigurationView(CreateView):
     form_class = SystemConfigurationForm
     template_name = 'core/sysconfig.html'
     model = SystemConfiguration
-    success_url = reverse_lazy('mainPage')
+    success_url = reverse_lazy('core:admin_panel')
 
 
 class TransactionsView(generic.ListView):

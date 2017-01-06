@@ -3,7 +3,6 @@ from core.views import LoginView,EmployeeCreateView,BranchCreateView,AccountCrea
     EmployeeListView, BranchListView, AdminPanel, CustomerCreateView
 
 from core import views
-__author__ = 'mohre'
 app_name = 'core'
 
 urlpatterns = [
@@ -11,9 +10,9 @@ urlpatterns = [
     url(r'^admin/create_employee$', EmployeeCreateView.as_view(), name="create_employee"),
     url(r'^admin/employee_list$', EmployeeListView.as_view(), name="employee_list"),
     url(r'^admin/branch_list$', BranchListView.as_view(), name="branch_list"),
-    url(r'^sysconf/$', SystemConfigurationView.as_view(), name="SystemConfiguration"),
+    url(r'^admin/sysconf/$', SystemConfigurationView.as_view(), name="SystemConfiguration"),
     url(r'^admin/create_branch/$', BranchCreateView.as_view(), name="create_branch"),
-    url(r'^admin/panel/$', AdminPanel.as_view(), name="admin_panel.html"),
+    url(r'^admin/panel/$', AdminPanel.as_view(), name="admin_panel"),
     url(r'^cashier/create_account/$', AccountCreateView.as_view(), name="create_account"),
     url(r'^cashier/create_customer/$', CustomerCreateView.as_view(), name="create_account"),
     url(r'^transactions/?$' ,views.TransactionsView.as_view(), name='transactions'),

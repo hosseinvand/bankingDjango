@@ -5,17 +5,17 @@
   <div class="panel panel-default">
       <div class="panel-body">
           <div class="list-group">
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">ایجاد شعبه</button>
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">لیست شعب</button>
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">ایجاد کارمند</button>
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">لیست کارمند‌ها</button>
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">ایجاد مشتری</button>
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">تعریف قبض جدید</button>
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">تعیین کارمزد</button>
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">ایجاد حساب</button>
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">لیست حساب‌ها</button>
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">تعیین حساب اصلی سامانه</button>
-              <button type="button" class="btn btn-primary btn-raised btn-lg btn-block">دریافت گزارش شعب</button>
+              <a href="{% url 'core:create_branch' %}" type="button" class="btn btn-primary btn-raised btn-lg btn-block" >ایجاد شعبه</a>
+              <a href="{% url 'core:branch_list' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">لیست شعب</a>
+              <a href="{% url 'core:create_employee' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">ایجاد کارمند</a>
+              <a href="{% url 'core:employee_list' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">لیست کارمند‌ها</a>
+              <a href="{% url 'core:customers' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">لیست مشتری‌ها</a>
+              <a href="{% url 'core:create_branch' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">تعریف قبض جدید</a>
+              <a href="{% url 'core:SystemConfiguration' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">تعیین کارمزد</a>
+              <a href="{% url 'core:create_account' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">ایجاد حساب</a>
+              <a href="{% url 'core:accounts' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">لیست حساب‌ها</a>
+              <a href="{% url 'core:create_branch' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">تعیین حساب اصلی سامانه</a>
+              <a href="{% url 'core:create_branch' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">دریافت گزارش شعب</a>
           </div>
     </div>
   </div>
