@@ -15,7 +15,7 @@
                     <tbody>
                     {% for branch in object_list %}
                         <tr>
-                        <td>{{ branch.name}}</td>
+                        <td id={{branch.pk}} >{{ branch.name}}</td>
                         <td>{{ branch.address}}</td>
                     </tr>
                     {% endfor %}

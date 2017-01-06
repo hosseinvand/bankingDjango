@@ -12,6 +12,8 @@ from django.views.generic import TemplateView
 
 from core.forms import LoginForm, EmployeeCreateForm, BranchCreateForm, BillTypeCreateForm
 from core.models import Customer, Employee, Branch, Account, Manager, Jursit, Auditor, Cashier, BillType
+from core.forms import LoginForm, EmployeeCreateForm, BranchCreateForm, CustomerCreateForm
+from core.models import Customer, Employee, Branch, Account, Manager, Jursit, Auditor, Cashier
 from django.views.generic import FormView, UpdateView,CreateView
 from core.forms import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
     AccountCreateForm
@@ -73,10 +75,16 @@ class BranchCreateView(CreateView):
 
 
 class AccountCreateView(CreateView):
-    model = Customer
+    model = Account
     template_name = 'core/create_account.html'
     success_url = reverse_lazy('core:admin_panel')
     form_class = AccountCreateForm
+
+class CustomerCreateView(CreateView):
+    model = Customer
+    template_name = 'core/create_customer.html'
+    success_url = reverse_lazy('mainPage')
+    form_class = CustomerCreateForm
 
 
 class AdminPanel(TemplateView):

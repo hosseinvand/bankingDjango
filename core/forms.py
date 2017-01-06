@@ -131,8 +131,28 @@ class BillTypeCreateForm(ModelForm):
 
 
 class AccountCreateForm(ModelForm):
-    username = fields_for_model(Account, labels={"user_type":"نوع کاربر"})['user_type']
+    username = fields_for_model(Account, labels={"real_owner":"صاحب حساب"})['real_owner']
 
+    class Meta:
+        model = Account
+        fields = ['user_type']
+        labels = {
+            'user_type': "نوع کاربر",
+        }
+
+    def clean(self):
+        cleaned_data = super(AccountCreateForm, self).clean()
+        # validate form data here!
+        return cleaned_data
+
+    def save(self, commit=True):
+        customer = self.cleaned_data.get('real_owner', None)
+        account = Account(real_owner = customer, **self.cleaned_data)
+        account.save()
+        account_number = account.account_number
+        return account
+
+class CustomerCreateForm(ModelForm):
     class Meta:
         model = Customer
         fields = ['first_name', 'last_name', 'sex', 'birthday', 'father_name',
@@ -149,21 +169,14 @@ class AccountCreateForm(ModelForm):
             'email': "آدرس ایمیل",
             'notif_type' : "نوع اطلاع رسانی"
         }
-
     def clean(self):
-        cleaned_data = super(AccountCreateForm, self).clean()
+        cleaned_data = super(CustomerCreateForm, self).clean()
         # validate form data here!
         return cleaned_data
-
-   # def save(self, commit=True):
-   #     first_name = self.cleaned_data.get('first_name', None)
-   #     last_name = self.cleaned_data.get('last_name', None)
-   #     customer = Customer(**self.cleaned_data)
-   #     customer.save()
-   #     employee = Employee(real_owner = customer)
-   #     employee.save()
-   #     account_number = employee.account_number
-   #     return employee
+    def save(self, commit=True):
+        customer = Customer(**self.cleaned_data)
+        customer.save()
+        return customer
 
 
 class SystemConfigurationForm(ModelForm):

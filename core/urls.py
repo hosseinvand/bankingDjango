@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from core.views import LoginView,EmployeeCreateView,BranchCreateView,AccountCreateView,SystemConfigurationView, \
-    EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView
+    EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, CustomerCreateView
 
 from core import views
 app_name = 'core'
@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^admin/create_bill_type/$', BillTypeCreateView.as_view(), name="create_bill_type"),
     url(r'^admin/panel/$', AdminPanel.as_view(), name="admin_panel"),
     url(r'^cashier/create_account/$', AccountCreateView.as_view(), name="create_account"),
+    url(r'^cashier/create_customer/$', CustomerCreateView.as_view(), name="create_account"),
     url(r'^transactions/?$' ,views.TransactionsView.as_view(), name='transactions'),
     url(r'^transactions/(?P<pk>[0-9]+)/$' ,views.TransactionDetailView.as_view(), name='transaction_detail'),
     url(r'^accounts/$' ,views.AccountsView.as_view(), name='accounts'),
