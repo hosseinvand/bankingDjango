@@ -92,6 +92,7 @@ class AdminPanel(TemplateView):
 
 
 class SystemConfigurationView(CreateView):
+    config = SystemConfiguration.get_solo()
     form_class = SystemConfigurationForm
     template_name = 'core/sysconfig.html'
     model = SystemConfiguration
@@ -143,4 +144,3 @@ class BillTypeCreateView(CreateView):
     form_class = BillTypeCreateForm
     template_name = 'core/bill_type_create.html'
     success_url = reverse_lazy('core:admin_panel')
-
