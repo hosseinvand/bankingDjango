@@ -44,7 +44,6 @@ class EmployeeCreateView(FormView):
         return response
 
 class EmployeeListView(TemplateView):
-    model = Employee # it it ok to use abstract class as mode?
     template_name = 'core/employee_list.html'
 
     def get_context_data(self, **kwargs):
@@ -55,6 +54,13 @@ class EmployeeListView(TemplateView):
         context['cashiers'] = Cashier.objects.all()
         return context
 
+
+class BranchListView(ListView):
+    model = Branch
+    template_name = 'core/branch_list.html'
+
+    def get_queryset(self):
+        return Branch.objects.all()
 
 
 class BranchCreateView(CreateView):

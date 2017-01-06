@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from core.views import LoginView,EmployeeCreateView,BranchCreateView,AccountCreateView,SystemConfigurationView, \
-    EmployeeListView
+    EmployeeListView, BranchListView
 
 from core import views
 __author__ = 'mohre'
@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name="login"),
     url(r'^admin/create_employee$', EmployeeCreateView.as_view(), name="create_employee"),
     url(r'^admin/employee_list$', EmployeeListView.as_view(), name="employee_list"),
+    url(r'^admin/branch_list$', BranchListView.as_view(), name="branch_list"),
     url(r'^sysconf/$', SystemConfigurationView.as_view(), name="SystemConfiguration"),
     url(r'^admin/create_branch/$', BranchCreateView.as_view(), name="create_branch"),
     url(r'^cashier/create_account/$', AccountCreateView.as_view(), name="create_account"),
