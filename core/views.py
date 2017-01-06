@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.views.generic import FormView
 
-from core.forms import LoginForm, EmployeeCreateForm, BranchCreateForm, AccountCreateForm
+from core.forms import LoginForm, EmployeeCreateForm, BranchCreateForm
 from core.models import Customer, Employee, Branch, Account
 from django.shortcuts import render
 
@@ -16,7 +16,7 @@ from django.shortcuts import render
 class LoginView(FormView):
     template_name = 'core/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('mainPage')
+    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         response = super(LoginView, self).form_valid(form)
@@ -25,10 +25,10 @@ class LoginView(FormView):
         login(self.request, user)
         return response
 
-class EmployeeCreateView(CreateView):
+class EmployeeCreateView(FormView):
     model = Employee
     template_name = 'core/create_employee.html'
-    success_url = reverse_lazy('mainPage')
+    success_url = reverse_lazy('login')
     form_class = EmployeeCreateForm
 
     # def form_valid(self, form):
@@ -39,17 +39,19 @@ class EmployeeCreateView(CreateView):
     #     SystemUser.objects.filter(user=user).update(role=Patient.load())
     #     login(self.request, new_user)
     #     return response
+
+
 class BranchCreateView(CreateView):
     model = Branch
     template_name = 'core/create_branch.html'
-    success_url = reverse_lazy('mainPage')
+    success_url = reverse_lazy('login')
     form_class = BranchCreateForm
 
 
-class AccountCreateView(CreateView):
-    model = Account
-    template_name = 'core/create_account.html'
-    success_url = reverse_lazy('mainPage')
-    form_class = AccountCreateForm
+# class AccountCreateView(CreateView):
+#     model = Account
+#     template_name = 'core/create_account.html'
+#     success_url = reverse_lazy('mainPage')
+#     form_class = AccountCreateForm
 
 

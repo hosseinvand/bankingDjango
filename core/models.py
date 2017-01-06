@@ -243,14 +243,6 @@ class Account(models.Model):
 
 
 class Branch(models.Model):
-    # manager = models.ForeignKey(
-    #     'Manager', # TODO: move Branch to new file
-    #     on_delete=models.PROTECT,
-    #     null=True,
-    #     related_name='+',
-    #     default=None,
-    # )
-
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
 
