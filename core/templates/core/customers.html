@@ -12,15 +12,18 @@
                         <th>نام خانوادگی</th>
                         <th>جنسیت</th>
                         <th>کد ملی</th>
+                        <th>جز‌ئیات</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for customer in object_list %}
                         <tr>
+
                         <td id={{customer.pk}} >{{ customer.first_name}}</td>
                         <td>{{ customer.last_name}}</td>
                         <td>{{ customer.get_sex_display}}</td>
                         <td>{{ customer.social_id}}</td>
+                        <td> <a href="{% url 'core:customer_detail' customer.id %}">جزئیات</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
