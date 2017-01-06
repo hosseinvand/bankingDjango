@@ -1,26 +1,54 @@
 {% extends "core/background.html" %}
 {% load widget_tweaks %}
 {% block pageBody %}
-  {% for customer in customer_list %}
-  <div class="col-md-8 col-md-offset-2">
-      <div class="panel panel-default">
-          <div class="panel-body">
-              <div class="list-group" id= {{branch.pk}} >
-                <a href="{% url 'core:customer_detail' customer.id %}">
-                  <p><strong>نام:</strong>
-                   {{customer.first_name}}
-                  <br>
-                  <strong>نام خانوادگی:</strong>
-                    {{customer.last_name}}
-                  <br>
-                  <strong>کد ملی:</strong>
-                    {{customer.social_id}}
-                  <br>
-              </a>
-          </div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1 class="page-header">لیست مشتری‌ها</h1>
+                <table class="table table-stripped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>جنسیت</th>
+                        <th>کد ملی</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for customer in object_list %}
+                        <tr>
+                        <td id={{customer.pk}} >{{ customer.first_name}}</td>
+                        <td>{{ customer.last_name}}</td>
+                        <td>{{ customer.get_sex_display}}</td>
+                        <td>{{ customer.social_id}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+{#                <div class="row">#}
+{#                    <div class="col-md-8">#}
+{#                        <nav>#}
+{#                            <ul class="pagination">#}
+{#                                <li>#}
+{#                                    <a href="#" aria-label="Previous">#}
+{#                                        <span aria-hidden="true">«</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                <li><a href="#">1</a></li>#}
+{#                                <li><a href="#">2</a></li>#}
+{#                                <li><a href="#">3</a></li>#}
+{#                                <li><a href="#">4</a></li>#}
+{#                                <li><a href="#">5</a></li>#}
+{#                                <li>#}
+{#                                    <a href="#" aria-label="Next">#}
+{#                                        <span aria-hidden="true">»</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </nav>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
         </div>
-      </div>
-  </div>
-
-  {% endfor %}
+    </div>
 {% endblock %}

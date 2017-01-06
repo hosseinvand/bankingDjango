@@ -128,7 +128,9 @@ class AccountDetailView(generic.DetailView):
 class CustomersView(generic.ListView):
     model = Customer
     template_name = 'core/customers.html'
-    context_object_name = 'customer_list'
+
+    def get_queryset(self):
+        return Customer.objects.all()
 
 
 class CustomerDetailView(generic.DeleteView):
