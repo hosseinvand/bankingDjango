@@ -22,14 +22,11 @@
                         <td>{{ account.get_user_type_display }}</td>
                         {%if account.real_owner%}
                             <td><a href="{% url 'core:customer_detail' account.real_owner.id %}">
-                              {{account.real_owner}}
+                              {{account.real_owner.first_name }} {{account.real_owner.last_name }}
                             </a></td>
                         {%endif%}
                         {%if account.legal_owners.all%}
-                            {%for owner in account.legal_owners.all%}
-                            {{owner}}
-                            <br>
-                          {%endfor%}
+                            {{ account.legal_owners.all | join:", " }}
                         {%endif%}
                     </tr>
                     {% endfor %}
