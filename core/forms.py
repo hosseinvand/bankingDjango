@@ -1,11 +1,13 @@
-from random import randrange
+# -*- coding: utf-8 -*-
 
+from random import randrange
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.forms import ModelForm, fields_for_model, Form
 from django import forms
+from django.utils.crypto import get_random_string
 
-from core.models import Customer, Employee, Branch
+from core.models import Customer, Employee, Branch, Account,SystemConfiguration, Manager, Cashier, Jursit, Auditor
 
 
 class LoginForm(ModelForm):
@@ -32,8 +34,16 @@ class LoginForm(ModelForm):
             raise forms.ValidationError("user is shasgool")
         return cleaned_data
 
+EMPLOYEE_TYPES = (
+    ('Manager', 'مدیر شعبه'),
+    ('Cashier', 'صندوق دار'),
+    ('Jursit', 'کارشناس حقوقی'),
+    ('Auditor', 'حسابرس'),
+)
 
 class EmployeeCreateForm(Form):
+    type = forms.ChoiceField(choices=EMPLOYEE_TYPES, label='سمت')
+
     labels = {
         'first_name': "نام",
         'last_name': "نام خانوادگی",
@@ -49,22 +59,33 @@ class EmployeeCreateForm(Form):
 
     def __init__(self, data=None, *args, **kwargs):
         super(EmployeeCreateForm, self).__init__(data, *args, **kwargs)
-        self.fields = fields_for_model(Employee, labels=self.labels)
+        self.fields.update(fields_for_model(Employee, labels=self.labels))
+        del self.fields['user']
 
     def clean(self):
         cleaned_data = super(EmployeeCreateForm, self).clean()
-        # validate form data here!
+        print('cleaned_data is: ', cleaned_data)
         return cleaned_data
 
-    # def save(self, commit=True):
-    #     first_name = self.cleaned_data.get('first_name', None)
-    #     last_name = self.cleaned_data.get('last_name', None)
-    #     username = get_random_string(length=8)
-    #     password = get_random_string(length=8)
-    #     user = User.objects.create_user(username=username, password=password, first_name=first_name,
-    #                                         last_name=last_name)
-    #     employee = Employee(user=user, **self.cleaned_data)
-    #     return employee
+    def save(self):
+        first_name = self.cleaned_data.get('first_name', None)
+        last_name = self.cleaned_data.get('last_name', None)
+        username = get_random_string(length=8)
+        password = get_random_string(length=8)
+        user = User.objects.create_user(username=username, password=password, first_name=first_name,
+                                            last_name=last_name)
+        model = {
+            'Manager': Manager,
+            'Cashier': Cashier,
+            'Jursit': Jursit,
+            'Auditor': Auditor
+        }[self.cleaned_data.get('type')]
+        del self.cleaned_data['type']
+
+        employee = model(user=user, **self.cleaned_data)
+        employee.save()
+
+        return employee
 
 
 class BranchCreateForm(ModelForm):
@@ -87,3 +108,82 @@ class BranchCreateForm(ModelForm):
         branch.save()
         return branch
 
+class AccountCreateForm(ModelForm):
+    username = fields_for_model(Account, labels={"user_type":"نوع کاربر"})['user_type']
+
+    class Meta:
+        model = Customer
+        fields = ['first_name', 'last_name', 'sex', 'birthday', 'father_name',
+                  'social_id', 'phone_number', 'email', 'notif_type']
+        labels = {
+            'first_name': "نام",
+            'last_name': "نام خانوادگی",
+            'sex': "جنسیت",
+            'birthday': "تاریخ تولد",
+            'father_name': "نام پدر",
+            'social_id': "شماره ملی",
+            'phone_number': "شماره تلفن",
+            # 'address': "آدرس",
+            'email': "آدرس ایمیل",
+            'notif_type' : "نوع اطلاع رسانی"
+        }
+
+    def clean(self):
+        cleaned_data = super(AccountCreateForm, self).clean()
+        # validate form data here!
+        return cleaned_data
+
+   # def save(self, commit=True):
+   #     first_name = self.cleaned_data.get('first_name', None)
+   #     last_name = self.cleaned_data.get('last_name', None)
+   #     customer = Customer(**self.cleaned_data)
+   #     customer.save()
+   #     employee = Employee(real_owner = customer)
+   #     employee.save()
+   #     account_number = employee.account_number
+   #     return employee
+
+
+class SystemConfigurationForm(ModelForm):
+
+
+    def __init__(self, *args, **kwargs):
+        super(SystemConfigurationForm, self).__init__(*args, **kwargs)
+        instance = SystemConfiguration.objects.get()
+
+        self.fields['card_production_fee'].initial = str(instance.card_production_fee)
+        self.fields['cheque_production_fee'].initial = str(instance.cheque_production_fee)
+        self.fields['sms_notif_fee'].initial = str(instance.sms_notif_fee)
+        self.fields['card_to_card_fee'].initial = str(instance.card_to_card_fee)
+        self.fields['transactio_fee'].initial = str(instance.transactio_fee)
+        self.fields['atm_min_money'].initial = str(instance.atm_min_money)
+        self.fields['loan_interest'].initial = str(instance.loan_interest)
+        self.fields['deposit_yearly_interest'].initial = str(instance.deposit_yearly_interest)
+
+    class Meta:
+        model = SystemConfiguration
+        fields = [
+            'card_production_fee',
+            'cheque_production_fee',
+            'sms_notif_fee',
+            'card_to_card_fee',
+            'transactio_fee',
+            'atm_min_money',
+            'loan_interest',
+            'deposit_yearly_interest',
+        ]
+        labels = {
+            'card_production_fee': "هزینه‌ی صدور کارت",
+            'cheque_production_fee': "هزینه‌ی صدور چک",
+            'sms_notif_fee': "هزینه‌ی فعال‌سازی اعلام پیامک",
+            'card_to_card_fee': "هزینه‌ی کارت به کارت",
+            'transactio_fee': "هزینه‌ی تراکنش",
+            'atm_min_money': "مقدار کمینه‌ی پول موجود در خودپرداز",
+            'loan_interest': "بهره‌ی وام",
+            'deposit_yearly_interest': "بهره‌ی حساب سالیانه",
+        }
+
+    def save(self, commit=True):
+        instance = SystemConfiguration(**self.cleaned_data)
+        instance.save()
+        return instance

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib.auth.models import User  # multiple models have keys
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -8,9 +10,9 @@ UNKNOWN = 'NA'
 ACCEPT = 'AC'
 REJECT = 'RE'
 statuses = (
-    (UNKNOWN, 'unknown'),
-    (ACCEPT, 'accepted'),
-    (REJECT, 'rejected'),
+    (UNKNOWN, 'نامعلوم'),
+    (ACCEPT, 'قبول'),
+    (REJECT, 'رد'),
 )
 
 DAY = "da"
@@ -18,10 +20,10 @@ WEEK = "we"
 MONTH = "mo"
 YEAR = "yr"
 period_types = (
-    (DAY, "daily"),
-    (WEEK, "weekly"),
-    (MONTH, "monthly"),
-    (YEAR, "yearly"),
+    (DAY, "روزانه"),
+    (WEEK, "هفتگی"),
+    (MONTH, "ماهانه"),
+    (YEAR, "سالانه"),
 )
 
 NONE = "NON"
@@ -29,31 +31,31 @@ SMS = "SMS"
 MAIL = "MAL"
 BOTH = "BOT"
 notif_types = (
-    (NONE, "none"),
-    (SMS, "sms"),
-    (MAIL, "E-Mail"),
-    (BOTH, "both"),
+    (NONE, "هیچ"),
+    (SMS, "پیامک"),
+    (MAIL, "رایانامه"),
+    (BOTH, "هردو"),
 )
 
 REAL = 'R'
 LEGAL = 'L'
 customer_types = (
-    (REAL, "real"),
-    (LEGAL, "legal"),
+    (REAL, "حقیقی"),
+    (LEGAL, "حقوقی"),
 )
 
 WITHDRAW = 'w'
 DEPOSIT = 'd'
 transaction_types = (
-    (WITHDRAW, 'withdraw'),
-    (DEPOSIT, 'deposit'),
+    (WITHDRAW, 'برداشت'),
+    (DEPOSIT, 'واریز'),
 )
 
 CARD_TO_CARD = "CTC"
 TRANSACTION = "TRN"
 wage_types = (
-    (CARD_TO_CARD, "card to card"),
-    (TRANSACTION, "transaction"),
+    (CARD_TO_CARD, "کارت به کارت"),
+    (TRANSACTION, "تراکنش"),
 )
 
 EDUCATION_TYPES=(
@@ -98,6 +100,18 @@ class Customer(models.Model):
     father_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=11)
     email = models.CharField(max_length=255)
+    sex = models.CharField(
+        max_length=30,
+        choices=SEX_TYPES,
+        blank=True,
+    )
+    address = models.CharField(max_length=255)
+
+
+    social_id = models.CharField(
+        max_length=10,
+        unique=True,
+    )
 
     notif_type = models.CharField(
         max_length=3,
@@ -122,13 +136,16 @@ class Notification(models.Model):
 
     text = models.TextField(max_length=1023)
     seen = models.BooleanField(default=False)
-
+    time = models.DateTimeField(auto_now=True)
     def __str__(self):
         return "{}, Seen:{}".format(
             self.user.username,
             self.seen,
         )
 
+
+    class Meta:
+        ordering = ['time']
 
 class Maintainer(models.Model):
     user = models.OneToOneField(
@@ -161,6 +178,7 @@ class ATM(models.Model):
         on_delete=models.SET_NULL,
         related_name="atms",
         null=True,
+        blank=True,
         default=None,
     )
 
@@ -209,6 +227,7 @@ class Account(models.Model):
         Customer,
         on_delete=models.PROTECT,
         null=True,
+        blank=True,
         default=None,
         related_name="accounts",
     )
@@ -268,7 +287,11 @@ class Employee(models.Model):
     birth_date = models.DateField()
     birth_place = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
-    sex = models.CharField(max_length=30, choices=SEX_TYPES, blank=True)
+    sex = models.CharField(
+        max_length=30,
+        choices=SEX_TYPES,
+        blank=True
+    )
     branch = models.ForeignKey(
         Branch,
         on_delete=models.SET_NULL,
@@ -276,8 +299,16 @@ class Employee(models.Model):
         null=True,
         default=None
     )
-    education = models.CharField(max_length=30, choices=EDUCATION_TYPES, blank=True)
-    relationship = models.CharField(max_length=30, choices=RELATIONSHIP_TYPES, blank=True)
+    education = models.CharField(
+        max_length=30,
+        choices=EDUCATION_TYPES,
+        blank=True,
+    )
+    relationship = models.CharField(
+        max_length=30,
+        choices=RELATIONSHIP_TYPES,
+        blank=True,
+    )
 
     class Meta:
         abstract = True
