@@ -24,11 +24,8 @@
               {%endif%}
               {%if account.legal_owners.all%}
               <strong>صاحبان حقوقی حساب:</strong>
+                {{ account.legal_owners.all | join:", " }}
               {%endif%}
-              {%for owner in account.legal_owners.all%}
-                {{owner}}
-                <br>
-              {%endfor%}
           </div>
         </div>
       </div>
