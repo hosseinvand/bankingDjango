@@ -79,3 +79,7 @@ class AccountsView(generic.ListView):
     model = Account
     template_name = 'core/accounts.html'
     context_object_name = 'account_list'
+
+class AccountDetailView(generic.DetailView):
+    model = Account
+    template_name = 'core/account_detail.html'
