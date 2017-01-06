@@ -10,6 +10,8 @@ from django.views.generic import FormView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 
+from core.forms import LoginForm, EmployeeCreateForm, BranchCreateForm, BillTypeCreateForm
+from core.models import Customer, Employee, Branch, Account, Manager, Jursit, Auditor, Cashier, BillType
 from core.forms import LoginForm, EmployeeCreateForm, BranchCreateForm, CustomerCreateForm
 from core.models import Customer, Employee, Branch, Account, Manager, Jursit, Auditor, Cashier
 from django.views.generic import FormView, UpdateView,CreateView
@@ -110,10 +112,12 @@ class TransactionDetailView(generic.DetailView):
     template_name = 'core/transaction_detail.html'
 
 
-class AccountsView(generic.ListView):
+class AccountsView(ListView):
     model = Account
     template_name = 'core/accounts.html'
-    context_object_name = 'account_list'
+
+    def get_queryset(self):
+        return Account.objects.all()
 
 
 class AccountDetailView(generic.DetailView):
@@ -130,3 +134,11 @@ class CustomersView(generic.ListView):
 class CustomerDetailView(generic.DeleteView):
     model = Customer
     template_name = 'core/customer_detail.html'
+
+
+class BillTypeCreateView(CreateView):
+    model = BillType
+    form_class = BillTypeCreateForm
+    template_name = 'core/bill_type_create.html'
+    success_url = reverse_lazy('core:admin_panel')
+

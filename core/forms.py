@@ -7,7 +7,8 @@ from django.forms import ModelForm, fields_for_model, Form
 from django import forms
 from django.utils.crypto import get_random_string
 
-from core.models import Customer, Employee, Branch, Account,SystemConfiguration, Manager, Cashier, Jursit, Auditor
+from core.models import Customer, Employee, Branch, Account,SystemConfiguration, Manager, Cashier, Jursit, Auditor, \
+    BillType
 
 
 class LoginForm(ModelForm):
@@ -107,6 +108,27 @@ class BranchCreateForm(ModelForm):
         branch = Branch(**self.cleaned_data)
         branch.save()
         return branch
+
+
+class BillTypeCreateForm(ModelForm):
+    class Meta:
+        model = BillType
+        fields = ['company', 'account']
+        labels = {
+            'company': "نام شرکت",
+            'account': "حساب بانکی مرتبط",
+        }
+
+    def clean(self):
+        cleaned_data = super(BillTypeCreateForm, self).clean()
+        # validate form data here!
+        return cleaned_data
+
+    def save(self, commit=True):
+        billType = BillType(**self.cleaned_data)
+        billType.save()
+        return billType
+
 
 class AccountCreateForm(ModelForm):
 
