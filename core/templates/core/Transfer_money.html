@@ -5,7 +5,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <form name="searchForm" class="form-horizontal" method="post">{% csrf_token %}
-
+{#                    {{ form.as_p }}#}
                     <!-- showing errors at top of the form -->
                     {% if form.errors %}
                         {% for field in form %}
@@ -32,12 +32,11 @@
                         </div>
                     {% endfor %}
 
-{#                    {{ form.as_p }}#}
                     <!-- submit button -->
                     <fieldset>
                         <div class="form-group">
                             <div class="col-xs-6 col-xs-offset-3">
-                                <button type="submit" class="btn btn-lg btn-block btn-raised btn-primary">ایجاد مشتری</button>
+                                <button type="submit" class="btn btn-lg btn-block btn-raised btn-primary">انتقال وجه</button>
                             </div>
                         </div>
                     </fieldset>

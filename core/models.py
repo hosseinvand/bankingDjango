@@ -2,6 +2,7 @@
 
 from django.contrib.auth.models import User  # multiple models have keys
 from django.db import models
+# from django.db import
 from django.core.exceptions import ValidationError
 from solo.models import SingletonModel
 import uuid
@@ -313,6 +314,10 @@ class Employee(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return self.first_name
+
+
 class Manager(Employee):
 
     def __str__(self):
@@ -347,7 +352,7 @@ class Jursit(Employee):
 
 
 class Transaction(models.Model):
-    amount = models.IntegerField()
+    amount = models.IntegerField(blank=False)
     branch = models.ForeignKey(
         Branch,
         on_delete=models.SET_NULL,
@@ -360,10 +365,11 @@ class Transaction(models.Model):
         Account,
         on_delete=models.PROTECT,
         related_name='transactions',
+        blank=False
     )
 
-    auditor = models.ForeignKey(
-        Auditor,
+    cashier = models.ForeignKey(
+        Cashier,
         on_delete=models.PROTECT,
         related_name='transactions',
     )
@@ -384,7 +390,6 @@ class Transaction(models.Model):
             self.date,
             self.time,
         )
-
 
 class TransactionWage(models.Model):
     amount = models.IntegerField()

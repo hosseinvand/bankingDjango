@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm, fields_for_model, Form
 from django import forms
 from django.utils.crypto import get_random_string
-
+from django.db import transaction
 from core.models import Customer, Employee, Branch, Account,SystemConfiguration, Manager, Cashier, Jursit, Auditor, \
-    BillType
+    BillType, Transaction, Card
 
 
 class LoginForm(ModelForm):
@@ -131,7 +131,6 @@ class BillTypeCreateForm(ModelForm):
 
 
 class AccountCreateForm(ModelForm):
-
     class Meta:
         model = Account
         fields = ['user_type', 'real_owner']
@@ -150,6 +149,58 @@ class AccountCreateForm(ModelForm):
         account.save()
         account_number = account.account_number
         return account
+
+
+class Withdraw_Cash_from_Account_form(ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ['amount', 'account']
+        labels = {
+            'amount': "مبلغ برداشتی",
+            "account": " حساب"
+        }
+
+    def clean(self):
+        cleaned_data = super(Withdraw_Cash_from_Account_form, self).clean()
+        account = cleaned_data.get("account")
+        amount = cleaned_data.get("amount")
+        if account.is_blocked:
+            self.add_error("account", "اکانت شما بلاک شده است.")
+        if account.balance < amount + 10000:
+                self.add_error("amount", "پول نداری بدبخت!")
+
+        return cleaned_data
+
+    # @transaction.atomic
+    # def save(self, commit=True):
+    #     transaction_type = 'w'
+    #     trans = Transaction( **self.cleaned_data)
+    #     # trans.branch = Auditor.objects.get(pk = )
+    #     trans.save()
+    #
+    #     account = Transaction.account
+    #     account.balance -= trans.amount
+    #
+    #     return account
+
+class Add_Cash_to_Account_form(ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ['amount', 'account']
+        labels = {
+            'amount': "مبلغ واریزی",
+            "account": " حساب"
+        }
+
+    def clean(self):
+        cleaned_data = super(Add_Cash_to_Account_form, self).clean()
+        account = cleaned_data.get("account")
+        if account.is_blocked:
+            self.add_error("account", "اکانت شما بلاک شده است.")
+
+        return cleaned_data
+
+
 
 class CustomerCreateForm(ModelForm):
     class Meta:
@@ -176,6 +227,51 @@ class CustomerCreateForm(ModelForm):
         customer = Customer(**self.cleaned_data)
         customer.save()
         return customer
+
+
+class Card_Issuing_form(ModelForm):
+    class Meta:
+        model = Card
+        fields = ['account']
+        labels = {
+            'account': "شماره حساب",
+        }
+    def clean(self):
+        cleaned_data = super(Card_Issuing_form, self).clean()
+        account = cleaned_data.get("account")
+        if account.is_blocked:
+            self.add_error("account", "اکانت شما بلاک شده است.")
+        if len(Card.objects.filter(account = account)) > 0:
+            self.add_error("account", "برای این حساب کارت صادر شده است.")
+        return cleaned_data
+
+    def save(self, commit=True):
+        card = Card(**self.cleaned_data)
+        card.save()
+        return card
+
+
+class Transfer_Money_form(Form):
+    source_account = forms.ModelChoiceField(queryset=Account.objects.all(), label='حساب مبدا')
+    dest_account = forms.ModelChoiceField(queryset=Account.objects.all(), label='حساب مقصد')
+    amount = forms.IntegerField(label='مبلغ')
+
+
+    def clean(self):
+        cleaned_data = super(Transfer_Money_form, self).clean()
+        source_account = cleaned_data.get("source_account")
+        dest_account = cleaned_data.get("dest_account")
+        amount = cleaned_data.get("amount")
+
+        if source_account.is_blocked:
+            self.add_error("source_account", "اکانت مبدا بلاک شده است.")
+        if dest_account.is_blocked:
+            self.add_error("dest_account", "اکانت مقصد بلاک شده است.")
+        if source_account.balance < amount + 10000:
+                self.add_error("amount", "پول نداری بدبخت!")
+        return cleaned_data
+
+
 
 
 class SystemConfigurationForm(ModelForm):
