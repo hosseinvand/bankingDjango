@@ -1,10 +1,12 @@
 from django.conf.urls import url
 
-from core.views import Withdraw_Cash_from_Account_view, Add_Cash_To_Account_view, Card_Issuing_view, Transfer_Money_view
-from core.views import LoginView,EmployeeCreateView,BranchCreateView,AccountCreateView,SystemConfigurationView, \
-    EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, CustomerCreateView, CashierPanel
+from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, AccountCreateView, \
+    SystemConfigurationView, \
+    EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, CustomerCreateView, CashierPanel, \
+    AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView
+from core.views.admin import Withdraw_Cash_from_Account_view, Add_Cash_To_Account_view, Card_Issuing_view, \
+    Transfer_Money_view
 
-from core import views
 app_name = 'core'
 
 urlpatterns = [
@@ -25,13 +27,12 @@ urlpatterns = [
     url(r'^cashier/create_customer/$', CustomerCreateView.as_view(), name="create_customer"),
     url(r'^cashier/card_issue/$', Card_Issuing_view.as_view(), name="card_issue"),
     # url(r'^cashier/account_transactions/?$', Account_Transactions_View.as_view(), name='account_transactions'),
-    # url(r'^cashier/account_transactions/(?P<pk>[0-9]+)?$', views.Account_Transactions_selection_View.as_view(), name='account_transactions_selection'),
-    url(r'^transactions/?$' ,views.TransactionsView.as_view(), name='transactions'),
-    url(r'^transactions/(?P<pk>[0-9]+)/$' ,views.TransactionDetailView.as_view(), name='transaction_detail'),
-    url(r'^accounts/$' ,views.AccountsView.as_view(), name='accounts'),
-    url(r'^accounts/(?P<pk>.{36})/$' ,views.AccountDetailView.as_view(), name='account_detail'),
-    url(r'^customers/$' ,views.CustomersView.as_view(), name='customers'),
-    url(r'^customers/(?P<pk>[0-9]+)/$' ,views.CustomerDetailView.as_view(), name='customer_detail'),
-
+    # url(r'^cashier/account_transactions/(?P<pk>[0-9]+)?$', Account_Transactions_selection_View.as_view(), name='account_transactions_selection'),
+    url(r'^transactions/?$', TransactionsView.as_view(), name='transactions'),
+    url(r'^transactions/(?P<pk>[0-9]+)/$', TransactionDetailView.as_view(), name='transaction_detail'),
+    url(r'^accounts/$', AccountsView.as_view(), name='accounts'),
+    url(r'^accounts/(?P<pk>.{36})/$', AccountDetailView.as_view(), name='account_detail'),
+    url(r'^customers/$', CustomersView.as_view(), name='customers'),
+    url(r'^customers/(?P<pk>[0-9]+)/$', CustomerDetailView.as_view(), name='customer_detail'),
 
 ]

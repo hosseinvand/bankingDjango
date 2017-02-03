@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from random import randrange
+from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.forms import ModelForm, fields_for_model, Form
-from django import forms
 from django.utils.crypto import get_random_string
-from django.db import transaction
-from core.models import Customer, Employee, Branch, Account,SystemConfiguration, Manager, Cashier, Jursit, Auditor, \
+
+from core.models import Customer, Employee, Branch, Account, SystemConfiguration, Manager, Cashier, Jursit, Auditor, \
     BillType, Transaction, Card
 
 
@@ -35,6 +34,7 @@ class LoginForm(ModelForm):
             raise forms.ValidationError("user is shasgool")
         return cleaned_data
 
+
 EMPLOYEE_TYPES = (
     ('Manager', 'مدیر شعبه'),
     ('Cashier', 'صندوق دار'),
@@ -42,7 +42,9 @@ EMPLOYEE_TYPES = (
     ('Auditor', 'حسابرس'),
 )
 
+
 class EmployeeCreateForm(Form):
+    button_text = "ایجاد کارمند"
     type = forms.ChoiceField(choices=EMPLOYEE_TYPES, label='سمت')
 
     labels = {
@@ -74,7 +76,7 @@ class EmployeeCreateForm(Form):
         username = get_random_string(length=8)
         password = get_random_string(length=8)
         user = User.objects.create_user(username=username, password=password, first_name=first_name,
-                                            last_name=last_name)
+                                        last_name=last_name)
         model = {
             'Manager': Manager,
             'Cashier': Cashier,
@@ -90,6 +92,7 @@ class EmployeeCreateForm(Form):
 
 
 class BranchCreateForm(ModelForm):
+    button_text = "ایجاد شعبه"
 
     class Meta:
         model = Branch
@@ -111,6 +114,8 @@ class BranchCreateForm(ModelForm):
 
 
 class BillTypeCreateForm(ModelForm):
+    button_text = "ایجاد قبض"
+
     class Meta:
         model = BillType
         fields = ['company', 'account']
@@ -131,6 +136,8 @@ class BillTypeCreateForm(ModelForm):
 
 
 class AccountCreateForm(ModelForm):
+    button_text = "ایجاد حساب"
+
     class Meta:
         model = Account
         fields = ['user_type', 'real_owner']
@@ -145,7 +152,7 @@ class AccountCreateForm(ModelForm):
         return cleaned_data
 
     def save(self, commit=True):
-        account = Account( **self.cleaned_data)
+        account = Account(**self.cleaned_data)
         account.save()
         account_number = account.account_number
         return account
@@ -167,21 +174,22 @@ class Withdraw_Cash_from_Account_form(ModelForm):
         if account.is_blocked:
             self.add_error("account", "اکانت شما بلاک شده است.")
         if account.balance < amount + 10000:
-                self.add_error("amount", "پول نداری بدبخت!")
+            self.add_error("amount", "پول نداری بدبخت!")
 
         return cleaned_data
 
-    # @transaction.atomic
-    # def save(self, commit=True):
-    #     transaction_type = 'w'
-    #     trans = Transaction( **self.cleaned_data)
-    #     # trans.branch = Auditor.objects.get(pk = )
-    #     trans.save()
-    #
-    #     account = Transaction.account
-    #     account.balance -= trans.amount
-    #
-    #     return account
+        # @transaction.atomic
+        # def save(self, commit=True):
+        #     transaction_type = 'w'
+        #     trans = Transaction( **self.cleaned_data)
+        #     # trans.branch = Auditor.objects.get(pk = )
+        #     trans.save()
+        #
+        #     account = Transaction.account
+        #     account.balance -= trans.amount
+        #
+        #     return account
+
 
 class Add_Cash_to_Account_form(ModelForm):
     class Meta:
@@ -201,8 +209,9 @@ class Add_Cash_to_Account_form(ModelForm):
         return cleaned_data
 
 
-
 class CustomerCreateForm(ModelForm):
+    button_text = "ایجاد مشتری"
+
     class Meta:
         model = Customer
         fields = ['first_name', 'last_name', 'sex', 'birthday', 'father_name',
@@ -217,12 +226,14 @@ class CustomerCreateForm(ModelForm):
             'phone_number': "شماره تلفن",
             # 'address': "آدرس",
             'email': "آدرس ایمیل",
-            'notif_type' : "نوع اطلاع رسانی"
+            'notif_type': "نوع اطلاع رسانی"
         }
+
     def clean(self):
         cleaned_data = super(CustomerCreateForm, self).clean()
         # validate form data here!
         return cleaned_data
+
     def save(self, commit=True):
         customer = Customer(**self.cleaned_data)
         customer.save()
@@ -236,12 +247,13 @@ class Card_Issuing_form(ModelForm):
         labels = {
             'account': "شماره حساب",
         }
+
     def clean(self):
         cleaned_data = super(Card_Issuing_form, self).clean()
         account = cleaned_data.get("account")
         if account.is_blocked:
             self.add_error("account", "اکانت شما بلاک شده است.")
-        if len(Card.objects.filter(account = account)) > 0:
+        if len(Card.objects.filter(account=account)) > 0:
             self.add_error("account", "برای این حساب کارت صادر شده است.")
         return cleaned_data
 
@@ -263,7 +275,6 @@ class Transfer_Money_form(Form):
     dest_account = forms.ModelChoiceField(queryset=Account.objects.all(), label='حساب مقصد')
     amount = forms.IntegerField(label='مبلغ')
 
-
     def clean(self):
         cleaned_data = super(Transfer_Money_form, self).clean()
         source_account = cleaned_data.get("source_account")
@@ -275,10 +286,8 @@ class Transfer_Money_form(Form):
         if dest_account.is_blocked:
             self.add_error("dest_account", "اکانت مقصد بلاک شده است.")
         if source_account.balance < amount + 10000:
-                self.add_error("amount", "پول نداری بدبخت!")
+            self.add_error("amount", "پول نداری بدبخت!")
         return cleaned_data
-
-
 
 
 class SystemConfigurationForm(ModelForm):
