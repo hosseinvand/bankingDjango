@@ -251,6 +251,13 @@ class Card_Issuing_form(ModelForm):
         return card
 
 
+# class Account_Transaction_Form(Form):
+#     account = forms.ModelChoiceField(queryset=Account.objects.all(), label='شماره حساب')
+#     def clean(self):
+#         cleaned_data = super(Account_Transaction_Form, self).clean()
+#         return cleaned_data
+
+
 class Transfer_Money_form(Form):
     source_account = forms.ModelChoiceField(queryset=Account.objects.all(), label='حساب مبدا')
     dest_account = forms.ModelChoiceField(queryset=Account.objects.all(), label='حساب مقصد')
