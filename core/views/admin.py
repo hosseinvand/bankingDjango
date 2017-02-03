@@ -5,6 +5,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db import transaction
 from django.urls import reverse_lazy
 from django.views import generic
+from django.views.generic import DeleteView
 from django.views.generic import FormView, CreateView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
@@ -14,7 +15,7 @@ from core.forms.admin import BillTypeCreateForm, \
 from core.forms.admin import CustomerCreateForm
 from core.forms.admin import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
     AccountCreateForm
-from core.models import BillType, Card
+from core.models import BillType, Card, Employee
 from core.models import Customer, SystemConfiguration, Branch, Account, Transaction
 from core.models import Manager, Jursit, Auditor, Cashier
 
@@ -42,6 +43,23 @@ class EmployeeCreateView(FormView):
         response = super(EmployeeCreateView, self).form_valid(form)
         form.save()
         return response
+
+
+class EmployeeDeleteView(DeleteView):
+    model = Employee
+    success_url = reverse_lazy('core:employee_list')
+
+    def get_queryset(self):
+        print(self.request.GET['type'])
+        if self.request.GET['type'] == 'manager':
+            return Manager.objects.all()
+        if self.request.GET['type'] == 'jursit':
+            return Jursit.objects.all()
+        if self.request.GET['type'] == 'cashier':
+            return Cashier.objects.all()
+        if self.request.GET['type'] == 'auditor':
+            return Auditor.objects.all()
+
 
 
 class EmployeeListView(TemplateView):

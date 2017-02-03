@@ -3,7 +3,8 @@ from django.conf.urls import url
 from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, AccountCreateView, \
     SystemConfigurationView, \
     EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, CustomerCreateView, CashierPanel, \
-    AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView
+    AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView, \
+    EmployeeDeleteView
 from core.views.admin import Withdraw_Cash_from_Account_view, Add_Cash_To_Account_view, Card_Issuing_view, \
     Transfer_Money_view
 
@@ -12,6 +13,7 @@ app_name = 'core'
 urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name="login"),
     url(r'^admin/create_employee/$', EmployeeCreateView.as_view(), name="create_employee"),
+    url(r'^admin/delete_employee/(?P<pk>[0-9]+)/$', EmployeeDeleteView.as_view(), name="delete_employee"),
     url(r'^admin/employee_list/$', EmployeeListView.as_view(), name="employee_list"),
     url(r'^admin/branch_list/$', BranchListView.as_view(), name="branch_list"),
     url(r'^admin/sysconf/$', SystemConfigurationView.as_view(), name="SystemConfiguration"),

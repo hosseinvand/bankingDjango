@@ -1,0 +1,14 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form action="" method="post">{% csrf_token %}
+                    <h3>حذف کارمند {{ object }} از سامانه؟</h3>
+                    <input class="btn btn-lg btn-raised btn-warning" type="submit" value="تایید" />
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
