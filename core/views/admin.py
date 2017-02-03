@@ -44,6 +44,11 @@ class EmployeeCreateView(FormView):
         form.save()
         return response
 
+    def get_form_kwargs(self):
+        kwargs = super(FormView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
 
 class EmployeeDeleteView(DeleteView):
     model = Employee

@@ -61,7 +61,7 @@ class EmployeeCreateForm(Form):
     }
 
     def __init__(self, data=None, *args, **kwargs):
-        super(EmployeeCreateForm, self).__init__(data, *args, **kwargs)
+        super(EmployeeCreateForm, self).__init__(data)
         self.fields.update(fields_for_model(Employee, labels=self.labels))
         del self.fields['user']
 
