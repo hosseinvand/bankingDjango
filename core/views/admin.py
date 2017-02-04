@@ -15,6 +15,7 @@ from core.forms.admin import BillTypeCreateForm, \
 from core.forms.admin import CustomerCreateForm
 from core.forms.admin import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
     AccountCreateForm
+from core.mixin import SuperUserRequired
 from core.models import BillType, Card, Employee
 from core.models import Customer, SystemConfiguration, Branch, Account, Transaction
 from core.models import Manager, Jursit, Auditor, Cashier
@@ -33,7 +34,7 @@ class LoginView(FormView):
         return response
 
 
-class EmployeeCreateView(FormView):
+class EmployeeCreateView(SuperUserRequired, FormView):
     # model = Employee
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:admin_panel')
@@ -50,7 +51,7 @@ class EmployeeCreateView(FormView):
         return kwargs
 
 
-class EmployeeDeleteView(DeleteView):
+class EmployeeDeleteView(SuperUserRequired, DeleteView):
     model = Employee
     success_url = reverse_lazy('core:employee_list')
 
@@ -67,7 +68,7 @@ class EmployeeDeleteView(DeleteView):
 
 
 
-class EmployeeListView(TemplateView):
+class EmployeeListView(SuperUserRequired, TemplateView):
     template_name = 'core/employee_list.html'
 
     def get_context_data(self, **kwargs):
@@ -79,7 +80,7 @@ class EmployeeListView(TemplateView):
         return context
 
 
-class BranchListView(ListView):
+class BranchListView(SuperUserRequired, ListView):
     model = Branch
     template_name = 'core/branch_list.html'
 
@@ -87,14 +88,14 @@ class BranchListView(ListView):
         return Branch.objects.all()
 
 
-class BranchCreateView(CreateView):
+class BranchCreateView(SuperUserRequired, CreateView):
     model = Branch
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:admin_panel')
     form_class = BranchCreateForm
 
 
-class AccountCreateView(CreateView):
+class AccountCreateView(SuperUserRequired, CreateView):
     model = Account
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:admin_panel')
@@ -180,7 +181,7 @@ class Add_Cash_To_Account_view(CreateView):
         return super(Add_Cash_To_Account_view, self).form_valid(form)
 
 
-class CustomerCreateView(CreateView):
+class CustomerCreateView(SuperUserRequired, CreateView):
     model = Customer
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:admin_panel')
@@ -201,7 +202,7 @@ class Card_Issuing_view(SuccessMessageMixin, CreateView):
         )
 
 
-class AdminPanel(TemplateView):
+class AdminPanel(SuperUserRequired, TemplateView):
     template_name = 'core/admin_panel.html'
 
 
@@ -209,7 +210,7 @@ class CashierPanel(TemplateView):
     template_name = 'core/cashier_panel.html'
 
 
-class SystemConfigurationView(CreateView):
+class SystemConfigurationView(SuperUserRequired, CreateView):
     form_class = SystemConfigurationForm
     template_name = 'core/sysconfig.html'
     model = SystemConfiguration
@@ -273,7 +274,7 @@ class TransactionsView(generic.ListView):
 
 
 
-class AccountsView(ListView):
+class AccountsView(SuperUserRequired, ListView):
     model = Account
     template_name = 'core/accounts.html'
 
@@ -281,12 +282,12 @@ class AccountsView(ListView):
         return Account.objects.all()
 
 
-class AccountDetailView(generic.DetailView):
+class AccountDetailView(SuperUserRequired, generic.DetailView):
     model = Account
     template_name = 'core/account_detail.html'
 
 
-class CustomersView(generic.ListView):
+class CustomersView(SuperUserRequired, generic.ListView):
     model = Customer
     template_name = 'core/customers.html'
 
@@ -299,12 +300,12 @@ class Print_Account_Circulation_view(generic.ListView):
     template_name = 'core/customers.html'
 
 
-class CustomerDetailView(generic.DeleteView):
+class CustomerDetailView(SuperUserRequired, generic.DeleteView):
     model = Customer
     template_name = 'core/customer_detail.html'
 
 
-class BillTypeCreateView(CreateView):
+class BillTypeCreateView(SuperUserRequired, CreateView):
     model = BillType
     form_class = BillTypeCreateForm
     template_name = 'core/simple_from_with_single_button.html'
