@@ -8,6 +8,8 @@
                 <table class="table table-stripped table-bordered">
                     <thead>
                     <tr>
+                        <th>
+                        </th>
                         <th>نام کاربری</th>
                         <th>نام</th>
                         <th>نام خانوادگی</th>
@@ -17,22 +19,25 @@
                     <tbody>
                     {% for employee in managers %}
                         <tr>
-                        <td>{{ employee.user.username }}</td>
-                        <td>{{ employee.first_name }}</td>
-                        <td>{{ employee.last_name }}</td>
-                        <td>مدیر شعبه</td>
-                    </tr>
+                            <td><a href="{% url 'core:delete_employee' employee.id %}?type=manager" class="glyphicon glyphicon-remove"></a></td>
+                            <td>{{ employee.user.username }}</td>
+                            <td>{{ employee.first_name }}</td>
+                            <td>{{ employee.last_name }}</td>
+                            <td>مدیر شعبه</td>
+                        </tr>
                     {% endfor %}
                     {% for employee in jursits %}
                         <tr>
-                        <td>{{ employee.user.username }}</td>
-                        <td>{{ employee.first_name }}</td>
-                        <td>{{ employee.last_name }}</td>
-                        <td>کارشناس حقوقی</td>
-                    </tr>
+                            <td><a href="{% url 'core:delete_employee' employee.id %}?type=jursit" class="glyphicon glyphicon-remove"></a></td>
+                            <td>{{ employee.user.username }}</td>
+                            <td>{{ employee.first_name }}</td>
+                            <td>{{ employee.last_name }}</td>
+                            <td>کارشناس حقوقی</td>
+                        </tr>
                     {% endfor %}
                     {% for employee in auditors %}
                         <tr>
+                        <td><a href="{% url 'core:delete_employee' employee.id %}?type=auditor" class="glyphicon glyphicon-remove"></a></td>
                         <td>{{ employee.user.username }}</td>
                         <td>{{ employee.first_name }}</td>
                         <td>{{ employee.last_name }}</td>
@@ -41,6 +46,7 @@
                     {% endfor %}
                     {% for employee in cashiers %}
                         <tr>
+                        <td><a href="{% url 'core:delete_employee' employee.id %}?type=cashier" class="glyphicon glyphicon-remove"></a></td>
                         <td>{{ employee.user.username }}</td>
                         <td>{{ employee.first_name }}</td>
                         <td>{{ employee.last_name }}</td>
