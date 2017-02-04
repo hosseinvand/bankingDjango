@@ -10,7 +10,8 @@ from django.views.generic import ListView
 from django.views.generic import TemplateView
 
 from core.forms.admin import BillTypeCreateForm, \
-    Withdraw_Cash_from_Account_form, Add_Cash_to_Account_form, Card_Issuing_form, Transfer_Money_form
+    Withdraw_Cash_from_Account_form, Add_Cash_to_Account_form, Card_Issuing_form, Transfer_Money_form, \
+    Account_Transaction_Form
 from core.forms.admin import CustomerCreateForm
 from core.forms.admin import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
     AccountCreateForm
@@ -197,6 +198,10 @@ class SystemConfigurationView(CreateView):
         self.config = SystemConfiguration.get_solo()
 
 
+
+
+
+
 class TransactionDetailView(generic.DetailView):
     # print("############################################################")
     # print(transactionXX)
@@ -214,30 +219,22 @@ class TransactionsView(generic.ListView):
         return Transaction.objects.all().order_by('date', 'time')
 
 
-# class Account_Transactions_View(FormView):
-#     template_name = 'core/account_transaction.html'
-#     # success_url = reverse_lazy('core:', kwargs: {'id': account})
-#     form_class = Account_Transaction_Form
-#
-#
-#    .r def get_success_url(self):
-#         return reverse('offerta create', args=(selfequest.get('account')))
-#
-#     # @transaction.atomic
-#     # def form_valid(self, form):
-#     #     account = form.cleaned_data.get('account')
-#     #     print("hoooooooooo")
-#     #     print(account)
-#     #     return super(Account_Transactions_View, self).form_valid(form)
-#
-#
-# class Account_Transactions_selection_View(generic.ListView):
-#     model =  Transaction
-#     template_name = 'core/transactions.html'
-#     context_object_name = 'transaction_list'
-#
-#     def get_queryset(self):
-#         return Transaction.objects.filter(account= input_account).order_by('date','time')
+class Account_Transactions_View(FormView):
+    template_name = 'core/account_transaction.html'
+    form_class = Account_Transaction_Form
+
+    def get_success_url(self):
+        return reverse_lazy('account_transactions_selection', args=(self.object.get('input_account')))
+        # self.object
+
+class Account_Transactions_selection_View(generic.ListView):
+    model =  Transaction
+    template_name = 'core/transactions.html'
+    context_object_name = 'transaction_list'
+
+    def get_queryset(self):
+        return Transaction.objects.all().order_by('date', 'time')
+        # return Transaction.objects.filter(account= input_account).order_by('date','time')
 
 
 

@@ -255,19 +255,25 @@ class Card_Issuing_form(ModelForm):
             self.add_error("account", "اکانت شما بلاک شده است.")
         if len(Card.objects.filter(account=account)) > 0:
             self.add_error("account", "برای این حساب کارت صادر شده است.")
+        # if account.balance < 10000 + SystemConfiguration.get_deferred_fields["card_production_fee"]:
+        #     self.add_error("account", "موجودی حساب کافی نیست.")
+
         return cleaned_data
 
     def save(self, commit=True):
         card = Card(**self.cleaned_data)
+        # account = card.account
+        # account.balance -= SystemConfiguration.card_production_fee
+        # account.save()
         card.save()
         return card
 
 
-# class Account_Transaction_Form(Form):
-#     account = forms.ModelChoiceField(queryset=Account.objects.all(), label='شماره حساب')
-#     def clean(self):
-#         cleaned_data = super(Account_Transaction_Form, self).clean()
-#         return cleaned_data
+class Account_Transaction_Form(Form):
+    input_account = forms.ModelChoiceField(queryset=Account.objects.all(), label='شماره حساب')
+    def clean(self):
+        cleaned_data = super(Account_Transaction_Form, self).clean()
+        return cleaned_data
 
 
 class Transfer_Money_form(Form):
@@ -288,6 +294,9 @@ class Transfer_Money_form(Form):
         if source_account.balance < amount + 10000:
             self.add_error("amount", "پول نداری بدبخت!")
         return cleaned_data
+
+
+
 
 
 class SystemConfigurationForm(ModelForm):
