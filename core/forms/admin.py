@@ -7,7 +7,7 @@ from django.forms import ModelForm, fields_for_model, Form
 from django.utils.crypto import get_random_string
 
 from core.models import Customer, Employee, Branch, Account, SystemConfiguration, Manager, Cashier, Jursit, Auditor, \
-    BillType, Transaction, Card
+    BillType, Transaction, Card, Bill
 
 
 class LoginForm(ModelForm):
@@ -133,6 +133,27 @@ class BillTypeCreateForm(ModelForm):
         billType = BillType(**self.cleaned_data)
         billType.save()
         return billType
+
+
+class Bill_Create_form(ModelForm):
+    button_text = "ایجاد قبض"
+
+    class Meta:
+        model = Bill
+        fields = ['bill_type', 'amount']
+        labels = {
+            'bill_type': "نوع قبض",
+            'amount': "مقدار قبض",
+        }
+
+    def clean(self):
+        cleaned_data = super(Bill_Create_form, self).clean()
+        return cleaned_data
+
+    def save(self, commit=True):
+        bill = Bill(**self.cleaned_data)
+        bill.save()
+        return bill
 
 
 class AccountCreateForm(ModelForm):
