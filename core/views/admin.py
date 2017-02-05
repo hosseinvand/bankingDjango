@@ -25,7 +25,7 @@ from core.models import Manager, Jursit, Auditor, Cashier
 class LoginView(FormView):
     template_name = 'core/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('core:cashier_panel')
+    success_url = reverse_lazy('core:admin_panel')
 
     def form_valid(self, form):
         response = super(LoginView, self).form_valid(form)

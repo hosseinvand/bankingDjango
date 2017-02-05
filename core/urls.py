@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.urls import reverse_lazy
 
 from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, AccountCreateView, \
     SystemConfigurationView, \
@@ -8,11 +9,13 @@ from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, Ac
 from core.views.admin import Withdraw_Cash_from_Account_view, Add_Cash_To_Account_view, Card_Issuing_view, \
     Transfer_Money_view
 from core.views.cashier import Bill_Payment_view, Account_Transactions_View, Account_Transactions_Selection_View
+from django.contrib.auth.views import logout
 
 app_name = 'core'
 
 urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name="login"),
+    url(r'^logout/$', logout, {'next_page': reverse_lazy('core:login')}, name='logout'),
     url(r'^admin/create_employee/$', EmployeeCreateView.as_view(), name="create_employee"),
     url(r'^admin/employee_list/$', EmployeeListView.as_view(), name="employee_list"),
     url(r'^admin/branch_list/$', BranchListView.as_view(), name="branch_list"),
@@ -37,5 +40,4 @@ urlpatterns = [
     url(r'^accounts/(?P<pk>.{36})/$', AccountDetailView.as_view(), name='account_detail'),
     url(r'^customers/$', CustomersView.as_view(), name='customers'),
     url(r'^customers/(?P<pk>[0-9]+)/$', CustomerDetailView.as_view(), name='customer_detail'),
-
 ]
