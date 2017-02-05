@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 
 from core.forms.manager import BranchEmployeeCreateForm, ATMCreateForm
 from core.mixin import ManagerRequired
-from core.models import Auditor, Employee, ATM
+from core.models import Auditor, Employee, ATM, Maintainer
 from core.models import Jursit, Cashier
 from core.views.admin import EmployeeCreateView
 
@@ -36,6 +36,7 @@ class BranchEmployeeListView(ManagerRequired, TemplateView):
         context['jursits'] = Jursit.objects.filter(branch=branch)
         context['auditors'] = Auditor.objects.filter(branch=branch)
         context['cashiers'] = Cashier.objects.filter(branch=branch)
+        context['maintainers'] = Maintainer.objects.filter(branch=branch)
         return context
 
 

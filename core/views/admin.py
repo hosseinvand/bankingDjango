@@ -17,7 +17,7 @@ from core.forms.admin import CustomerCreateForm
 from core.forms.admin import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
     AccountCreateForm
 from core.mixin import SuperUserRequired, ManagerOrSuperUserRequired
-from core.models import BillType, Card, Employee, Bill
+from core.models import BillType, Card, Employee, Bill, Maintainer
 from core.models import Customer, SystemConfiguration, Branch, Account, Transaction
 from core.models import Manager, Jursit, Auditor, Cashier
 
@@ -78,6 +78,7 @@ class EmployeeListView(SuperUserRequired, TemplateView):
         context['jursits'] = Jursit.objects.all()
         context['auditors'] = Auditor.objects.all()
         context['cashiers'] = Cashier.objects.all()
+        context['maintainers'] = Maintainer.objects.all()
         return context
 
 

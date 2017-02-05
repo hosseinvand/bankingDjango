@@ -27,9 +27,13 @@ class BranchEmployeeCreateForm(EmployeeCreateForm):
 class ATMCreateForm(ModelForm):
     button_text = "ایجاد دستگاه"
 
+    def __init__(self, data=None, *args, **kwargs):
+        super(ATMCreateForm, self).__init__(data)
+        self.user = kwargs.get('user')
+
     class Meta:
         model = ATM
-        fields = ['serial', ]
+        fields = ['serial']
         labels = {
             'serial': "شماره سریال دستگاه",
         }
