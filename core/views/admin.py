@@ -23,7 +23,7 @@ from core.models import Manager, Jursit, Auditor, Cashier
 class LoginView(FormView):
     template_name = 'core/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('core:cashier_panel')
+    success_url = reverse_lazy('core:main_panel')
 
     def form_valid(self, form):
         response = super(LoginView, self).form_valid(form)
@@ -36,7 +36,7 @@ class LoginView(FormView):
 class EmployeeCreateView(SuperUserRequired, FormView):
     # model = Employee
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:admin_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = EmployeeCreateForm
 
     def form_valid(self, form):
@@ -52,7 +52,7 @@ class EmployeeCreateView(SuperUserRequired, FormView):
 
 class EmployeeDeleteView(ManagerOrSuperUserRequired, DeleteView):
     model = Employee
-    success_url = reverse_lazy('core:admin_panel')
+    success_url = reverse_lazy('core:main_panel')
 
     def get_queryset(self):
         print(self.request.GET['type'])
@@ -91,21 +91,21 @@ class BranchListView(SuperUserRequired, ListView):
 class BranchCreateView(SuperUserRequired, CreateView):
     model = Branch
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:admin_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = BranchCreateForm
 
 
 class AccountCreateView(SuperUserRequired, CreateView):
     model = Account
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:admin_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = AccountCreateForm
 
 
 class CustomerCreateView(SuperUserRequired, CreateView):
     model = Customer
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:admin_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = CustomerCreateForm
 
 
@@ -113,12 +113,14 @@ class CustomerCreateView(SuperUserRequired, CreateView):
 class AdminPanel(SuperUserRequired, TemplateView):
     template_name = 'core/admin_panel.html'
 
+class MainPanel(TemplateView):
+    template_name = 'core/main_panel.html'
 
 class SystemConfigurationView(SuperUserRequired, CreateView):
     form_class = SystemConfigurationForm
     template_name = 'core/sysconfig.html'
     model = SystemConfiguration
-    success_url = reverse_lazy('core:admin_panel')
+    success_url = reverse_lazy('core:main_panel')
 
     def __init__(self, *args, **kwargs):
         super(SystemConfigurationView, self).__init__(*args, **kwargs)
@@ -172,6 +174,6 @@ class BillTypeCreateView(SuperUserRequired, CreateView):
     model = BillType
     form_class = BillTypeCreateForm
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:admin_panel')
+    success_url = reverse_lazy('core:main_panel')
 
 
