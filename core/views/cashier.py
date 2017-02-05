@@ -22,7 +22,7 @@ class Bill_Payment_view(FormView):
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:cashier_panel')
     form_class = Bill_Payment_form
-
+    print()
     @transaction.atomic
     def form_valid(self, form):
         account = form.cleaned_data.get('account')
