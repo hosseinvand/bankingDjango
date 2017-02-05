@@ -53,6 +53,15 @@
                         <td>صندوق‌دار</td>
                     </tr>
                     {% endfor %}
+                    {% for employee in maintainers %}
+                        <tr>
+                        <td><a href="{% url 'core:delete_employee' employee.id %}?type=maintainer" class="glyphicon glyphicon-remove"></a></td>
+                        <td>{{ employee.user.username }}</td>
+                        <td>{{ employee.first_name }}</td>
+                        <td>{{ employee.last_name }}</td>
+                        <td>مسئول دستگاه خودپرداز</td>
+                    </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
 {#                <div class="row">#}

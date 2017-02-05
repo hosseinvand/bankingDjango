@@ -3,10 +3,11 @@ from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import FormView
 from django.views.generic import TemplateView
+from django.views.generic import UpdateView
 
 from core.forms.manager import BranchEmployeeCreateForm, ATMCreateForm
 from core.mixin import ManagerRequired
-from core.models import Auditor, Employee, ATM
+from core.models import Auditor, Employee, ATM, Maintainer
 from core.models import Jursit, Cashier
 from core.views.admin import EmployeeCreateView
 
@@ -36,6 +37,7 @@ class BranchEmployeeListView(ManagerRequired, TemplateView):
         context['jursits'] = Jursit.objects.filter(branch=branch)
         context['auditors'] = Auditor.objects.filter(branch=branch)
         context['cashiers'] = Cashier.objects.filter(branch=branch)
+        context['maintainers'] = Maintainer.objects.filter(branch=branch)
         return context
 
 
@@ -53,3 +55,9 @@ class ATMCreateView(ManagerRequired, CreateView):
         kwargs = super(CreateView, self).get_form_kwargs()
         kwargs.update({'user': self.request.user})
         return kwargs
+
+
+class SetMaintainerForATMView(ManagerRequired, UpdateView):
+    model = ATM
+    fields = ['maintainer']
+    template_name_suffix = '_update_form'
