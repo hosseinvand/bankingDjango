@@ -45,3 +45,29 @@ class Bill_Payment_view(FormView):
         payedbill.save()
 
         return super(Bill_Payment_view, self).form_valid(form)
+
+
+
+class Account_Transactions_View(FormView):
+    template_name = 'core/account_transaction.html'
+    form_class = Account_Transaction_Form
+
+    def get_success_url(self):
+        # print("ehsan ehsan ehsan ehsan ehsa nehsa nehsa n")
+        # print()
+        # print(Account.objects.get(pk = self.request.POST['input_account']).pk )
+        return reverse_lazy('core:account_transactions_select_view', kwargs={"pk": self.request.POST['input_account']})
+
+class Account_Transactions_Selection_View(generic.ListView):
+    model =  Transaction
+    template_name = 'core/transactions.html'
+    context_object_name = 'transaction_list'
+    # print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    def get_queryset(self):
+        # print("############################################################")
+        # print("############################################################")
+        # print(self.kwargs)
+        # print(Account.objects.get(pk=self.kwargs['pk']).balance)
+        return Transaction.objects.filter(account=Account.objects.get(pk=self.kwargs['pk'])).order_by('date', 'time')
+        # return Transaction.objects.filter(account= self.args).order_by('date','time')
+
