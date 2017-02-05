@@ -11,7 +11,7 @@ from core.views.admin import Withdraw_Cash_from_Account_view, Add_Cash_To_Accoun
 from core.views.cashier import Bill_Payment_view, Account_Transactions_View, Account_Transactions_Selection_View
 from django.contrib.auth.views import logout
 
-from core.views.manager import BranchEmployeeListView
+from core.views.manager import BranchEmployeeListView, BranchEmployeeCreateView
 
 app_name = 'core'
 
@@ -43,5 +43,6 @@ urlpatterns = [
     url(r'^accounts/(?P<pk>.{36})/$', AccountDetailView.as_view(), name='account_detail'),
     url(r'^customers/$', CustomersView.as_view(), name='customers'),
     url(r'^customers/(?P<pk>[0-9]+)/$', CustomerDetailView.as_view(), name='customer_detail'),
-    url(r'^manager/employee_list/$', BranchEmployeeListView.as_view(), name="branch_employee_list"),
+    url(r'^manager/employee_list/$', BranchEmployeeListView.as_view(), name="employee_list_manager"),
+    url(r'^manager/create_employee/$', BranchEmployeeCreateView.as_view(), name="create_employee_manager"),
 ]

@@ -16,6 +16,6 @@ class BranchEmployeeCreateForm(EmployeeCreateForm):
     def __init__(self, data=None, *args, **kwargs):
         super(BranchEmployeeCreateForm, self).__init__(data, *args, **kwargs)
         self.user = kwargs.get('user')
-        # TODO use branch of current user
-        self.fields['branch'].initial = Branch.objects.all()[0]
-        self.fields['branch'].queryset = Branch.objects.all()
+        branch = self.user.manager.branch
+        self.fields['branch'].initial = branch
+        self.fields['branch'].queryset = Branch.objects.filter(id=branch.id)

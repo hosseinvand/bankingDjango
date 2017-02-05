@@ -11,7 +11,7 @@ from core.views.admin import EmployeeCreateView
 
 class BranchEmployeeCreateView(ManagerRequired, FormView):
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:manager_panel')
+    success_url = reverse_lazy('core:admin_panel')
     form_class = BranchEmployeeCreateForm
 
     def form_valid(self, form):
@@ -25,7 +25,7 @@ class BranchEmployeeCreateView(ManagerRequired, FormView):
         return kwargs
 
 
-class BranchEmployeeListView(TemplateView):
+class BranchEmployeeListView(ManagerRequired, TemplateView):
     template_name = 'core/employee_list.html'
 
     def get_context_data(self, **kwargs):
