@@ -1,0 +1,22 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+<div class="col-md-8 col-md-offset-2">
+  <div class="panel panel-default">
+      <div class="panel-body">
+          <div class="list-group">
+{#              {% for f in request.user %}#}
+{#                  <P>{{ f }}</P>#}
+{#              {% endfor %}#}
+{#             <p> {{ user. }}</p>#}
+              <a href="{% url 'core:create_employee' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">ایجاد کارمند</a>
+              <a href="{% url 'core:employee_list' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">لیست کارمند‌ها</a>
+              <a href="{% url 'core:create_employee' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">ایجاد دستگاه خود پرداز</a>
+              <a href="{% url 'core:employee_list' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">تعیین مسئول دستگاه</a>
+              <a href="{% url 'core:create_employee' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">لیست دستگاه‌های خود پرداز</a>
+              <a href="{% url 'core:create_employee' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">گزارش گیری</a>
+          </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

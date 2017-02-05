@@ -1,11 +1,12 @@
 from django.urls import reverse_lazy
+from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 
-from core.forms.manager import BranchEmployeeCreateForm
+from core.forms.manager import BranchEmployeeCreateForm, ATMCreateForm
 from core.mixin import ManagerRequired
-from core.models import Auditor, Employee
+from core.models import Auditor, Employee, ATM
 from core.models import Jursit, Cashier
 from core.views.admin import EmployeeCreateView
 
@@ -36,3 +37,19 @@ class BranchEmployeeListView(ManagerRequired, TemplateView):
         context['auditors'] = Auditor.objects.filter(branch=branch)
         context['cashiers'] = Cashier.objects.filter(branch=branch)
         return context
+
+
+class ManagerPanel(ManagerRequired, TemplateView):
+    template_name = 'core/manager_panel.html'
+
+
+class ATMCreateView(ManagerRequired, CreateView):
+    model = ATM
+    form_class = ATMCreateForm
+    template_name = 'core/simple_from_with_single_button.html'
+    success_url = reverse_lazy('core:manager_panel')
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs

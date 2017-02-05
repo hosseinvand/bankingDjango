@@ -7,7 +7,7 @@ from django.forms import ModelForm, fields_for_model, Form
 from django.utils.crypto import get_random_string
 
 from core.models import Customer, Employee, Branch, Account, SystemConfiguration, Manager, Cashier, Jursit, Auditor, \
-    BillType, Transaction, Card, Bill
+    BillType, Transaction, Card, Bill, Maintainer
 
 
 class LoginForm(ModelForm):
@@ -82,7 +82,8 @@ class EmployeeCreateForm(Form):
             'Manager': Manager,
             'Cashier': Cashier,
             'Jursit': Jursit,
-            'Auditor': Auditor
+            'Auditor': Auditor,
+            'Maintainer': Maintainer
         }[self.cleaned_data.get('type')]
         del self.cleaned_data['type']
 
