@@ -1,10 +1,11 @@
 from django.urls import reverse_lazy
+from django.views.generic import DeleteView
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 
 from core.forms.manager import BranchEmployeeCreateForm
 from core.mixin import ManagerRequired
-from core.models import Auditor
+from core.models import Auditor, Employee
 from core.models import Jursit, Cashier
 from core.views.admin import EmployeeCreateView
 
