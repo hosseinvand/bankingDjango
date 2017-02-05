@@ -74,7 +74,8 @@ class EmployeeCreateForm(Form):
         first_name = self.cleaned_data.get('first_name', None)
         last_name = self.cleaned_data.get('last_name', None)
         username = get_random_string(length=8)
-        password = get_random_string(length=8)
+        # password = get_random_string(length=8)
+        password = username
         user = User.objects.create_user(username=username, password=password, first_name=first_name,
                                         last_name=last_name)
         model = {

@@ -269,6 +269,7 @@ class Branch(models.Model):
     def __str__(self):
         return str(self.name)
 
+
 class Employee(models.Model):
     user = models.OneToOneField(
         User,
@@ -276,7 +277,7 @@ class Employee(models.Model):
         unique=True,
         null=True,
         default=None,
-        related_name='+',
+        related_name='%(class)s',
     )
 
     first_name = models.CharField(max_length=255)
