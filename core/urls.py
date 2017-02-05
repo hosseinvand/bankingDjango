@@ -7,7 +7,7 @@ from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, Ac
     Bill_Create_view
 from core.views.admin import Withdraw_Cash_from_Account_view, Add_Cash_To_Account_view, Card_Issuing_view, \
     Transfer_Money_view
-from core.views.cashier import Bill_Payment_view
+from core.views.cashier import Bill_Payment_view, Account_Transactions_View, Account_Transactions_Selection_View
 
 app_name = 'core'
 
@@ -29,8 +29,8 @@ urlpatterns = [
     url(r'^cashier/create_customer/$', CustomerCreateView.as_view(), name="create_customer"),
     url(r'^cashier/bill_payment/$', Bill_Payment_view.as_view(), name="bill_payment"),
     url(r'^cashier/card_issue/$', Card_Issuing_view.as_view(), name="card_issue"),
-    # url(r'^cashier/account_transactions/?$', Account_Transactions_View.as_view(), name='account_transactions'),
-    # url(r'^cashier/account_transactions/(?P<pk>[0-9]+)?$', Account_Transactions_selection_View.as_view(), name='account_transactions_selection'),
+    url(r'^cashier/account_transactions/$', Account_Transactions_View.as_view(), name='account_transactions'),
+    url(r'^cashier/account_transactions/select/(?P<pk>.+)$', Account_Transactions_Selection_View.as_view(), name='account_transactions_select_view'),
     url(r'^transactions/?$', TransactionsView.as_view(), name='transactions'),
     url(r'^transactions/(?P<pk>[0-9]+)/$', TransactionDetailView.as_view(), name='transaction_detail'),
     url(r'^accounts/$', AccountsView.as_view(), name='accounts'),

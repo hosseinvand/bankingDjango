@@ -221,15 +221,7 @@ class SystemConfigurationView(SuperUserRequired, CreateView):
         super(SystemConfigurationView, self).__init__(*args, **kwargs)
         self.config = SystemConfiguration.get_solo()
 
-
-
-
-
-
 class TransactionDetailView(generic.DetailView):
-    # print("############################################################")
-    # print(transactionXX)
-    # print("############################################################")
     model = Transaction
     template_name = 'core/transaction_detail.html'
 
@@ -240,34 +232,6 @@ class TransactionsView(generic.ListView):
     context_object_name = 'transaction_list'
     def get_queryset(self):
         return Transaction.objects.all().order_by('date', 'time')
-
-
-class Account_Transactions_View(FormView):
-    template_name = 'core/account_transaction.html'
-    form_class = Account_Transaction_Form
-
-    def get_success_url(self):
-        return reverse_lazy('account_transactions_selection', args=(self.object.get('input_account')))
-        # self.object
-
-class Account_Transactions_selection_View(generic.ListView):
-    model =  Transaction
-    template_name = 'core/transactions.html'
-    context_object_name = 'transaction_list'
-
-    def get_queryset(self):
-        return Transaction.objects.all().order_by('date', 'time')
-        # return Transaction.objects.filter(account= input_account).order_by('date','time')
-
-
-
-
-
-
-
-
-
-
 
 
 class AccountsView(SuperUserRequired, ListView):
