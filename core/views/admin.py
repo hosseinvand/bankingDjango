@@ -12,12 +12,12 @@ from django.views.generic import TemplateView
 
 from core.forms.admin import BillTypeCreateForm, \
     Withdraw_Cash_from_Account_form, Add_Cash_to_Account_form, Card_Issuing_form, Transfer_Money_form, \
-    Account_Transaction_Form
+    Account_Transaction_Form, Bill_Create_form
 from core.forms.admin import CustomerCreateForm
 from core.forms.admin import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
     AccountCreateForm
 from core.mixin import SuperUserRequired
-from core.models import BillType, Card, Employee
+from core.models import BillType, Card, Employee, Bill
 from core.models import Customer, SystemConfiguration, Branch, Account, Transaction
 from core.models import Manager, Jursit, Auditor, Cashier
 
@@ -238,7 +238,6 @@ class TransactionsView(generic.ListView):
     model = Transaction
     template_name = 'core/transactions.html'
     context_object_name = 'transaction_list'
-
     def get_queryset(self):
         return Transaction.objects.all().order_by('date', 'time')
 
@@ -305,5 +304,12 @@ class CustomerDetailView(SuperUserRequired, generic.DeleteView):
 class BillTypeCreateView(SuperUserRequired, CreateView):
     model = BillType
     form_class = BillTypeCreateForm
+    template_name = 'core/simple_from_with_single_button.html'
+    success_url = reverse_lazy('core:admin_panel')
+
+
+class Bill_Create_view(CreateView):
+    model = Bill
+    form_class = Bill_Create_form
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:admin_panel')
