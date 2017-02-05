@@ -138,26 +138,75 @@ class Notification(models.Model):
     text = models.TextField(max_length=1023)
     seen = models.BooleanField(default=False)
     time = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return "{}, Seen:{}".format(
             self.user.username,
             self.seen,
         )
 
-
     class Meta:
         ordering = ['time']
 
-class Maintainer(models.Model):
+
+class Branch(models.Model):
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class Employee(models.Model):
     user = models.OneToOneField(
         User,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         unique=True,
-        related_name='+',
+        null=True,
+        default=None,
+        related_name='%(class)s',
     )
+
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    social_id = models.CharField(
+        max_length=10,
+        unique=True,
+    )
+    birth_date = models.DateField()
+    birth_place = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    sex = models.CharField(
+        max_length=30,
+        choices=SEX_TYPES,
+        blank=True
+    )
+    branch = models.ForeignKey(
+        Branch,
+        on_delete=models.SET_NULL,
+        related_name='+',
+        null=True,
+        default=None
+    )
+    education = models.CharField(
+        max_length=30,
+        choices=EDUCATION_TYPES,
+        blank=True,
+    )
+    relationship = models.CharField(
+        max_length=30,
+        choices=RELATIONSHIP_TYPES,
+        blank=True,
+    )
 
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.first_name
+
+
+class Maintainer(Employee):
     def __str__(self):
         return "{} {}".format(
             self.first_name,
@@ -173,7 +222,7 @@ class Greenback(models.Model):
 
 
 class ATM(models.Model):
-    balance = models.IntegerField()
+    serial = models.CharField(max_length=20)
     maintainer = models.ForeignKey(
         Maintainer,
         on_delete=models.SET_NULL,
@@ -188,6 +237,23 @@ class ATM(models.Model):
         through='Contain',
         related_name='+',
     )
+
+    branch = models.ForeignKey(
+        Branch,
+        on_delete=models.SET_NULL,
+        related_name='atms',
+        null=True,
+        blank=True,
+        default=None,
+    )
+
+    @property
+    def balance(self):
+        sum = 0
+        for greenback in self.greenback:
+            count = Contain.objects.get(greenback=greenback, atm=self).count
+            sum += greenback.value * count
+        return sum
 
     def __str__(self):
         return "atm:{} - balance:{}".format(
@@ -260,62 +326,6 @@ class Account(models.Model):
             self.account_number,
             written_owner,
         )
-
-
-class Branch(models.Model):
-    name = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-
-    def __str__(self):
-        return str(self.name)
-
-class Employee(models.Model):
-    user = models.OneToOneField(
-        User,
-        on_delete=models.SET_NULL,
-        unique=True,
-        null=True,
-        default=None,
-        related_name='+',
-    )
-
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    social_id = models.CharField(
-        max_length=10,
-        unique=True,
-    )
-    birth_date = models.DateField()
-    birth_place = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    sex = models.CharField(
-        max_length=30,
-        choices=SEX_TYPES,
-        blank=True
-    )
-    branch = models.ForeignKey(
-        Branch,
-        on_delete=models.SET_NULL,
-        related_name='+',
-        null=True,
-        default=None
-    )
-    education = models.CharField(
-        max_length=30,
-        choices=EDUCATION_TYPES,
-        blank=True,
-    )
-    relationship = models.CharField(
-        max_length=30,
-        choices=RELATIONSHIP_TYPES,
-        blank=True,
-    )
-
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-        return self.first_name
 
 
 class Manager(Employee):

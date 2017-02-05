@@ -16,7 +16,7 @@ from core.forms.admin import BillTypeCreateForm, \
 from core.forms.admin import CustomerCreateForm
 from core.forms.admin import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
     AccountCreateForm
-from core.mixin import SuperUserRequired
+from core.mixin import SuperUserRequired, ManagerOrSuperUserRequired
 from core.models import BillType, Card, Employee, Bill
 from core.models import Customer, SystemConfiguration, Branch, Account, Transaction
 from core.models import Manager, Jursit, Auditor, Cashier
@@ -25,7 +25,7 @@ from core.models import Manager, Jursit, Auditor, Cashier
 class LoginView(FormView):
     template_name = 'core/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('core:cashier_panel')
+    success_url = reverse_lazy('core:admin_panel')
 
     def form_valid(self, form):
         response = super(LoginView, self).form_valid(form)
@@ -52,9 +52,9 @@ class EmployeeCreateView(SuperUserRequired, FormView):
         return kwargs
 
 
-class EmployeeDeleteView(SuperUserRequired, DeleteView):
+class EmployeeDeleteView(ManagerOrSuperUserRequired, DeleteView):
     model = Employee
-    success_url = reverse_lazy('core:employee_list')
+    success_url = reverse_lazy('core:admin_panel')
 
     def get_queryset(self):
         print(self.request.GET['type'])

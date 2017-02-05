@@ -1,20 +1,26 @@
 from django.conf.urls import url
+from django.urls import reverse_lazy
 
 from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, AccountCreateView, \
     SystemConfigurationView, \
     EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, CustomerCreateView, CashierPanel, \
     AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView, \
-    Bill_Create_view
+    Bill_Create_view, EmployeeDeleteView
 from core.views.admin import Withdraw_Cash_from_Account_view, Add_Cash_To_Account_view, Card_Issuing_view, \
     Transfer_Money_view
 from core.views.cashier import Bill_Payment_view, Account_Transactions_View, Account_Transactions_Selection_View
+from django.contrib.auth.views import logout
+
+from core.views.manager import BranchEmployeeListView, BranchEmployeeCreateView, ManagerPanel, ATMCreateView
 
 app_name = 'core'
 
 urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name="login"),
+    url(r'^logout/$', logout, {'next_page': reverse_lazy('core:login')}, name='logout'),
     url(r'^admin/create_employee/$', EmployeeCreateView.as_view(), name="create_employee"),
     url(r'^admin/employee_list/$', EmployeeListView.as_view(), name="employee_list"),
+    url(r'^admin/delete_employee/(?P<pk>[0-9]+)/$', EmployeeDeleteView.as_view(), name="delete_employee"),
     url(r'^admin/branch_list/$', BranchListView.as_view(), name="branch_list"),
     url(r'^admin/sysconf/$', SystemConfigurationView.as_view(), name="SystemConfiguration"),
     url(r'^admin/create_branch/$', BranchCreateView.as_view(), name="create_branch"),
@@ -37,5 +43,8 @@ urlpatterns = [
     url(r'^accounts/(?P<pk>.{36})/$', AccountDetailView.as_view(), name='account_detail'),
     url(r'^customers/$', CustomersView.as_view(), name='customers'),
     url(r'^customers/(?P<pk>[0-9]+)/$', CustomerDetailView.as_view(), name='customer_detail'),
-
+    url(r'^manager/employee_list/$', BranchEmployeeListView.as_view(), name="employee_list_manager"),
+    url(r'^manager/create_employee/$', BranchEmployeeCreateView.as_view(), name="create_employee_manager"),
+    url(r'^manager/panel/$', ManagerPanel.as_view(), name="manager_panel"),
+    url(r'^manager/create_atm/$', ATMCreateView.as_view(), name="create_atm"),
 ]

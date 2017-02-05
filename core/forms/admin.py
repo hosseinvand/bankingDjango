@@ -7,7 +7,7 @@ from django.forms import ModelForm, fields_for_model, Form
 from django.utils.crypto import get_random_string
 
 from core.models import Customer, Employee, Branch, Account, SystemConfiguration, Manager, Cashier, Jursit, Auditor, \
-    BillType, Transaction, Card, Bill
+    BillType, Transaction, Card, Bill, Maintainer
 
 
 class LoginForm(ModelForm):
@@ -74,14 +74,16 @@ class EmployeeCreateForm(Form):
         first_name = self.cleaned_data.get('first_name', None)
         last_name = self.cleaned_data.get('last_name', None)
         username = get_random_string(length=8)
-        password = get_random_string(length=8)
+        # password = get_random_string(length=8)
+        password = username
         user = User.objects.create_user(username=username, password=password, first_name=first_name,
                                         last_name=last_name)
         model = {
             'Manager': Manager,
             'Cashier': Cashier,
             'Jursit': Jursit,
-            'Auditor': Auditor
+            'Auditor': Auditor,
+            'Maintainer': Maintainer
         }[self.cleaned_data.get('type')]
         del self.cleaned_data['type']
 
