@@ -8,7 +8,7 @@ from core.mixin import MaintainerRequired
 
 class SetGreenbackForATMView(MaintainerRequired, FormView):
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:maintainer_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = SetGreenbackForATMForm
 
     def get_form_kwargs(self):
@@ -19,7 +19,3 @@ class SetGreenbackForATMView(MaintainerRequired, FormView):
     def form_valid(self, form):
         form.save()
         return super(SetGreenbackForATMView, self).form_valid(form)
-
-
-class MaintainerPanel(MaintainerRequired, TemplateView):
-    template_name = 'core/maintainer_panel.html'

@@ -41,15 +41,11 @@ class BranchEmployeeListView(ManagerRequired, TemplateView):
         return context
 
 
-class ManagerPanel(ManagerRequired, TemplateView):
-    template_name = 'core/manager_panel.html'
-
-
 class ATMCreateView(ManagerRequired, CreateView):
     model = ATM
     form_class = ATMCreateForm
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:manager_panel')
+    success_url = reverse_lazy('core:main_panel')
 
     def get_form_kwargs(self):
         kwargs = super(CreateView, self).get_form_kwargs()
@@ -59,7 +55,7 @@ class ATMCreateView(ManagerRequired, CreateView):
 
 class SetMaintainerForATMView(ManagerRequired, FormView):
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:manager_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = SetMaintainerForATMForm
 
     def get_form_kwargs(self):

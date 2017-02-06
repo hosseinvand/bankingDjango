@@ -1,0 +1,23 @@
+{% if user.cashier %}
+    {% include 'core/cashier_panel.html' %}
+{% endif %}
+
+{% if user.is_superuser %}
+    {% include 'core/admin_panel.html' %}
+{% endif %}
+
+{% if user.jursit %}
+    {% include 'core/jursit_panel.html' %}
+{% endif %}
+
+{% if user.auditor %}
+    {% include 'core/auditor_panel.html' %}
+{% endif %}
+
+{% if user.manager %}
+    {% include 'core/manager_panel.html' %}
+{% endif %}
+
+{% if user.maintainer %}
+    {% include 'core/maintainer_panel.html' %}
+{% endif %}

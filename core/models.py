@@ -694,7 +694,8 @@ class Cheque(models.Model):
 
 
 class ChequeIssue(models.Model):
-    date = models.DateField()
+    date = models.DateTimeField(auto_now=True)
+
     cheque = models.OneToOneField(
         Cheque,
         on_delete=models.PROTECT,
@@ -702,8 +703,21 @@ class ChequeIssue(models.Model):
     )
 
     amount = models.IntegerField()
-    legal_expert_validation = models.BooleanField(default=False)
-    auditor_validation = models.BooleanField(default=False)
+    # legal_expert_validation = models.BooleanField(default=False)
+    # auditor_validation = models.BooleanField(default=False)
+
+
+    legal_expert_validation = models.CharField(
+        max_length=2,
+        choices=statuses,
+        default=UNKNOWN,
+    )
+    auditor_validation = models.CharField(
+        max_length=2,
+        choices=statuses,
+        default=UNKNOWN,
+    )
+
     dest = models.ForeignKey(
         Account,
         on_delete=models.PROTECT,

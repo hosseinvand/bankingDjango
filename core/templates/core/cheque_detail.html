@@ -1,0 +1,32 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+              <p><strong>حساب:</strong>
+                <a href="{% url 'core:account_detail' transaction.account.account_number %}">
+                  {{transaction.account.account_number }}
+                </a>
+              </p>
+
+              <p><strong>مبلغ:</strong> {{transaction.amount}}</p>
+
+              <p><strong>زمان:</strong> {{transaction.time}}</p>
+
+              <p><strong>نوع:</strong> {{transaction.get_transaction_type_display}}</p>
+
+              <p> <strong>تاریخ:</strong> {{transaction.date|date:"SHORT_DATE_FORMAT"}}</p>
+
+              <p><strong>حسابرس:</strong> {{ transaction.auditor}}</p>
+
+              <p><strong>شعبه:</strong>
+                <a href="{% url 'core:branch_list' %}#{{transaction.branch.pk}}">{{ transaction.branch }}
+                </a>
+              </p>
+
+              </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -3,7 +3,7 @@
 from django import forms
 from django.forms import ModelForm, fields_for_model, Form
 from core.models import Customer, Employee, Branch, Account, SystemConfiguration, Manager, Cashier, Jursit, Auditor, \
-    BillType, Transaction, Card, Bill, ChequeApplication, Cheque
+    BillType, Transaction, Card, Bill, ChequeApplication, Cheque, ChequeIssue
 
 
 class Bill_Payment_form(Form):
@@ -194,32 +194,46 @@ class Cheque_Application_form(ModelForm):
         return cheque_application
 
 
-
-class Cheque_Issue_form(ModelForm):
+class Cheque_Issue_toAccount_form(ModelForm):
     button_text = "وصول چک"
 
     class Meta:
-        model = ChequeApplication
+        model = ChequeIssue
+        fields = ['cheque', 'amount', 'dest']
+        labels = {
+            'cheque': "مشخصات چک ",
+            'amount' : "مبلغ چک",
+            'dest' : 'حساب مقصد',
+        }
+
+    def clean(self):
+        cleaned_data = super(Cheque_Issue_toAccount_form, self).clean()
+        account = cleaned_data.get("dest")
+        if account.is_blocked:
+            self.add_error("dest", "اکانت شما بلاک شده است.")
+        return cleaned_data
+
+    def save(self, commit=True):
+        cheque_issue = ChequeIssue(**self.cleaned_data)
+        cheque_issue.save()
+        return cheque_issue
+
+class Cheque_Issue_Cash_form(ModelForm):
+    button_text = "وصول چک"
+
+    class Meta:
+        model = ChequeIssue
         fields = ['cheque', 'amount']
         labels = {
             'cheque': "مشخصات چک ",
             'amount' : "مبلغ چک",
-
         }
 
     def clean(self):
-        cleaned_data = super(Cheque_Issue_form, self).clean()
-        account = cleaned_data.get("account")
-        if account.is_blocked:
-            self.add_error("account", "اکانت شما بلاک شده است.")
-        if account.balance < SystemConfiguration.get_solo().cheque_production_fee + 10000:
-            self.add_error("account", "موجودی شما کافی نمی‌باشد.")
+        cleaned_data = super(Cheque_Issue_Cash_form, self).clean()
         return cleaned_data
 
     def save(self, commit=True):
-        cheque_application = ChequeApplication(**self.cleaned_data)
-        cheque_application.save()
-        for i in range(0, 10):
-            cheque = Cheque(cheque_application=cheque_application)
-            cheque.save()
-        return cheque_application
+        cheque_issue = ChequeIssue(**self.cleaned_data)
+        cheque_issue.save()
+        return cheque_issue
