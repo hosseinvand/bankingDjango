@@ -9,7 +9,8 @@ from django.views.generic import ListView
 from django.views.generic import TemplateView
 
 from core.forms.cashier import Bill_Payment_form, Account_Transaction_Form, Bill_Create_form, Transfer_Money_form, \
-    Add_Cash_to_Account_form, Card_Issuing_form, Withdraw_Cash_from_Account_form, Cheque_Application_form
+    Add_Cash_to_Account_form, Card_Issuing_form, Withdraw_Cash_from_Account_form, Cheque_Application_form, \
+ Cheque_Issue_toAccount_form, Cheque_Issue_Cash_form
 from core.models import BillType, Card, PayedBill, Bill, ChequeApplication, ChequeIssue
 from core.models import Customer, SystemConfiguration, Branch, Account, Transaction
 from core.models import Manager, Jursit, Auditor, Cashier
@@ -20,9 +21,9 @@ from core.models import Manager, Jursit, Auditor, Cashier
 
 class Bill_Payment_view(FormView):
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:cashier_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = Bill_Payment_form
-    print()
+
     @transaction.atomic
     def form_valid(self, form):
         account = form.cleaned_data.get('account')
@@ -45,7 +46,8 @@ class Bill_Payment_view(FormView):
         return super(Bill_Payment_view, self).form_valid(form)
 
 
-
+class CashierPanel(TemplateView):
+    template_name = 'core/cashier_panel.html'
 
 
 class Account_Transactions_View(FormView):
@@ -67,7 +69,7 @@ class Account_Transactions_Selection_View(generic.ListView):
 
 class Transfer_Money_view(FormView):
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:cashier_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = Transfer_Money_form
 
     @transaction.atomic
@@ -98,7 +100,7 @@ class Transfer_Money_view(FormView):
 class Add_Cash_To_Account_view(CreateView):
     model = Transaction
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:cashier_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = Add_Cash_to_Account_form
 
     @transaction.atomic
@@ -119,18 +121,14 @@ class Bill_Create_view(CreateView):
     model = Bill
     form_class = Bill_Create_form
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:admin_panel')
-
-
-class CashierPanel(TemplateView):
-    template_name = 'core/cashier_panel.html'
+    success_url = reverse_lazy('core:main_panel')
 
 
 
 class Card_Issuing_view(SuccessMessageMixin, CreateView):
     model = Card
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:cashier_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = Card_Issuing_form
     success_message = "شماره کارت صادر شده: " + " %(card_number)s"
 
@@ -145,7 +143,7 @@ class Card_Issuing_view(SuccessMessageMixin, CreateView):
 class Withdraw_Cash_from_Account_view(SuccessMessageMixin, CreateView):
     model = Transaction
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:cashier_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = Withdraw_Cash_from_Account_form
 
     # success_message = "%(balance)s" + " برابر است با:  " + "%(last_name)s %(first_name)s  "موجودی جدید حساب
@@ -174,12 +172,19 @@ class Withdraw_Cash_from_Account_view(SuccessMessageMixin, CreateView):
 class Cheque_Application_view(CreateView):
     model = ChequeApplication
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:cashier_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = Cheque_Application_form
 
 
-class Cheque_Issue_view(CreateView):
+class Cheque_Issue_Cash_view(CreateView):
     model = ChequeIssue
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:cashier_panel')
-    form_class = Cheque_Application_form
+    success_url = reverse_lazy('core:main_panel')
+    form_class = Cheque_Issue_Cash_form
+
+
+class Cheque_Issue_toAccount_view(CreateView):
+    model = ChequeIssue
+    template_name = 'core/simple_from_with_single_button.html'
+    success_url = reverse_lazy('core:main_panel')
+    form_class = Cheque_Issue_toAccount_form
