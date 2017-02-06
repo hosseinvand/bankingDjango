@@ -250,9 +250,9 @@ class ATM(models.Model):
     @property
     def balance(self):
         sum = 0
-        for greenback in self.greenback:
-            count = Contain.objects.get(greenback=greenback, atm=self).count
-            sum += greenback.value * count
+        contains = Contain.objects.filter(atm=self)
+        for contain in contains:
+            sum += contain.greenback.value * contain.count
         return sum
 
     def __str__(self):
