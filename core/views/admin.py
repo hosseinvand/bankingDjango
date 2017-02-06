@@ -10,12 +10,12 @@ from django.views.generic import FormView, CreateView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 
-from core.forms.admin import BillTypeCreateForm
+from core.forms.admin import BillTypeCreateForm, GreenbackCreateForm
 from core.forms.admin import CustomerCreateForm
 from core.forms.admin import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
     AccountCreateForm
 from core.mixin import SuperUserRequired, ManagerOrSuperUserRequired
-from core.models import BillType, Card, Employee, Bill, Maintainer
+from core.models import BillType, Card, Employee, Bill, Maintainer, Greenback
 from core.models import Customer, SystemConfiguration, Branch, Account, Transaction
 from core.models import Manager, Jursit, Auditor, Cashier
 
@@ -101,6 +101,12 @@ class AccountCreateView(SuperUserRequired, CreateView):
     success_url = reverse_lazy('core:main_panel')
     form_class = AccountCreateForm
 
+class GreenbackCreateView(SuperUserRequired, CreateView):
+    model = Greenback
+    template_name = 'core/simple_from_with_single_button.html'
+    success_url = reverse_lazy('core:main_panel')
+    form_class = GreenbackCreateForm
+
 
 class CustomerCreateView(SuperUserRequired, CreateView):
     model = Customer
@@ -175,5 +181,6 @@ class BillTypeCreateView(SuperUserRequired, CreateView):
     form_class = BillTypeCreateForm
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:main_panel')
+
 
 

@@ -3,7 +3,9 @@ from django.contrib.auth.views import logout
 from django.urls import reverse_lazy
 
 from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, SystemConfigurationView, \
-    EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView, EmployeeDeleteView
+    EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView, EmployeeDeleteView, \
+    GreenbackCreateView
+# from core.views.cashier import Bill_Create_view
 from core.views.manager import BranchEmployeeListView, BranchEmployeeCreateView, ManagerPanel, ATMCreateView, \
     SetMaintainerForATMView
 
@@ -12,6 +14,7 @@ app_name = 'core'
 urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name="login"),
     url(r'^logout/$', logout, {'next_page': reverse_lazy('core:login')}, name='logout'),
+    url(r'^admin/create_greenback/$', GreenbackCreateView.as_view(), name="create_greenback"),
     url(r'^admin/create_employee/$', EmployeeCreateView.as_view(), name="create_employee"),
     url(r'^admin/employee_list/$', EmployeeListView.as_view(), name="employee_list"),
     url(r'^admin/delete_employee/(?P<pk>[0-9]+)/$', EmployeeDeleteView.as_view(), name="delete_employee"),
@@ -19,8 +22,8 @@ urlpatterns = [
     url(r'^admin/sysconf/$', SystemConfigurationView.as_view(), name="SystemConfiguration"),
     url(r'^admin/create_branch/$', BranchCreateView.as_view(), name="create_branch"),
     url(r'^admin/create_bill_type/$', BillTypeCreateView.as_view(), name="create_bill_type"),
-    url(r'^admin/bill_create/$', Bill_Create_view.as_view(), name="bill_create"),
-    url(r'^admin/panel/$', AdminPanel.as_view(), name="admin_panel"),
+    #url(r'^admin/bill_create/$', Bill_Create_view.as_view(), name="bill_create"),
+    url(r'^admin/panel/$', AdminPanel.as_view(), name="main_panel"),
     # url(r'^cashier/panel/$', CashierPanel.as_view(), name="cashier_panel"),
     # url(r'^cashier/create_account/$', AccountCreateView.as_view(), name="create_account"),
     # url(r'^cashier/add_cash/$', Add_Cash_To_Account_view.as_view(), name="add_cash_to_account"),
