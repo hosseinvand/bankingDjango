@@ -10,7 +10,12 @@ from django.contrib.auth.views import logout
 from django.urls import reverse_lazy
 
 from core.views.jursit import Block_Account_view, Check_Issue_Requests_view, ChequeDetailView
-from core.views.manager import BranchEmployeeListView, BranchEmployeeCreateView, ManagerPanel, ATMCreateView, \
+from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, SystemConfigurationView, \
+    EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView, EmployeeDeleteView, \
+    GreenbackCreateView
+# from core.views.cashier import Bill_Create_view
+from core.views.maintainer import SetGreenbackForATMView
+from core.views.manager import BranchEmployeeListView, BranchEmployeeCreateView, ATMCreateView, \
     SetMaintainerForATMView
 
 EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, CustomerCreateView, \
@@ -59,9 +64,9 @@ urlpatterns = [
     url(r'^customers/(?P<pk>[0-9]+)/$', CustomerDetailView.as_view(), name='customer_detail'),
     url(r'^manager/employee_list/$', BranchEmployeeListView.as_view(), name="employee_list_manager"),
     url(r'^manager/create_employee/$', BranchEmployeeCreateView.as_view(), name="create_employee_manager"),
-    url(r'^manager/panel/$', ManagerPanel.as_view(), name="manager_panel"),
     url(r'^manager/create_atm/$', ATMCreateView.as_view(), name="create_atm"),
     url(r'^manager/set_maintainer/$', SetMaintainerForATMView.as_view(), name="set_maintainer"),
+    url(r'^maintainer/set_greenback/$', SetGreenbackForATMView.as_view(), name="set_greenback"),
     url(r'^jursit/block_account/$', Block_Account_view.as_view(), name="block_account"),
     url(r'^jursit/check_issue_requests/$', Check_Issue_Requests_view.as_view(), name="cheque_issue_requests"),
     url(r'^jursit/check_issue_requests/(?P<pk>[0-9]+)/$', ChequeDetailView.as_view(), name='cheque_detail'),

@@ -17,3 +17,7 @@
 {% if user.manager %}
     {% include 'core/manager_panel.html' %}
 {% endif %}
+
+{% if user.maintainer %}
+    {% include 'core/maintainer_panel.html' %}
+{% endif %}
