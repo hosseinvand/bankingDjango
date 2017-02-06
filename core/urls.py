@@ -5,12 +5,14 @@ from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, Ac
     SystemConfigurationView, \
     EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, CustomerCreateView, \
     AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView, EmployeeDeleteView, \
-    MainPanel
+    MainPanel, GreenbackCreateView
 from django.contrib.auth.views import logout
 from django.urls import reverse_lazy
 
 from core.views.jursit import Block_Account_view, Check_Issue_Requests_view, ChequeDetailView
-from core.views.manager import BranchEmployeeListView, BranchEmployeeCreateView, ManagerPanel, ATMCreateView
+from core.views.manager import BranchEmployeeListView, BranchEmployeeCreateView, ManagerPanel, ATMCreateView, \
+    SetMaintainerForATMView
+
 EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, CustomerCreateView, \
     AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView
 from core.views.cashier import Bill_Payment_view, Account_Transactions_View, Account_Transactions_Selection_View, \
