@@ -5,25 +5,29 @@
         <div class="panel panel-default">
             <div class="panel-body">
               <p><strong>حساب:</strong>
-                <a href="{% url 'core:account_detail' transaction.account.account_number %}">
-                  {{transaction.account.account_number }}
+                  salam keivan
                 </a>
               </p>
 
-              <p><strong>مبلغ:</strong> {{transaction.amount}}</p>
+              <p><strong>مبلغ:</strong> {{cheque_issue.amount}}</p>
 
-              <p><strong>زمان:</strong> {{transaction.time}}</p>
+                {% if cheque_issue.dest == None %}
+                    <p><strong>نوع:</strong> {{"پرداخت نقدی"}}</p>
+                {% else %}
+                    <p><strong>نوع:</strong> {{"واریز به حساب "}}</p>
+                    <p><strong>حساب مقصد:</strong> {{ cheque_issue.dest}}</p>
+                {% endif %}
 
-              <p><strong>نوع:</strong> {{transaction.get_transaction_type_display}}</p>
+              <p> <strong>تاریخ:</strong> {{cheque_issue.date|date:"SHORT_DATE_FORMAT"}}</p>
 
-              <p> <strong>تاریخ:</strong> {{transaction.date|date:"SHORT_DATE_FORMAT"}}</p>
+              <p><strong>شماره چک:</strong> {{ cheque_issue.cheque.cheque_id}}</p>
 
-              <p><strong>حسابرس:</strong> {{ transaction.auditor}}</p>
+              <p><strong>شماره حساب:</strong> {{ cheque_issue.cheque.cheque_application.account}}</p>
 
-              <p><strong>شعبه:</strong>
-                <a href="{% url 'core:branch_list' %}#{{transaction.branch.pk}}">{{ transaction.branch }}
-                </a>
-              </p>
+{#              <p><strong>شعبه:</strong>#}
+{#                <a href="{% url 'core:branch_list' %}#{{transaction.branch.pk}}">{{ transaction.branch }}#}
+{#                </a>#}
+{#              </p>#}
 
               </div>
             </div>

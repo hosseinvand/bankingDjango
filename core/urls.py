@@ -17,7 +17,8 @@ EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, CustomerCreate
     AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView
 from core.views.cashier import Bill_Payment_view, Account_Transactions_View, Account_Transactions_Selection_View, \
     Bill_Create_view, CashierPanel, Add_Cash_To_Account_view, Withdraw_Cash_from_Account_view, Transfer_Money_view, \
-    Card_Issuing_view, Cheque_Application_view, Cheque_Issue_Cash_view, Cheque_Issue_toAccount_view
+    Card_Issuing_view, Cheque_Application_view, Cheque_Issue_Cash_view, Cheque_Issue_toAccount_view, Loan_Request_view, \
+    Payment_Order_view
 
 app_name = 'core'
 
@@ -48,6 +49,8 @@ urlpatterns = [
     url(r'^cashier/cheque_issue_toAccount/$', Cheque_Issue_toAccount_view.as_view(), name="cheque_issue_toAccount"),
     url(r'^cashier/account_transactions/$', Account_Transactions_View.as_view(), name='account_transactions'),
     url(r'^cashier/account_transactions/select/(?P<pk>.+)$', Account_Transactions_Selection_View.as_view(), name='account_transactions_select_view'),
+    url(r'^cashier/loan_request/$', Loan_Request_view.as_view(), name="loan_request"),
+    url(r'^cashier/payment_order/$', Payment_Order_view.as_view(), name="payment_order"),
     url(r'^transactions/?$', TransactionsView.as_view(), name='transactions'),
     url(r'^transactions/(?P<pk>[0-9]+)/$', TransactionDetailView.as_view(), name='transaction_detail'),
     url(r'^accounts/$', AccountsView.as_view(), name='accounts'),

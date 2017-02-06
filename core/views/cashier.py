@@ -10,8 +10,8 @@ from django.views.generic import TemplateView
 
 from core.forms.cashier import Bill_Payment_form, Account_Transaction_Form, Bill_Create_form, Transfer_Money_form, \
     Add_Cash_to_Account_form, Card_Issuing_form, Withdraw_Cash_from_Account_form, Cheque_Application_form, \
- Cheque_Issue_toAccount_form, Cheque_Issue_Cash_form
-from core.models import BillType, Card, PayedBill, Bill, ChequeApplication, ChequeIssue
+ Cheque_Issue_toAccount_form, Cheque_Issue_Cash_form, Loan_Request_form, Payment_Order_form
+from core.models import BillType, Card, PayedBill, Bill, ChequeApplication, ChequeIssue, LoanApplication, PaymentOrder
 from core.models import Customer, SystemConfiguration, Branch, Account, Transaction
 from core.models import Manager, Jursit, Auditor, Cashier
 
@@ -188,3 +188,17 @@ class Cheque_Issue_toAccount_view(CreateView):
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:main_panel')
     form_class = Cheque_Issue_toAccount_form
+
+
+class Loan_Request_view(CreateView):
+    model = LoanApplication
+    template_name = 'core/simple_from_with_single_button.html'
+    success_url = reverse_lazy('core:main_panel')
+    form_class = Loan_Request_form
+
+
+class Payment_Order_view(CreateView):
+    model = PaymentOrder
+    template_name = 'core/simple_from_with_single_button.html'
+    success_url = reverse_lazy('core:main_panel')
+    form_class = Payment_Order_form
