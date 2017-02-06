@@ -16,3 +16,8 @@ class ManagerOrSuperUserRequired(UserPassesTestMixin):
 class ManagerRequired(UserPassesTestMixin):
     def test_func(self):
         return hasattr(self.request.user, 'manager')
+
+
+class MaintainerRequired(UserPassesTestMixin):
+    def test_func(self):
+        return hasattr(self.request.user, 'maintainer')

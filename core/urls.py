@@ -6,6 +6,7 @@ from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, Sy
     EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView, EmployeeDeleteView, \
     GreenbackCreateView
 # from core.views.cashier import Bill_Create_view
+from core.views.maintainer import SetGreenbackForATMView, MaintainerPanel
 from core.views.manager import BranchEmployeeListView, BranchEmployeeCreateView, ManagerPanel, ATMCreateView, \
     SetMaintainerForATMView
 
@@ -47,4 +48,6 @@ urlpatterns = [
     url(r'^manager/panel/$', ManagerPanel.as_view(), name="manager_panel"),
     url(r'^manager/create_atm/$', ATMCreateView.as_view(), name="create_atm"),
     url(r'^manager/set_maintainer/$', SetMaintainerForATMView.as_view(), name="set_maintainer"),
+    url(r'^maintainer/set_greenback/$', SetGreenbackForATMView.as_view(), name="set_greenback"),
+    url(r'^maintainer/panel/$', MaintainerPanel.as_view(), name="maintainer_panel"),
 ]
