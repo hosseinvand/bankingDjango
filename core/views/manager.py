@@ -5,7 +5,7 @@ from django.views.generic import FormView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 
-from core.forms.manager import BranchEmployeeCreateForm, ATMCreateForm
+from core.forms.manager import BranchEmployeeCreateForm, ATMCreateForm, SetMaintainerForATMForm
 from core.mixin import ManagerRequired
 from core.models import Auditor, Employee, ATM, Maintainer
 from core.models import Jursit, Cashier
@@ -57,7 +57,16 @@ class ATMCreateView(ManagerRequired, CreateView):
         return kwargs
 
 
-class SetMaintainerForATMView(ManagerRequired, UpdateView):
-    model = ATM
-    fields = ['maintainer']
-    template_name_suffix = '_update_form'
+class SetMaintainerForATMView(ManagerRequired, FormView):
+    template_name = 'core/simple_from_with_single_button.html'
+    success_url = reverse_lazy('core:manager_panel')
+    form_class = SetMaintainerForATMForm
+
+    def get_form_kwargs(self):
+        kwargs = super(FormView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super(SetMaintainerForATMView, self).form_valid(form)
