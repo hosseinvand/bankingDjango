@@ -641,16 +641,16 @@ class ChequeApplication(models.Model):
         related_name="cheque_books",
     )
 
-    legal_expert_validation = models.CharField(
-        max_length=2,
-        choices=statuses,
-        default=UNKNOWN,
-    )
-    auditor_validation = models.CharField(
-        max_length=2,
-        choices=statuses,
-        default=UNKNOWN,
-    )
+    # legal_expert_validation = models.CharField(
+    #     max_length=2,
+    #     choices=statuses,
+    #     default=UNKNOWN,
+    # )
+    # auditor_validation = models.CharField(
+    #     max_length=2,
+    #     choices=statuses,
+    #     default=UNKNOWN,
+    # )
     date = models.DateField(auto_now=True)
 
     def __str__(self):
@@ -676,21 +676,21 @@ class Cheque(models.Model):
             self.cheque_application,
         )
 
-    def clean(self):
-        if (self.cheque_application.legal_expert_validation != ACCEPT):
-            raise ValidationError(
-                "Can't make cheque page for lack of legal validation it is {}".format(
-                    self.cheque_application.legal_expert_validation,
-                )
-            )
-            print(self.cheque_application.legal_expert_validation)
-
-        if(self.cheque_application.auditor_validation != ACCEPT):
-            raise ValidationError(
-                "Can't make cheque page for lack of auditor validation{}".format(
-                    self.cheque_application.legal_expert_validation,
-                )
-            )
+    # def clean(self):
+    #     if (self.cheque_application.legal_expert_validation != ACCEPT):
+    #         raise ValidationError(
+    #             "Can't make cheque page for lack of legal validation it is {}".format(
+    #                 self.cheque_application.legal_expert_validation,
+    #             )
+    #         )
+    #         print(self.cheque_application.legal_expert_validation)
+    #
+    #     if(self.cheque_application.auditor_validation != ACCEPT):
+    #         raise ValidationError(
+    #             "Can't make cheque page for lack of auditor validation{}".format(
+    #                 self.cheque_application.legal_expert_validation,
+    #             )
+    #         )
 
 
 class ChequeIssue(models.Model):
