@@ -1,0 +1,37 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+    {% if messages %}
+    <div class="col-lg-3 color03">
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{# <p> {{ user.superuser }}</p>#}
+<div class="col-md-8 col-md-offset-2">
+  <div class="panel panel-default">
+      <div class="panel-body">
+          <div class="list-group">
+              <a href="{% url 'core:create_account' %}" type="button" class="btn btn-primary btn-raised btn-lg btn-block" >افتتاح حساب</a>
+              <a href="{% url 'core:create_customer' %}" type="button" class="btn btn-primary btn-raised btn-lg btn-block" >ایجاد مشتری</a>
+              <a href="{% url 'core:account_transactions' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">چاپ گردش حساب</a>
+              <a href="{% url 'core:add_cash_to_account' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">واریز به حساب</a>
+              <a href="{% url 'core:withdraw_cash_from_account' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">برداشت از حساب</a>
+              <a href="{% url 'core:bill_payment' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">پرداخت قبض</a>
+              <a href="{% url 'core:transfer_money' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">انتقال وجه</a>
+              <a href="{% url 'core:bill_create' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">تعریف قبض جدید</a>
+              <a href="{% url 'core:card_issue' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">صدور کارت بانکی</a>
+              <a href="{% url 'core:cheque_application' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">صدور چک</a>
+              <a href="{% url 'core:cheque_issue_cash' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">وصول نقدی چک</a>
+              <a href="{% url 'core:cheque_issue_toAccount' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">خواباندن چک به حساب</a>
+              <a href="{% url 'core:loan_request' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">درخواست وام</a>
+              <a href="{% url 'core:payment_order' %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">ایجاد حواله‌های منظم</a>
+          </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

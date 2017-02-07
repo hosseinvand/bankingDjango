@@ -3,7 +3,7 @@
 from django import forms
 from django.forms import ModelForm, fields_for_model, Form
 from core.models import Customer, Employee, Branch, Account, SystemConfiguration, Manager, Cashier, Jursit, Auditor, \
-    BillType, Transaction, Card, Bill, ChequeApplication, Cheque, ChequeIssue
+    BillType, Transaction, Card, Bill, ChequeApplication, Cheque, ChequeIssue, LoanApplication, PaymentOrder
 
 
 class Bill_Payment_form(Form):
@@ -237,3 +237,59 @@ class Cheque_Issue_Cash_form(ModelForm):
         cheque_issue = ChequeIssue(**self.cleaned_data)
         cheque_issue.save()
         return cheque_issue
+
+
+class Loan_Request_form(ModelForm):
+    button_text = "ثبت درخواست وام"
+
+    class Meta:
+        model = LoanApplication
+        fields = ['payment_count', 'amount', 'account']
+        labels = {
+            'payment_count': "تعداد اقسات",
+            'amount' : "مبلغ وام",
+            'account' : "حساب کاربری مشتری"
+        }
+
+    def clean(self):
+        cleaned_data = super(Loan_Request_form, self).clean()
+        account = cleaned_data.get("account")
+        if account.is_blocked:
+            self.add_error("account", "اکانت شما بلاک شده است.")
+        return cleaned_data
+
+    def save(self, commit=True):
+        loan_application = LoanApplication(**self.cleaned_data)
+        loan_application.save()
+        return loan_application
+
+
+class Payment_Order_form(ModelForm):
+    button_text = "ثبت درخواست حواله های منظم"
+
+    class Meta:
+        model = PaymentOrder
+        fields = ['account', 'dest', 'amount', 'start_date', 'end_date', 'period_type']
+        labels = {
+            'account': "حساب مشتری",
+            'dest' : "حساب مقصد",
+            'amount' : "مقدار انتقالی",
+            'start_date': "تاریخ شروع",
+            'end_date': "تاریخ پایان",
+            'period_type': "نوع زمانی حواله",
+        }
+
+    def clean(self):
+        cleaned_data = super(Payment_Order_form, self).clean()
+        account = cleaned_data.get("account")
+        dest_account = cleaned_data.get("dest")
+        if account.is_blocked:
+            self.add_error("account", "اکانت شما بلاک شده است.")
+        if dest_account.is_blocked:
+            self.add_error("dest", "اکانت مقصد بلاک شده است.")
+        return cleaned_data
+
+    def save(self, commit=True):
+        payment_order = PaymentOrder(**self.cleaned_data)
+        payment_order.save()
+        return payment_order
