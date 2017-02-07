@@ -9,7 +9,10 @@ from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, Ac
 from django.contrib.auth.views import logout
 from django.urls import reverse_lazy
 
-from core.views.jursit import Block_Account_view, Check_Issue_Requests_view, ChequeDetailView
+from core.views.auditor import Auditor_Check_Issue_Requests_view, Auditor_Loan_Requests_view, Auditor_LoanDetailView
+from core.views.auditor import Auditor_ChequeDetailView
+from core.views.jursit import Block_Account_view, Jursit_Check_Issue_Requests_view, Jursit_ChequeDetailView, \
+    Jursit_Loan_Requests_view, Jursit_LoanDetailView
 from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, SystemConfigurationView, \
     EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView, EmployeeDeleteView, \
     GreenbackCreateView
@@ -68,7 +71,13 @@ urlpatterns = [
     url(r'^manager/set_maintainer/$', SetMaintainerForATMView.as_view(), name="set_maintainer"),
     url(r'^maintainer/set_greenback/$', SetGreenbackForATMView.as_view(), name="set_greenback"),
     url(r'^jursit/block_account/$', Block_Account_view.as_view(), name="block_account"),
-    url(r'^jursit/check_issue_requests/$', Check_Issue_Requests_view.as_view(), name="cheque_issue_requests"),
-    url(r'^jursit/check_issue_requests/(?P<pk>[0-9]+)/$', ChequeDetailView.as_view(), name='cheque_detail'),
+    url(r'^jursit/check_issue_requests/$', Jursit_Check_Issue_Requests_view.as_view(), name="jursit_cheque_issue_requests"),
+    url(r'^jursit/check_issue_requests/(?P<pk>[0-9]+)/$', Jursit_ChequeDetailView.as_view(), name='jursit_cheque_detail'),
+    url(r'^jursit/loan_requests/$', Jursit_Loan_Requests_view.as_view(),name="jursit_loan_requests"),
+    url(r'^jursit/loan_requests/(?P<pk>[0-9]+)/$', Jursit_LoanDetailView.as_view(),name='jursit_loan_detail'),
+    url(r'^Auditor/check_issue_requests/$', Auditor_Check_Issue_Requests_view.as_view(),name="auditor_cheque_issue_requests"),
+    url(r'^Auditor/check_issue_requests/(?P<pk>[0-9]+)/$', Auditor_ChequeDetailView.as_view(),name='auditor_cheque_detail'),
+    url(r'^Auditor/loan_requests/$', Auditor_Loan_Requests_view.as_view(), name="auditor_loan_requests"),
+    url(r'^Auditor/loan_requests/(?P<pk>[0-9]+)/$', Auditor_LoanDetailView.as_view(), name='auditor_loan_detail'),
 
 ]

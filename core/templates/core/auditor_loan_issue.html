@@ -1,0 +1,27 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+
+  {% for loanapplication in loan_list %}
+
+      <div class="col-md-8 col-md-offset-2">
+          <div class="panel panel-default">
+              <div class="panel-body">
+                  <div class="list-group">
+                    <a href="{% url 'core:auditor_loan_detail' loanapplication.id %}">
+                      <strong>تعداد اقساط:</strong>
+                        {{ loanapplication.payment_count}}
+                      <br>
+                      <strong>مقدار وجه:</strong>
+                        {{ loanapplication.amount}}
+                      </p>
+                    </a>
+                  </div>
+              </div>
+            </div>
+      </div>
+  {% endfor %}
+
+
+{% endblock %}
+

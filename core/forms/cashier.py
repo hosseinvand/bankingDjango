@@ -83,7 +83,7 @@ class Transfer_Money_form(Form):
             self.add_error("source_account", "اکانت مبدا بلاک شده است.")
         if dest_account.is_blocked:
             self.add_error("dest_account", "اکانت مقصد بلاک شده است.")
-        if source_account.balance < amount + 10000:
+        if source_account.balance < SystemConfiguration.get_solo().transaction_fee +amount + 10000:
             self.add_error("amount", "پول نداری بدبخت!")
         return cleaned_data
 
@@ -187,6 +187,10 @@ class Cheque_Application_form(ModelForm):
 
     def save(self, commit=True):
         cheque_application = ChequeApplication(**self.cleaned_data)
+        account = cheque_application.account
+        account.balance -= SystemConfiguration.get_solo().cheque_production_fee
+
+        account.save()
         cheque_application.save()
         for i in range(0, 10):
             cheque = Cheque(cheque_application=cheque_application)
@@ -213,10 +217,7 @@ class Cheque_Issue_toAccount_form(ModelForm):
             self.add_error("dest", "اکانت شما بلاک شده است.")
         return cleaned_data
 
-    def save(self, commit=True):
-        cheque_issue = ChequeIssue(**self.cleaned_data)
-        cheque_issue.save()
-        return cheque_issue
+
 
 class Cheque_Issue_Cash_form(ModelForm):
     button_text = "وصول چک"
@@ -232,11 +233,6 @@ class Cheque_Issue_Cash_form(ModelForm):
     def clean(self):
         cleaned_data = super(Cheque_Issue_Cash_form, self).clean()
         return cleaned_data
-
-    def save(self, commit=True):
-        cheque_issue = ChequeIssue(**self.cleaned_data)
-        cheque_issue.save()
-        return cheque_issue
 
 
 class Loan_Request_form(ModelForm):

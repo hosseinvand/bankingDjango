@@ -1,0 +1,86 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+            <form action="" method="post">{% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Update" />
+            </form>
+                <p><strong>حساب:</strong>
+                  salam keivan
+                </a>
+              </p>
+
+              <p><strong>مبلغ:</strong> {{chequeissue}}</p>
+
+                {% if chequeissue.dest == None %}
+                    <p><strong>نوع:</strong> {{"پرداخت نقدی"}}</p>
+                {% else %}
+                    <p><strong>نوع:</strong> {{"واریز به حساب "}}</p>
+                    <p><strong>حساب مقصد:</strong> {{ chequeissue.dest}}</p>
+                {% endif %}
+
+              <p> <strong>تاریخ:</strong> {{chequeissue.date|date:"SHORT_DATE_FORMAT"}}</p>
+
+              <p><strong>شماره چک:</strong> {{ chequeissue.cheque.cheque_id}}</p>
+
+              <p><strong>شماره حساب:</strong> {{ chequeissue.cheque.cheque_application.account}}</p>
+
+              <p><strong>شعبه:</strong>
+                <a href="{% url 'core:branch_list' %}#{{transaction.branch.pk}}">{{ transaction.branch }}
+                </a>
+              </p>
+
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form name="searchForm" class="form-horizontal" method="post">{% csrf_token %}
+
+                    <!-- showing errors at top of the form -->
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- form itself :) -->
+                    {% for field in form %}
+                        <div class="form-group">
+                            <div class="col-xs-10 col-xs-offset-1">
+                                {{ field.label }}
+                                {% render_field field class="form-control" %}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <!-- submit button -->
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-xs-6 col-xs-offset-3">
+                                <button type="submit" class="btn btn-lg btn-block btn-raised btn-primary">{{ form.button_text }}</button>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

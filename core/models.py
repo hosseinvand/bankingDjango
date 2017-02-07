@@ -81,7 +81,7 @@ class SystemConfiguration(SingletonModel):
     cheque_production_fee = models.IntegerField(default=100)
     sms_notif_fee = models.IntegerField(default=100)
     card_to_card_fee = models.IntegerField(default=100)
-    transactio_fee = models.IntegerField(default=100)
+    transaction_fee = models.IntegerField(default=100)
     atm_min_money = models.IntegerField(default=100000)
     loan_interest = models.FloatField(default=0.14)
     deposit_yearly_interest = models.FloatField(
@@ -718,6 +718,14 @@ class ChequeIssue(models.Model):
         default=UNKNOWN,
     )
 
+    cashier = models.ForeignKey(
+        Cashier,
+        on_delete=models.PROTECT,
+        related_name='+',
+        null=True,
+        default=None,
+    )
+
     dest = models.ForeignKey(
         Account,
         on_delete=models.PROTECT,
@@ -725,13 +733,13 @@ class ChequeIssue(models.Model):
         null=True,
         default=None,
     )
-    transaction = models.ForeignKey(
-        Transaction,
-        on_delete=models.PROTECT,
-        related_name='+',
-        null=True,
-        default=None,
-    )  # keep in mind that this always points to withdraw transaction
+    # transaction = models.ForeignKey(
+    #     Transaction,
+    #     on_delete=models.PROTECT,
+    #     related_name='+',
+    #     null=True,
+    #     default=None,
+    # )  # keep in mind that this always points to withdraw transaction
 
     def __str__(self):
         return "issue for check {}".format(

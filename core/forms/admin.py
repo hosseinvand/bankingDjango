@@ -237,7 +237,7 @@ class SystemConfigurationForm(ModelForm):
         self.fields['cheque_production_fee'].initial = str(instance.cheque_production_fee)
         self.fields['sms_notif_fee'].initial = str(instance.sms_notif_fee)
         self.fields['card_to_card_fee'].initial = str(instance.card_to_card_fee)
-        self.fields['transactio_fee'].initial = str(instance.transactio_fee)
+        self.fields['transaction_fee'].initial = str(instance.transaction_fee)
         self.fields['atm_min_money'].initial = str(instance.atm_min_money)
         self.fields['loan_interest'].initial = str(instance.loan_interest)
         self.fields['deposit_yearly_interest'].initial = str(instance.deposit_yearly_interest)
@@ -249,7 +249,7 @@ class SystemConfigurationForm(ModelForm):
             'cheque_production_fee',
             'sms_notif_fee',
             'card_to_card_fee',
-            'transactio_fee',
+            'transaction_fee',
             'atm_min_money',
             'loan_interest',
             'deposit_yearly_interest',
@@ -259,7 +259,7 @@ class SystemConfigurationForm(ModelForm):
             'cheque_production_fee': "هزینه‌ی صدور چک",
             'sms_notif_fee': "هزینه‌ی فعال‌سازی اعلام پیامک",
             'card_to_card_fee': "هزینه‌ی کارت به کارت",
-            'transactio_fee': "هزینه‌ی تراکنش",
+            'transaction_fee': "هزینه‌ی تراکنش",
             'atm_min_money': "مقدار کمینه‌ی پول موجود در خودپرداز",
             'loan_interest': "بهره‌ی وام",
             'deposit_yearly_interest': "بهره‌ی حساب سالیانه",

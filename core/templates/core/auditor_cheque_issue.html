@@ -1,0 +1,33 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+
+  {% for cheque_issue in cheque_issue_list %}
+{#      {% if transaction.account.real_owner.first_name == 'rasa' %}#}
+{#      input_account#}
+
+      <div class="col-md-8 col-md-offset-2">
+          <div class="panel panel-default">
+              <div class="panel-body">
+                  <div class="list-group">
+                    <a href="{% url 'core:auditor_cheque_detail' cheque_issue.id %}">
+                      <p><strong>آی دی چک:</strong>
+                          {{ cheque_issue.cheque}}
+                      <br>
+                      <strong>تاریخ:</strong>
+                        {{ cheque_issue.date|date:"SHORT_DATE_FORMAT"}}
+                      <br>
+                      <strong>مقدار وجه:</strong>
+                        {{ cheque_issue.amount}}
+                      </p>
+                    </a>
+                  </div>
+              </div>
+            </div>
+      </div>
+{#      {% endif %}#}
+  {% endfor %}
+
+
+{% endblock %}
+

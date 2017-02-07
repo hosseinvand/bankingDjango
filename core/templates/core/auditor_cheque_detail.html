@@ -1,0 +1,42 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+              <p><strong>مبلغ:</strong> {{chequeissue.amount}}</p>
+
+                {% if chequeissue.dest == None %}
+                    <p><strong>نوع:</strong> {{"پرداخت نقدی"}}</p>
+                {% else %}
+                    <p><strong>نوع:</strong> {{"واریز به حساب "}}</p>
+                    <p><strong>حساب مقصد:</strong> {{ chequeissue.dest}}</p>
+                {% endif %}
+
+              <p> <strong>تاریخ:</strong> {{chequeissue.date|date:"SHORT_DATE_FORMAT"}}</p>
+
+              <p><strong>شماره چک:</strong> {{ chequeissue.cheque.cheque_id}}</p>
+
+              <p><strong>شماره حساب:</strong> {{ chequeissue.cheque.cheque_application.account}}</p>
+
+{#              <p><strong>شعبه:</strong>#}
+{#                <a href="{% url 'core:branch_list' %}#{{transaction.branch.pk}}">{{ transaction.branch }}#}
+{#                </a>#}
+{#              </p>#}
+
+            <form action="" method="post">{% csrf_token %}
+                {% for field in form %}
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                {{ field.label }}
+                                {% render_field field class="form-control" %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                <input type="submit" class="btn btn-lg btn-raised btn-primary" value="به روز رسانی" />
+            </form>
+              </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
