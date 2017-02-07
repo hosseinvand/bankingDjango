@@ -382,6 +382,9 @@ class Transaction(models.Model):
         Cashier,
         on_delete=models.PROTECT,
         related_name='transactions',
+        null=True,
+        blank=True,
+        default=None,
     )
 
     date = models.DateField(auto_now=True)

@@ -14,7 +14,7 @@ from core.views.admin import EmployeeCreateView
 
 class BranchEmployeeCreateView(ManagerRequired, FormView):
     template_name = 'core/simple_from_with_single_button.html'
-    success_url = reverse_lazy('core:admin_panel')
+    success_url = reverse_lazy('core:main_panel')
     form_class = BranchEmployeeCreateForm
 
     def form_valid(self, form):

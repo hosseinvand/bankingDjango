@@ -95,7 +95,7 @@ class BranchCreateView(SuperUserRequired, CreateView):
     form_class = BranchCreateForm
 
 
-class AccountCreateView(SuperUserRequired, CreateView):
+class AccountCreateView(CreateView):
     model = Account
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:main_panel')
@@ -108,7 +108,7 @@ class GreenbackCreateView(SuperUserRequired, CreateView):
     form_class = GreenbackCreateForm
 
 
-class CustomerCreateView(SuperUserRequired, CreateView):
+class CustomerCreateView(CreateView):
     model = Customer
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:main_panel')
@@ -153,7 +153,7 @@ class AccountsView(SuperUserRequired, ListView):
         return Account.objects.all()
 
 
-class AccountDetailView(SuperUserRequired, generic.DetailView):
+class AccountDetailView(generic.DetailView):
     model = Account
     template_name = 'core/account_detail.html'
 
