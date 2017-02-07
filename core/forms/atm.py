@@ -2,7 +2,7 @@ from uuid import UUID
 
 from django import forms
 
-from core.models import Card, ATM, Contain, Transaction, CardToCard
+from core.models import Card, ATM, Contain, Transaction, CardToCard, WithdrawFromATM
 
 
 class LoginATMForm(forms.Form):
@@ -71,6 +71,13 @@ class WithdrawATMForm(forms.Form):
         account = self.card.account
         account.balance -= sum
         account.save()
+
+        trans_w = Transaction(account=self.card.account, amount=sum, transaction_type='w')
+        trans_w.save()
+
+        withdraw = WithdrawFromATM(ATM=self.atm, card=self.card, amount=sum, transaction=trans_w)
+        withdraw.save()
+
         return
 
 
