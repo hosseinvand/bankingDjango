@@ -2,7 +2,7 @@ from uuid import UUID
 
 from django import forms
 
-from core.models import Card, ATM, Contain
+from core.models import Card, ATM, Contain, Transaction, CardToCard
 
 
 class LoginATMForm(forms.Form):
@@ -22,6 +22,13 @@ class LoginATMForm(forms.Form):
 
         if not Card.objects.filter(card_number=card_number).exists():
             self.add_error("card_number", "این کارت وجود ندارد.")
+            return cleaned_data
+
+        card = Card.objects.filter(card_number=card_number).first()
+        if card.account.is_blocked:
+            self.add_error("card_number", "اکانت این کارت مسدود است.")
+            return cleaned_data
+
         return cleaned_data
 
 
@@ -47,8 +54,9 @@ class WithdrawATMForm(forms.Form):
             else:
                 sum += int(cleaned_data[str(contain.greenback.id)])
 
-        if sum > self.card.account.balance:
+        if sum > self.card.account.balance + 10000:
             raise forms.ValidationError("موجودی کافی نیست")
+            return cleaned_data
 
         return cleaned_data
 
@@ -64,3 +72,62 @@ class WithdrawATMForm(forms.Form):
         account.balance -= sum
         account.save()
         return
+
+
+class CardToCardATMForm(forms.Form):
+    button_text = "انتقال وجه"
+    card_number_to = forms.CharField(max_length=100, label='شماره کارت مقصد')
+    amount = forms.IntegerField(label='مبلغ')
+
+    def __init__(self, data=None, *args, **kwargs):
+        super(CardToCardATMForm, self).__init__(data)
+        self.atm = ATM.objects.get(id=kwargs.get('atm'))
+        self.card = Card.objects.get(card_number=kwargs.get('card_number'))
+
+    def clean(self):
+        cleaned_data = super(CardToCardATMForm, self).clean()
+        card_number = cleaned_data['card_number_to']
+
+        if cleaned_data['amount'] > self.card.account.balance + 10000:
+            raise forms.ValidationError("موجودی کافی نیست")
+            return cleaned_data
+
+        try:
+            uuid_obj = UUID(card_number, version=4)
+        except:
+            self.add_error("card_number_to", "شماره کارت نامعتبر است.")
+            return cleaned_data
+
+        if not Card.objects.filter(card_number=card_number).exists():
+            self.add_error("card_number_to", "این کارت وجود ندارد.")
+            return cleaned_data
+
+        card = Card.objects.filter(card_number=card_number).first()
+        if card.account.is_blocked:
+            self.add_error("card_number_to", "اکانت این کارت مسدود است.")
+            return cleaned_data
+        self.card_to = card
+
+        return cleaned_data
+
+    def save(self):
+
+        source_account = self.card.account
+        dest_account = self.card_to.account
+        amount = self.cleaned_data.get('amount')
+
+        source_account.balance -= amount
+        dest_account.balance += amount
+        source_account.save()
+        dest_account.save()
+
+        trans_w = Transaction(account=source_account, amount=amount, transaction_type='w')
+        trans_d = Transaction(account=dest_account, amount=amount, transaction_type='d')
+        trans_w.save()
+        trans_d.save()
+
+        card_to_card = CardToCard(from_card=self.card, to_card=self.card_to, amount=amount, deposit=trans_d, withdraw=trans_w, atm=self.atm)
+        card_to_card.save()
+
+        return
+

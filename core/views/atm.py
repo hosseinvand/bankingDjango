@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.views.generic import TemplateView
 
-from core.forms.atm import LoginATMForm, WithdrawATMForm
+from core.forms.atm import LoginATMForm, WithdrawATMForm, CardToCardATMForm
 
 
 class LoginATM(TemplateView):
@@ -50,3 +50,18 @@ class WithdrawATM(FormView):
     def form_valid(self, form):
         form.save()
         return super(WithdrawATM, self).form_valid(form)
+
+
+class CardToCardATM(FormView):
+    template_name = 'core/simple_from_with_single_button.html'
+    success_url = reverse_lazy('core:atm_login')
+    form_class = CardToCardATMForm
+
+    def get_form_kwargs(self):
+        kwargs = super(FormView, self).get_form_kwargs()
+        kwargs.update({'atm': self.kwargs.get('atm'), 'card_number': self.kwargs.get('card_number')})
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super(CardToCardATM, self).form_valid(form)

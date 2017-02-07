@@ -9,7 +9,7 @@ from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, Ac
 from django.contrib.auth.views import logout
 from django.urls import reverse_lazy
 
-from core.views.atm import LoginATM, PanelATM, WithdrawATM
+from core.views.atm import LoginATM, PanelATM, WithdrawATM, CardToCardATM
 from core.views.jursit import Block_Account_view, Check_Issue_Requests_view, ChequeDetailView
 from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, SystemConfigurationView, \
     EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView, EmployeeDeleteView, \
@@ -74,4 +74,5 @@ urlpatterns = [
     url(r'^atm/login/$', LoginATM.as_view(), name='atm_login'),
     url(r'^atm/panel/(?P<atm>[0-9]+)/(?P<card_number>.+)/$', PanelATM.as_view(), name='atm_panel'),
     url(r'^atm/withdraw/(?P<atm>[0-9]+)/(?P<card_number>.+)/$', WithdrawATM.as_view(), name='atm_withdraw'),
+    url(r'^atm/card_to_card/(?P<atm>[0-9]+)/(?P<card_number>.+)/$', CardToCardATM.as_view(), name='card_to_card'),
 ]

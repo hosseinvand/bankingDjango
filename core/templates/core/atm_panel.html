@@ -9,8 +9,10 @@
 {#                  <P>{{ f }}</P>#}
 {#              {% endfor %}#}
 {#             <p> {{ user. }}</p>#}
-              <a href="{% url 'core:create_employee_manager' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">انتقال وجه</a>
+              <a href="{% url 'core:atm_withdraw' atm card_number %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">مشاهده موجودی</a>
+              <a href="{% url 'core:card_to_card' atm card_number %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">انتقال وجه</a>
               <a href="{% url 'core:atm_withdraw' atm card_number %}"  type="button" class="btn btn-success btn-raised btn-lg btn-block">برداشت وجه</a>
+              <a href="{% url 'core:atm_login' %}"  type="button" class="btn btn-primary btn-raised btn-lg btn-block">خروج</a>
           </div>
     </div>
   </div>
