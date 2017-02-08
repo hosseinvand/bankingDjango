@@ -114,7 +114,18 @@ class CustomerCreateView(CreateView):
     success_url = reverse_lazy('core:main_panel')
     form_class = CustomerCreateForm
 
+class ReportView(SuperUserRequired, FormView):
+    template_name = 'core/simple_from_with_single_button.html'
+    success_url = reverse_lazy('core:main_panel')
+    form_class = ReportForm
 
+    def get_form_kwargs(self):
+        kwargs = super(FormView, self).get_form_kwargs()
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super(CardToCardATM, self).form_valid(form)
 
 class AdminPanel(SuperUserRequired, TemplateView):
     template_name = 'core/admin_panel.html'

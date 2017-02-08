@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^admin/create_branch/$', BranchCreateView.as_view(), name="create_branch"),
     url(r'^admin/create_bill_type/$', BillTypeCreateView.as_view(), name="create_bill_type"),
     url(r'^admin/bill_create/$', Bill_Create_view.as_view(), name="bill_create"),
+    url(r'^admin/report/$', ReportView.as_view(), name="bill_create"),
     url(r'^admin/panel/$', AdminPanel.as_view(), name="admin_panel"),
     url(r'^main/panel/$', MainPanel.as_view(), name="main_panel"),
     url(r'^cashier/panel/$', CashierPanel.as_view(), name="cashier_panel"),

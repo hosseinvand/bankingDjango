@@ -269,3 +269,12 @@ class SystemConfigurationForm(ModelForm):
         instance = SystemConfiguration(**self.cleaned_data)
         instance.save()
         return instance
+
+PERIOD_TYPES = (
+    ('Manager', 'مدیر شعبه'),
+    ('Cashier', 'صندوق دار'),
+    ('Jursit', 'کارشناس حقوقی'),
+    ('Auditor', 'حسابرس'),
+)
+class ReportForm(ModelForm):
+    period = forms.ChoiceField(choices=, label='واحد زمانی')
