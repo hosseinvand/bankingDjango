@@ -1,0 +1,9 @@
+{% load static %}
+<link rel="stylesheet" href="{% static "css/morris-0.4.3.min.css" %}">
+<script src="{% static "js/__ajax.googleapis.com_ajax_libs_jquery_1.9.0_jquery.js" %}"></script>
+<script src="{% static "js/__cdnjs.cloudflare.com_ajax_libs_raphael_2.1.0_raphael.js" %}"></script>
+<script src="{% static "js/http_cdn.oesmith.co.uk_morris-0.4.3.js" %}"></script>
+{% for chart in charts %}
+    <h2>{{ chart.name }}</h2>
+    {{ chart.chart.as_html }}
+{% endfor %}

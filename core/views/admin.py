@@ -3,6 +3,8 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import transaction
+from django.shortcuts import render
+from django.template.response import TemplateResponse
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import DeleteView
@@ -10,7 +12,7 @@ from django.views.generic import FormView, CreateView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
 
-from core.forms.admin import BillTypeCreateForm, GreenbackCreateForm
+from core.forms.admin import BillTypeCreateForm, GreenbackCreateForm, ReportForm
 from core.forms.admin import CustomerCreateForm
 from core.forms.admin import LoginForm, EmployeeCreateForm, SystemConfigurationForm, BranchCreateForm, \
     AccountCreateForm
@@ -114,6 +116,7 @@ class CustomerCreateView(CreateView):
     success_url = reverse_lazy('core:main_panel')
     form_class = CustomerCreateForm
 
+
 class ReportView(SuperUserRequired, FormView):
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:main_panel')
@@ -124,14 +127,17 @@ class ReportView(SuperUserRequired, FormView):
         return kwargs
 
     def form_valid(self, form):
-        form.save()
-        return super(CardToCardATM, self).form_valid(form)
+        charts = form.save()
+        return render(self.request, "core/admin_report.html", {'charts': charts})
+
 
 class AdminPanel(SuperUserRequired, TemplateView):
     template_name = 'core/admin_panel.html'
 
+
 class MainPanel(TemplateView):
     template_name = 'core/main_panel.html'
+
 
 class SystemConfigurationView(SuperUserRequired, CreateView):
     form_class = SystemConfigurationForm
