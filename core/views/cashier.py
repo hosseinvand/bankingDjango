@@ -61,6 +61,7 @@ class Account_Transactions_Selection_View(generic.ListView):
     model =  Transaction
     template_name = 'core/transactions.html'
     context_object_name = 'transaction_list'
+
     def get_queryset(self):
         return Transaction.objects.filter(account=Account.objects.get(pk=self.kwargs['pk'])).order_by('date', 'time')
 

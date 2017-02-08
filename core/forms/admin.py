@@ -308,6 +308,7 @@ class ReportForm(forms.Form):
         return cleaned_data
 
     def save(self):
+        print("savinggg")
         begin_date = self.cleaned_data["begin_date"]
         end_date = self.cleaned_data["end_date"]
         period = self.cleaned_data["period"]
@@ -344,9 +345,12 @@ class ReportForm(forms.Form):
             else:
                 charts = []
                 for branch in branches:
+                    datas = [meta]
                     for i in range(len(dates) - 1):
                         beg = dates[i]
                         end = dates[i + 1]
+                        print(branch.id)
+                        print(Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="w", branch=branch))
                         row = [beg.strftime("%Y-%m-%d"),
                                Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="d", branch=branch).count(),
                                Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="w", branch=branch).count(),
@@ -374,6 +378,7 @@ class ReportForm(forms.Form):
             else:
                 charts = []
                 for branch in branches:
+                    datas = [meta]
                     for i in range(len(dates) - 1):
                         beg = dates[i]
                         end = dates[i + 1]
