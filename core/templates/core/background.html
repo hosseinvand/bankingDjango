@@ -37,7 +37,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="active navbar-brand" href="/">بانک</a>
+            <a class="active navbar-brand" href="{% url 'core:main_panel' %}">بانک</a>
         </div>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">
@@ -78,6 +78,7 @@
 </div>
 {#<script src="{% static "js/jquery-3.1.0.js" %}"></script>#}
 <script src="{% static "js/jquery-1.10.2.min.js" %}"></script>
+<script src="{% static "js/jquery-ui.js" %}"></script>
 <script src="{% static "js/bootstrap.min.js" %}"></script>
 <script src="{% static "js/ripples.min.js" %}"></script>
 <script src="{% static "js/material.min.js" %}"></script>
@@ -85,6 +86,16 @@
     $(function () {
         $.material.init();
     });
+</script>
+<script>
+  $( function() {
+    $( "#id_begin_date" ).datepicker();
+  } );
+</script>
+<script>
+  $( function() {
+    $( "#id_end_date" ).datepicker();
+  } );
 </script>
 </body>
 

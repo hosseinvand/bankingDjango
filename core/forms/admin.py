@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-
+from dateutil.relativedelta import relativedelta
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.db.models import Sum
 from django.forms import ModelForm, fields_for_model, Form
 from django.utils.crypto import get_random_string
+from graphos.renderers import morris
+from graphos.sources.simple import SimpleDataSource
 
 from core.models import Customer, Employee, Branch, Account, SystemConfiguration, Manager, Cashier, Jursit, Auditor, \
-    BillType, Transaction, Card, Bill, Maintainer, Greenback
+    BillType, Transaction, Card, Bill, Maintainer, Greenback, CardToCard
 
 
 class LoginForm(ModelForm):
@@ -269,3 +272,124 @@ class SystemConfigurationForm(ModelForm):
         instance = SystemConfiguration(**self.cleaned_data)
         instance.save()
         return instance
+
+REPORT_PERIOD = (
+    ('Day', 'روز'),
+    ('Month', 'ماه'),
+    ('Year', 'سال'),
+)
+
+REPORT_TYPES = (
+    ('COUNT', 'بر اساس تعداد عملیات'),
+    ('VOLUME', 'بر اساس حجم نقدینگی')
+)
+
+REPORT_DOMAIN = (
+    ('ALL', 'کل سامانه'),
+    ('PART', 'به تفکیک شعب')
+)
+
+class ReportForm(forms.Form):
+    button_text = "ایجاد گزارش"
+
+    period = forms.ChoiceField(choices=REPORT_PERIOD, label='واحد زمانی')
+    type = forms.ChoiceField(choices=REPORT_TYPES, label='مورد گزارش')
+    domain = forms.ChoiceField(choices=REPORT_DOMAIN, label='دامنه گزارش')
+    begin_date = forms.DateField(label='شروع')
+    end_date = forms.DateField(label='پایان')
+
+    branches = forms.ModelMultipleChoiceField(Branch.objects.all(), label='انتخاب شعب', required=False)
+
+    def clean(self):
+        cleaned_data = super(ReportForm, self).clean()
+        if cleaned_data["end_date"] < cleaned_data["begin_date"]:
+            raise forms.ValidationError("تاریخ ورودی نامعتبر است.")
+            return cleaned_data
+        return cleaned_data
+
+    def save(self):
+        print("savinggg")
+        begin_date = self.cleaned_data["begin_date"]
+        end_date = self.cleaned_data["end_date"]
+        period = self.cleaned_data["period"]
+        type = self.cleaned_data["type"]
+        domain = self.cleaned_data["domain"]
+        branches = self.cleaned_data["branches"]
+
+        years = 1 if period == "Year" else 0
+        months = 1 if period == "Month" else 0
+        days = 1 if period == "Day" else 0
+
+        dates = []
+        index_date = begin_date
+        while index_date < end_date:
+            dates.append(index_date)
+            index_date = index_date + relativedelta(years=years, months=months, days=days)
+        dates.append(end_date)
+
+        if type == "COUNT":
+            meta = ['تاریخ', 'تعداد واریز', 'تعداد برداشت', 'تعداد کارت به کارت']
+            datas = [meta]
+            if domain == "ALL":
+                for i in range(len(dates) - 1):
+                    beg = dates[i]
+                    end = dates[i+1]
+                    row = [beg.strftime("%Y-%m-%d"),
+                           Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="d").count(),
+                           Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="w").count(),
+                           CardToCard.objects.filter(deposit__date__gte=beg, deposit__date__lt=end).count()]
+                    datas.append(row)
+                simple_data_source = SimpleDataSource(data=datas)
+                bar_chart = morris.BarChart(simple_data_source)
+                return [{'name': 'کل سامانه', 'chart': bar_chart}]
+            else:
+                charts = []
+                for branch in branches:
+                    datas = [meta]
+                    for i in range(len(dates) - 1):
+                        beg = dates[i]
+                        end = dates[i + 1]
+                        print(branch.id)
+                        print(Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="w", branch=branch))
+                        row = [beg.strftime("%Y-%m-%d"),
+                               Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="d", branch=branch).count(),
+                               Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="w", branch=branch).count(),
+                               CardToCard.objects.filter(deposit__date__gte=beg, deposit__date__lt=end, deposit__branch=branch).count()]
+                        datas.append(row)
+                    simple_data_source = SimpleDataSource(data=datas)
+                    bar_chart = morris.BarChart(simple_data_source)
+                    charts.append({'name': branch.name, 'chart': bar_chart})
+                return charts
+
+        else:
+            meta = ['تاریخ', 'حجم واریز', 'حجم برداشت']
+            datas = [meta]
+            if domain == "ALL":
+                for i in range(len(dates) - 1):
+                    beg = dates[i]
+                    end = dates[i + 1]
+                    row = [beg.strftime("%Y-%m-%d"),
+                           Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="d").aggregate(Sum('amount'))['amount__sum'],
+                           Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="w").aggregate(Sum('amount'))['amount__sum'],]
+                    datas.append(row)
+                simple_data_source = SimpleDataSource(data=datas)
+                bar_chart = morris.BarChart(simple_data_source)
+                return [{'name': 'کل سامانه', 'chart': bar_chart}]
+            else:
+                charts = []
+                for branch in branches:
+                    datas = [meta]
+                    for i in range(len(dates) - 1):
+                        beg = dates[i]
+                        end = dates[i + 1]
+                        row = [beg.strftime("%Y-%m-%d"),
+                               Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="d",
+                                                          branch=branch).aggregate(Sum('amount'))['amount__sum'],
+                               Transaction.objects.filter(date__gte=beg, date__lt=end, transaction_type="w",
+                                                          branch=branch).aggregate(Sum('amount'))['amount__sum'],]
+                        datas.append(row)
+                    simple_data_source = SimpleDataSource(data=datas)
+                    bar_chart = morris.BarChart(simple_data_source)
+                    charts.append({'name': branch.name, 'chart': bar_chart})
+                return charts
+

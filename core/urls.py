@@ -5,7 +5,7 @@ from core.views.admin import LoginView, EmployeeCreateView, BranchCreateView, Ac
     SystemConfigurationView, \
     EmployeeListView, BranchListView, AdminPanel, BillTypeCreateView, CustomerCreateView, \
     AccountDetailView, TransactionDetailView, TransactionsView, AccountsView, CustomersView, CustomerDetailView, EmployeeDeleteView, \
-    MainPanel, GreenbackCreateView
+    MainPanel, GreenbackCreateView, ReportView
 from django.contrib.auth.views import logout
 from django.urls import reverse_lazy
 
@@ -46,6 +46,7 @@ urlpatterns = [
     url(r'^admin/create_branch/$', BranchCreateView.as_view(), name="create_branch"),
     url(r'^admin/create_bill_type/$', BillTypeCreateView.as_view(), name="create_bill_type"),
     url(r'^admin/bill_create/$', Bill_Create_view.as_view(), name="bill_create"),
+    url(r'^admin/report/$', ReportView.as_view(), name="report"),
     url(r'^admin/panel/$', AdminPanel.as_view(), name="admin_panel"),
     url(r'^main/panel/$', MainPanel.as_view(), name="main_panel"),
     url(r'^cashier/panel/$', CashierPanel.as_view(), name="cashier_panel"),
@@ -87,6 +88,7 @@ urlpatterns = [
     url(r'^Auditor/check_issue_requests/(?P<pk>[0-9]+)/$', Auditor_ChequeDetailView.as_view(),name='auditor_cheque_detail'),
     url(r'^Auditor/loan_requests/$', Auditor_Loan_Requests_view.as_view(), name="auditor_loan_requests"),
     url(r'^Auditor/loan_requests/(?P<pk>[0-9]+)/$', Auditor_LoanDetailView.as_view(), name='auditor_loan_detail'),
+
     url(r'^atm/login/$', LoginATM.as_view(), name='atm_login'),
     url(r'^atm/panel/(?P<atm>[0-9]+)/(?P<card_number>.+)/$', PanelATM.as_view(), name='atm_panel'),
     url(r'^atm/withdraw/(?P<atm>[0-9]+)/(?P<card_number>.+)/$', WithdrawATM.as_view(), name='atm_withdraw'),

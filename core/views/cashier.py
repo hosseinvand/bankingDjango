@@ -1,12 +1,15 @@
 
 
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.files.storage import FileSystemStorage
 from django.db import transaction
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import FormView, CreateView
 from django.views.generic import ListView
 from django.views.generic import TemplateView
+from weasyprint import HTML
 
 from core.forms.cashier import Bill_Payment_form, Account_Transaction_Form, Bill_Create_form, Transfer_Money_form, \
     Add_Cash_to_Account_form, Card_Issuing_form, Withdraw_Cash_from_Account_form, Cheque_Application_form, \
@@ -57,12 +60,26 @@ class Account_Transactions_View(FormView):
     def get_success_url(self):
         return reverse_lazy('core:account_transactions_select_view', kwargs={"pk": self.request.POST['input_account']})
 
-class Account_Transactions_Selection_View(generic.ListView):
-    model =  Transaction
+
+class Account_Transactions_Selection_View(ListView):
+    model = Transaction
     template_name = 'core/transactions.html'
     context_object_name = 'transaction_list'
+
     def get_queryset(self):
         return Transaction.objects.filter(account=Account.objects.get(pk=self.kwargs['pk'])).order_by('date', 'time')
+
+    def get(self, request, *args, **kwargs):
+        response = super(Account_Transactions_Selection_View, self).get(self, request, *args, **kwargs)
+        html = HTML(string=response.rendered_content)
+        html.write_pdf(target='/tmp/mypdf.pdf')
+        fs = FileSystemStorage('/tmp')
+        with fs.open('mypdf.pdf') as pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+            return response
+        return response
+
 
 
 

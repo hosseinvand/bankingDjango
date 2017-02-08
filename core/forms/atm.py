@@ -72,7 +72,7 @@ class WithdrawATMForm(forms.Form):
         account.balance -= sum
         account.save()
 
-        trans_w = Transaction(account=self.card.account, amount=sum, transaction_type='w')
+        trans_w = Transaction(account=self.card.account, amount=sum, transaction_type='w', branch=self.atm.branch)
         trans_w.save()
 
         withdraw = WithdrawFromATM(ATM=self.atm, card=self.card, amount=sum, transaction=trans_w)
@@ -128,8 +128,8 @@ class CardToCardATMForm(forms.Form):
         source_account.save()
         dest_account.save()
 
-        trans_w = Transaction(account=source_account, amount=amount, transaction_type='w')
-        trans_d = Transaction(account=dest_account, amount=amount, transaction_type='d')
+        trans_w = Transaction(account=source_account, amount=amount, transaction_type='w', branch=self.atm.branch)
+        trans_d = Transaction(account=dest_account, amount=amount, transaction_type='d', branch=self.atm.branch)
         trans_w.save()
         trans_d.save()
 
