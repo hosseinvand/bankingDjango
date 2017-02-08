@@ -1,0 +1,35 @@
+{% extends "core/background.html" %}
+{% load widget_tweaks %}
+{% block pageBody %}
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+              <p><strong>مبلغ وام:</strong> {{loanapplication.amount}}</p>
+
+              <p> <strong>تعداد اقساط:</strong> {{loanapplication.payment_count}}</p>
+
+              <p><strong>حساب کاربری:</strong> {{ loanapplication.account}}</p>
+
+              <p><strong>موجودی حساب:</strong> {{ loanapplication.account.balance}}</p>
+
+{#              <p><strong>شعبه:</strong>#}
+{#                <a href="{% url 'core:branch_list' %}#{{transaction.branch.pk}}">{{ transaction.branch }}#}
+{#                </a>#}
+{#              </p>#}
+
+            <form action="" method="post">{% csrf_token %}
+                {% for field in form %}
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                {{ field.label }}
+                                {% render_field field class="form-control" %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                <input type="submit" class="btn btn-lg btn-raised btn-primary" value="به روز رسانی" />
+            </form>
+              </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -66,12 +66,10 @@ class Account_Transactions_Selection_View(generic.ListView):
 
 
 
-
 class Transfer_Money_view(FormView):
     template_name = 'core/simple_from_with_single_button.html'
     success_url = reverse_lazy('core:main_panel')
     form_class = Transfer_Money_form
-
     @transaction.atomic
     def form_valid(self, form):
         source_account = form.cleaned_data.get('source_account')
@@ -79,6 +77,7 @@ class Transfer_Money_view(FormView):
         amount = form.cleaned_data.get('amount')
 
         source_account.balance -= amount
+        source_account.balance -= SystemConfiguration.get_solo().transaction_fee
         dest_account.balance += amount
         source_account.save()
         dest_account.save()
@@ -182,6 +181,12 @@ class Cheque_Issue_Cash_view(CreateView):
     success_url = reverse_lazy('core:main_panel')
     form_class = Cheque_Issue_Cash_form
 
+    def save(self, commit=True):
+        cheque_issue = ChequeIssue(**self.cleaned_data)
+        cheque_issue.cashier = Cashier.objects.get(user__pk=self.request.user.id)
+        cheque_issue.save()
+        return cheque_issue
+
 
 class Cheque_Issue_toAccount_view(CreateView):
     model = ChequeIssue
@@ -189,6 +194,13 @@ class Cheque_Issue_toAccount_view(CreateView):
     success_url = reverse_lazy('core:main_panel')
     form_class = Cheque_Issue_toAccount_form
 
+    def save(self, commit=True):
+        cheque_issue = ChequeIssue(**self.cleaned_data)
+        cheque_issue.cashier = Cashier.objects.get(user__pk=self.request.user.id)
+        print("hooooooooo")
+        print("hossein")
+        cheque_issue.save()
+        return cheque_issue
 
 class Loan_Request_view(CreateView):
     model = LoanApplication
